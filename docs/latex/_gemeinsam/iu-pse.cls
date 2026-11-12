@@ -339,10 +339,13 @@
       {\fontsize{14pt}{19pt}\selectfont \@dokumentuntertitel\par}
     \fi
     \vfill
+    % Tutorzeile nur, wenn \Tutor in meta.tex nicht leer ist
+    \ifdefempty{\Tutor}{\def\iu@tutorzeile{}}%
+      {\def\iu@tutorzeile{Betreuende Person/Tutor:in: & \Tutor \\}}%
     \begin{tabular}{@{}l@{\hspace{1em}}l@{}}
       Name:                          & \Vorname\ \Nachname \\
       Matrikelnummer:                & \Matrikelnummer \\
-      Betreuende Person/Tutor:in:    & \Tutor \\
+      \iu@tutorzeile
       Abgabedatum:                   & \@abgabedatum \\
     \end{tabular}
     \par\vspace*{1cm}
