@@ -1,0 +1,101 @@
+% =====================================================================
+%  UML-Use-Case-Diagramm BalanceOS (UML 2.5.1, Kap. 18; OMG 2017, S. 639/641)
+%  Akteur „Nutzer:in“ außerhalb der Systemgrenze „BalanceOS“,
+%  Use Cases UC01–UC19 (Anforderungsdokument, Kap. 3.2)
+%  Spalte A: Basis-Use-Cases (mit Assoziation zum Akteur), gruppiert nach
+%            Stammdaten · Erfassung · Auswertung · Kompass · Daten · Should
+%  Spalte B/C: inkludierte bzw. erweiternde Use Cases
+%  Export: docs/diagramme/export/usecase.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\tikzset{
+  uc/.style={usecase, text width=, minimum width=3.9cm, minimum height=1.1cm, inner ysep=0pt, inner xsep=-0.22cm},
+  ucshould/.style={uc, fill=white, draw=iuGrau},
+  beschr/.style={stereotyp, fill=none, inner sep=1.5pt},
+}
+
+\begin{document}
+\begin{tikzpicture}
+
+  % ---------------- Spalte A: Basis-Use-Cases ----------------------
+  \def\xa{3.75}
+  % Stammdaten
+  \node[uc] (uc01) at (\xa,  0.00) {UC01\\Lebensbereiche verwalten};
+  \node[uc] (uc02) at (\xa, -1.20) {UC02\\Wunschprofil festlegen};
+  % Erfassung
+  \node[uc] (uc03) at (\xa, -2.75) {UC03\\Aktivität erfassen};
+  \node[uc] (uc04) at (\xa, -3.95) {UC04\\Aktivität bearbeiten};
+  \node[uc] (uc07) at (\xa, -5.15) {UC07\\Wochenansicht anzeigen};
+  % Auswertung
+  \node[uc] (uc08) at (\xa, -6.70) {UC08\\Dashboard anzeigen};
+  % Kompass
+  \node[uc] (uc12) at (\xa, -8.25) {UC12\\Regeln konfigurieren};
+  \node[uc] (uc13) at (\xa, -9.45) {UC13\\Balance-Kompass ansehen};
+  % Daten
+  \node[uc] (uc14) at (\xa, -11.00) {UC14\\Daten exportieren};
+  \node[uc] (uc15) at (\xa, -12.20) {UC15\\Alle Daten löschen};
+  \node[uc] (uc16) at (\xa, -13.40) {UC16\\Demodaten verwalten};
+  % Should
+  \node[ucshould] (uc17) at (\xa, -14.95) {UC17 (Should)\\WHO-5 ausfüllen};
+  \node[ucshould] (uc18) at (\xa, -16.15) {UC18 (Should)\\Statistik ansehen};
+  \node[ucshould] (uc19) at (\xa, -17.35) {UC19 (Should)\\Wochenreflexion erfassen};
+
+  % ---------------- Spalte B/C: inkludierte und erweiternde UCs -----
+  \def\xb{9.4}
+  \def\xc{13.55}
+  \node[uc] (uc05) at (\xb, -2.75) {UC05\\Wiederholung festlegen};
+  \node[uc] (uc06) at (\xb, -3.95) {UC06\\Termin überspringen};
+  \node[uc] (uc10) at (\xb, -6.70) {UC10\\Hinweise anzeigen};
+  \node[uc] (uc11) at (\xb, -8.40) {UC11\\Begründung anzeigen};
+  \node[uc] (uc09) at (\xb, -12.00) {UC09\\Wochenbewertung berechnen};
+
+  % Kommentar (UML-Notiz) zu UC09: optionaler Gesamt-Score (US19, Should)
+  \node[notiz, draw=none, inner xsep=4pt] (n09) at (\xc, -12.00)
+    {Enthält den optionalen\\Gesamt-Score mit eigener\\Gewichtung (US19, Should)};
+  \draw (n09.north west) -- ([xshift=-6pt]n09.north east) -- ([yshift=-6pt]n09.north east)
+        -- (n09.south east) -- (n09.south west) -- cycle;
+  \draw ([xshift=-6pt]n09.north east) |- ([yshift=-6pt]n09.north east);
+  \draw[dashed] (n09.west) -- (uc09.east);
+
+  % ---------------- Systemgrenze ------------------------------------
+  \begin{scope}[on background layer]
+    \coordinate (oben) at (\xa, 0.95);
+    \node[systemgrenze, fit=(oben)(uc01)(uc19)(uc11)(n09), inner xsep=14pt, inner ysep=8pt] (sys) {};
+  \end{scope}
+  \node[anchor=north, font=\fontsize{10pt}{12pt}\selectfont\bfseries]
+    at ([yshift=-4pt]sys.north) {BalanceOS};
+
+  % ---------------- Akteur und Assoziationen -------------------------
+  \akteur{nutzer}{-0.55,-8.6}{Nutzer:in}
+  \coordinate (a) at ([xshift=0.38cm]nutzer);
+  \foreach \u in {uc01,uc02,uc03,uc04,uc07,uc08,uc12,uc13,uc14,uc15,uc16,uc17,uc18,uc19}{
+    \draw[assoziation] (a) -- (\u.west);
+  }
+
+  % ---------------- «extend»: erweiternder UC -> Basis-UC -----------
+  \draw[extend] (uc05.west) -- node[beschr, above] {«extend»} (uc03.east);
+  \draw[extend] (uc06.west) -- node[beschr, above] {«extend»} (uc04.east);
+  \draw[extend] (uc11.north) -- node[beschr, right] {«extend»} (uc10.south);
+
+  % ---------------- «include»: Basis-UC -> inkludierter UC ----------
+  \draw[include] (uc08.east) -- node[beschr, above] {«include»} (uc10.west);
+  \draw[include] (uc08.-22) -- node[beschr, sloped, above] {«include»} (uc09.north west);
+  \draw[include] (uc18.east) -- node[beschr, sloped, above] {«include»} (uc09.south west);
+
+  % ---------------- Legende (außerhalb der Systemgrenze) ------------
+  \node[anchor=north west, align=left, font=\fontsize{8pt}{10pt}\selectfont, inner sep=0pt]
+    (leg) at ([xshift=0pt, yshift=-0.35cm]sys.south west) {\textbf{Legende:}};
+  \node[uc, minimum width=1.5cm, minimum height=0.55cm, anchor=west] (lm)
+    at ([xshift=0.25cm]leg.east) {};
+  \node[anchor=west, font=\fontsize{8pt}{10pt}\selectfont] (lmt) at (lm.east) {Must-Use-Case};
+  \node[ucshould, minimum width=1.5cm, minimum height=0.55cm, anchor=west] (ls)
+    at ([xshift=0.35cm]lmt.east) {};
+  \node[anchor=west, font=\fontsize{8pt}{10pt}\selectfont] (lst) at (ls.east) {Should-Use-Case};
+  \node[anchor=west, align=left, font=\fontsize{8pt}{10pt}\selectfont] (lit)
+    at ([xshift=0.35cm]lst.east)
+    {«include»: Basis-UC $\rightarrow$ inkludierter UC\\«extend»: erweiternder UC $\rightarrow$ Basis-UC};
+
+\end{tikzpicture}
+\end{document}

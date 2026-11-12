@@ -8,21 +8,40 @@
 \input{meta}
 \addbibresource{literatur.bib}
 
+% Tabellensatz: einzeilig, 10 pt (Richtlinien: in Tabellen bei Bedarf < 11 pt)
+\newcommand{\tabsatz}{\setstretch{1.0}\fontsize{10pt}{12pt}\selectfont
+  \renewcommand{\arraystretch}{1.15}}
+% Kompakte Aufzählung der Akzeptanzkriterien in Tabellenzellen
+\newlist{akz}{itemize}{1}
+\setlist[akz]{label=--, leftmargin=1.0em, labelsep=0.4em, nosep,
+  before=\vspace{-\baselineskip}\vspace{4.5pt}, after={}}
+
 \dokumenttitel{Anforderungsdokument}
 \dokumentuntertitel{\Projektname}
 
 \begin{document}
 \titelblatt
 \verzeichnisse
-\abbildungsverzeichnis   % entfernen, falls weniger als drei Abbildungen
-\tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
+% Abbildungsverzeichnis entfällt (weniger als drei Abbildungen).
+\tabellenverzeichnis
 
-\begin{abkuerzungen}[MoSCoW]
-  \acro{FA}{Funktionale Anforderung}
-  \acro{NFA}{Nichtfunktionale Anforderung}
-  \acro{US}{User Story}
-  \acro{UML}{Unified Modeling Language}
+\begin{abkuerzungen}[SWEBOK]
+  \acro{CSV}{Comma-Separated Values}
+  \acro{GUI}{Graphical User Interface}
+  \acro{IEC}{International Electrotechnical Commission}
+  \acro{ISO}{International Organization for Standardization}
+  \acro{JSON}{JavaScript Object Notation}
+  \acro{KI}{Künstliche Intelligenz}
   \acro{MoSCoW}{Must, Should, Could, Won't}
+  \acro{NFA}{Nichtfunktionale Anforderung}
+  \acro{PDF}{Portable Document Format}
+  \acro{PEP}{Python Enhancement Proposal}
+  \acro{SWEBOK}{Guide to the Software Engineering Body of Knowledge}
+  \acro{UC}{Use Case}
+  \acro{UML}{Unified Modeling Language}
+  \acro{US}{User Story}
+  \acro{UTF-8}{8-Bit Universal Coded Character Set Transformation Format}
+  \acro{WHO}{World Health Organization}
 \end{abkuerzungen}
 
 \hauptteil

@@ -1,0 +1,133 @@
+% =====================================================================
+%  Mock-up (Wireframe): Seite „Woche“ (Kalender Mo–So), KW 46/2026
+%  Beispieldaten: Persona Sarah Keller; Sonntag nur geplante Termine.
+%  Spezifikationsdokument, Kapitel 5 (Abbildung abb:mockup-woche)
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+\usetikzlibrary{patterns}
+
+\newcommand{\sz}[1]{\fontsize{#1pt}{\fpeval{#1*1.2}pt}\selectfont}
+
+% Farben der zehn Standard-Lebensbereiche (identisch in allen Mock-ups)
+\definecolor{bArbeit}{HTML}{4E79A7}
+\definecolor{bSchlaf}{HTML}{8E7CC3}
+\definecolor{bBewegung}{HTML}{59A14F}
+\definecolor{bFamilie}{HTML}{F28E2B}
+\definecolor{bHobbys}{HTML}{EDC948}
+\definecolor{bSozial}{HTML}{FF9DA7}
+\definecolor{bFreizeit}{HTML}{76B7B2}
+\definecolor{bErholung}{HTML}{8CD17D}
+\definecolor{bEntwicklung}{HTML}{9C755F}
+\definecolor{bAlltag}{HTML}{BAB0AC}
+
+\newcommand{\pfeillinks}[1]{\fill[iuLinie] ($(#1)+(0.07,0.11)$) -- ($(#1)+(-0.09,0)$) -- ($(#1)+(0.07,-0.11)$) -- cycle;}
+\newcommand{\pfeilrechts}[1]{\fill[iuLinie] ($(#1)+(-0.07,0.11)$) -- ($(#1)+(0.09,0)$) -- ($(#1)+(-0.07,-0.11)$) -- cycle;}
+
+% Raster: 00:00 oben bei y = 9.6, 0,3 cm je Stunde; Spalten 2,15 cm ab x = 1.3
+\newcommand{\yh}[1]{\fpeval{9.6-0.3*(#1)}}
+\newcommand{\xd}[1]{\fpeval{1.3+2.15*((#1)-1)+0.05}}
+% \block{Tag 1-7}{Beginn h}{Ende h}{Farbe}{Titel}{Status d/g/a}
+\newcommand{\block}[6]{%
+  \edef\bx{\xd{#1}}\edef\byo{\yh{#2}}\edef\byu{\yh{#3}}%
+  \if#6d
+    \fill[#4!45, draw=#4!85!black, line width=0.4pt, rounded corners=1pt] (\bx,\byu) rectangle (\bx+2.05,\byo);
+  \fi
+  \if#6g
+    \draw[#4!85!black, dashed, line width=0.7pt, fill=white, rounded corners=1pt] (\bx,\byu) rectangle (\bx+2.05,\byo);
+  \fi
+  \if#6a
+    \fill[white] (\bx,\byu) rectangle (\bx+2.05,\byo);
+    \fill[pattern=north east lines, pattern color=#4!80!black] (\bx,\byu) rectangle (\bx+2.05,\byo);
+    \draw[#4!85!black, line width=0.4pt, rounded corners=1pt] (\bx,\byu) rectangle (\bx+2.05,\byo);
+  \fi
+  \def\lblfill{none}\if#6a\def\lblfill{white}\fi
+  \ifx\relax#5\relax\else
+    \node[anchor=north west, font=\sz{7.2}, inner sep=1.5pt, fill=\lblfill, fill opacity=0.85, text opacity=1]
+      at (\bx+0.03,\byo-0.01) {#5};
+  \fi}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% ---------------- Rahmen und Kopfzeile ---------------------------------
+\draw[fenster, fill=white] (0,0) rectangle (16.6,11.3);
+\node[anchor=west, font=\sz{12}\bfseries] at (0.3,10.75) {Woche};
+\node[knopf, minimum width=0.55cm, minimum height=0.5cm] (zur) at (4.55,10.75) {};
+\pfeillinks{zur}
+\node[font=\sz{9}\bfseries] at (6.8,10.75) {KW 46 · 09.11.–15.11.2026};
+\node[knopf, minimum width=0.55cm, minimum height=0.5cm] (vor) at (9.05,10.75) {};
+\pfeilrechts{vor}
+\node[knopf, font=\sz{8.5}, minimum height=0.5cm] at (10.3,10.75) {Heute};
+\node[hauptknopf, font=\sz{9}\bfseries, anchor=east, minimum height=0.55cm] at (16.3,10.75) {+ Aktivität};
+\draw[iuGrau!50] (0,10.25) -- (16.6,10.25);
+
+% ---------------- Spaltenköpfe und Raster ------------------------------
+\foreach \tag/\datum [count=\d] in {Mo/09.11.,Di/10.11.,Mi/11.11.,Do/12.11.,Fr/13.11.,Sa/14.11.,So/15.11.}{
+  \node[font=\sz{8.5}\bfseries] at (\fpeval{1.3+2.15*(\d-0.5)},9.95) {\tag{} \datum};
+}
+\fill[iuFlaeche] (1.3,2.4) rectangle (16.35,9.6);
+\foreach \h in {0,2,...,24}{
+  \draw[iuGrau!40, line width=0.3pt] (1.3,\yh{\h}) -- (16.35,\yh{\h});
+  \node[anchor=east, font=\sz{7.2}, text=iuGrau] at (1.22,\yh{\h}) {\ifnum\h<10 0\fi\h:00};
+}
+\foreach \d in {0,...,7} \draw[iuGrau!60, line width=0.4pt] (1.3+2.15*\d,2.4) -- (1.3+2.15*\d,9.6);
+
+% ---------------- Aktivitäten (Mo–Sa durchgeführt, So geplant) ---------
+% Schlaf: Beginn 23:30, Ende 06:00 (über Mitternacht, Darstellung geteilt)
+\foreach \d in {1,...,6} {\block{\d}{0}{6}{bSchlaf}{Schlaf}{d}}
+\foreach \d in {1,...,6} {\block{\d}{23.5}{24}{bSchlaf}{}{d}}
+\block{7}{0}{6}{bSchlaf}{Schlaf}{d}
+% Arbeit
+\foreach \d in {1,2,3,5} {\block{\d}{8}{14}{bArbeit}{Arbeit}{d}}
+\block{4}{8}{17}{bArbeit}{Arbeit}{d}
+% Familie
+\foreach \d in {1,2,3,5} {\block{\d}{15}{16.5}{bFamilie}{Kind abholen}{d}}
+\block{6}{9}{12}{bFamilie}{Spielplatz}{d}
+\block{6}{16}{19}{bFamilie}{Familienzeit}{d}
+% Alltägliche Verpflichtungen
+\foreach \d in {1,2,5} {\block{\d}{17}{19}{bAlltag}{Haushalt}{d}}
+\block{3}{17}{18}{bAlltag}{Haushalt}{d}
+\block{4}{17.5}{19.5}{bAlltag}{Einkauf}{d}
+\block{6}{12}{13}{bAlltag}{Einkauf}{d}
+% Persönliche Entwicklung
+\foreach \d in {1,2,3} {\block{\d}{20}{22}{bEntwicklung}{Studium}{d}}
+% Bewegung
+\block{3}{18.5}{19.25}{bBewegung}{}{d}
+\block{6}{7.75}{8.5}{bBewegung}{}{d}
+\block{2}{19}{20}{bBewegung}{Yoga}{a}
+% Erholung, Soziale Kontakte, Freizeit, Hobbys
+\block{4}{20}{21.5}{bErholung}{Lesen}{d}
+\block{5}{19.5}{20.5}{bSozial}{Treffen}{d}
+\block{5}{20.5}{22.5}{bFreizeit}{Film}{d}
+\block{6}{14}{16}{bHobbys}{Malen}{d}
+\block{6}{19.5}{22.5}{bFreizeit}{Spieleabend}{d}
+% Sonntag: geplante Termine
+\block{7}{10}{13}{bFamilie}{Ausflug}{g}
+\block{7}{15}{16.5}{bErholung}{Sauna}{g}
+\block{7}{19}{21}{bEntwicklung}{Studium}{g}
+% kurze Blöcke ohne Beschriftung: Titel erscheint beim Zeigen mit der Maus
+
+% ---------------- Legende ----------------------------------------------
+\node[anchor=west, font=\sz{8}\bfseries] at (0.3,1.95) {Lebensbereiche};
+\foreach \name/\farbe/\lx/\ly in {Arbeit/bArbeit/0.3/1.5, Schlaf/bSchlaf/3.1/1.5, Bewegung/bBewegung/5.0/1.5,
+                                  Familie/bFamilie/7.0/1.5, Hobbys/bHobbys/10.7/1.5,
+                                  Soziale Kontakte/bSozial/0.3/1.1, Freizeit/bFreizeit/3.1/1.1,
+                                  Erholung/bErholung/5.0/1.1, Persönliche Entwicklung/bEntwicklung/7.0/1.1,
+                                  Alltägliche Verpflichtungen/bAlltag/10.7/1.1}{
+  \fill[\farbe!45, draw=\farbe!85!black, line width=0.4pt] (\lx,\ly-0.11) rectangle (\lx+0.3,\ly+0.11);
+  \node[anchor=west, font=\sz{7.5}] at (\lx+0.35,\ly) {\name};
+}
+\node[anchor=west, font=\sz{8}\bfseries] at (0.3,0.68) {Status};
+\fill[iuGrau!45, draw=iuGrau!85!black, line width=0.4pt] (1.55,0.57) rectangle (1.85,0.79);
+\node[anchor=west, font=\sz{7.5}] at (1.9,0.68) {durchgeführt};
+\draw[iuGrau!85!black, dashed, line width=0.7pt] (3.75,0.57) rectangle (4.05,0.79);
+\node[anchor=west, font=\sz{7.5}] at (4.1,0.68) {geplant};
+\fill[pattern=north east lines, pattern color=iuGrau!80!black] (5.45,0.57) rectangle (5.75,0.79);
+\draw[iuGrau!85!black, line width=0.4pt] (5.45,0.57) rectangle (5.75,0.79);
+\node[anchor=west, font=\sz{7.5}] at (5.8,0.68) {ausgefallen};
+\node[anchor=west, font=\sz{7.2}, text=iuGrau] at (0.3,0.28)
+  {Doppelklick auf einen Block öffnet „Aktivität bearbeiten“; Doppelklick auf eine freie Fläche legt dort eine Aktivität an.};
+
+\end{tikzpicture}
+\end{document}

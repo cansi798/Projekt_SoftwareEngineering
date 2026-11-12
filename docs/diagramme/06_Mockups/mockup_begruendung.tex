@@ -1,0 +1,67 @@
+% =====================================================================
+%  Mock-up (Wireframe): Begründungsdialog „Warum sehe ich das?“ zu Regel R01
+%  Beispieldaten: Persona Sarah Keller, KW 46/2026
+%  Spezifikationsdokument, Kapitel 5 (Abbildung abb:mockup-begruendung)
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\newcommand{\sz}[1]{\fontsize{#1pt}{\fpeval{#1*1.2}pt}\selectfont}
+\newcommand{\warnsymbol}[1]{%
+  \fill[iuGelb, draw=iuLinie!70, line width=0.4pt, line join=round]
+    ($(#1)+(0,0.2)$) -- ($(#1)+(0.23,-0.18)$) -- ($(#1)+(-0.23,-0.18)$) -- cycle;
+  \node[font=\sz{8}\bfseries, inner sep=0] at ($(#1)+(0,-0.04)$) {!};}
+\newcommand{\infosymbol}[1]{%
+  \draw[iuGrau, line width=0.5pt] (#1) circle (0.12);
+  \node[font=\sz{7.2}\bfseries, text=iuGrau, inner sep=0] at (#1) {i};}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% ---------------- Dialograhmen ----------------------------------------
+\draw[fenster, fill=white] (0,0) rectangle (10.6,9.2);
+\fill[iuFlaeche!60!white] (0.02,8.62) rectangle (10.58,9.18);
+\draw[iuGrau!60] (0,8.6) -- (10.6,8.6);
+\node[anchor=west, font=\sz{9.5}\bfseries] at (0.3,8.9) {Warum sehe ich das?};
+\draw[iuLinie, line width=0.6pt] (10.15,8.79) -- (10.37,9.01) (10.15,9.01) -- (10.37,8.79);
+
+% ---------------- Kopf des Hinweises ----------------------------------
+\warnsymbol{0.55,8.05}
+\node[anchor=west, font=\sz{9.5}\bfseries] at (0.95,8.07) {Ausdauerbewegung: 90 von 150 min};
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (0.95,7.65) {Hinweisart: Warnung · Kalenderwoche 46/2026};
+\draw[iuGrau!50] (0.3,7.35) -- (10.3,7.35);
+
+% ---------------- Begründung (Regel, Datenbasis, Zeitraum, …) ---------
+\foreach \lbl/\wert/\y in {
+    Regel/{R01 -- Ausdauerbewegung unter Richtwert}/7.05,
+    Modell/{WHO-Bewegungsleitlinie}/6.6,
+    Datenbasis/{2 durchgeführte Aktivitäten im Bereich Bewegung,\\Bewegungsart „Ausdauer, moderat“ (Mi 45 min, Sa 45 min)}/6.0,
+    Zeitraum/{KW 46 (09.11.–15.11.2026)}/5.4,
+    Schwelle/{moderat + 2 × intensiv ≥ 150 min pro Woche}/4.95,
+    Ihr Wert/{\textbf{90 min} (moderat 90 min, intensiv 0 min)}/4.5,
+    Quelle/{Bull et al. (2020, S. 1451)}/4.05,
+    Evidenzart/{Empfehlung (evidenzbasiert)}/3.6,
+    Grenzen/{Nur erfasste Aktivitäten werden berücksichtigt.}/3.15}{
+  \node[anchor=west, font=\sz{8}\bfseries, text=iuGrau] at (0.3,\y) {\lbl};
+  \node[anchor=west, font=\sz{8.5}, align=left] at (2.2,\y) {\wert};
+}
+% kleiner Fortschrittsbalken für „Ihr Wert“
+\fill[iuFlaeche] (7.75,4.43) rectangle (10.15,4.57);
+\fill[iuAkzent] (7.75,4.43) rectangle (9.19,4.57);
+\draw[iuLinie, line width=1pt] (10.15,4.35) -- (10.15,4.65);
+\node[font=\sz{7.2}, text=iuGrau, anchor=south east] at (10.2,4.65) {150 min};
+
+% ---------------- Hinweis „keine Diagnose“ ----------------------------
+\draw[iuGrau!70, fill=iuFlaeche, rounded corners=2pt] (0.3,1.65) rectangle (10.3,2.75);
+\node[anchor=north west, inner sep=0pt, align=left, font=\sz{8}] at (0.85,2.6)
+  {Der Hinweis zeigt einen Zusammenhang in den eigenen Einträgen.\\
+   Er ist \textbf{keine medizinische Diagnose} und ersetzt keine ärztliche Beratung.};
+\infosymbol{0.6,2.47}
+
+% ---------------- Schaltflächen ---------------------------------------
+\draw[iuGrau!60] (0,1.2) -- (10.6,1.2);
+\node[knopf, font=\sz{8.5}, anchor=west] at (0.3,0.6) {Regel R01 deaktivieren};
+\node[hauptknopf, font=\sz{8.5}\bfseries, anchor=east, minimum width=1.9cm] at (10.3,0.6) {Schließen};
+
+\end{tikzpicture}
+\end{document}

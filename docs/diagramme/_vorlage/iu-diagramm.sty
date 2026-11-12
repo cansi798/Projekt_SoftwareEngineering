@@ -1,0 +1,88 @@
+% =====================================================================
+%  iu-diagramm.sty – gemeinsame TikZ-Stile für alle Diagramme (UML 2.5.1)
+%  Verwendung in jeder Diagrammdatei:
+%     \documentclass[tikz,border=4pt]{standalone}
+%     \usepackage{iu-diagramm}
+%     \begin{document} \begin{tikzpicture} ... \end{tikzpicture} \end{document}
+%  Gebaut wird automatisch durch:  python tools/build_docs.py
+%  (jede .tex-Datei in docs/diagramme/<Unterordner>/ -> export/<Name>.pdf)
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{iu-diagramm}[2026/11/12 TikZ-Stile BalanceOS]
+
+\RequirePackage{fontspec}
+\setmainfont{arial}[Extension=.ttf,UprightFont=*,BoldFont=*bd,ItalicFont=*i,BoldItalicFont=*bi]
+\setsansfont{arial}[Extension=.ttf,UprightFont=*,BoldFont=*bd,ItalicFont=*i,BoldItalicFont=*bi]
+\RequirePackage[ngerman]{babel}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,shapes.multipart,arrows.meta,fit,calc,backgrounds,decorations.pathreplacing}
+
+% ---------------------------------------------------------------------
+%  Farben (zurückhaltend, druckfreundlich)
+% ---------------------------------------------------------------------
+\definecolor{iuLinie}{HTML}{222222}
+\definecolor{iuFlaeche}{HTML}{F4F6F8}
+\definecolor{iuAkzent}{HTML}{2F6690}
+\definecolor{iuGrau}{HTML}{8A8F96}
+\definecolor{iuGruen}{HTML}{3A7D44}
+\definecolor{iuGelb}{HTML}{E0B33A}
+\definecolor{iuRot}{HTML}{B23A3A}
+
+\tikzset{
+  every picture/.append style={font=\fontsize{9pt}{11pt}\selectfont, line width=0.6pt, draw=iuLinie},
+  % ---- Use-Case-Diagramm (UML 2.5.1, Kap. 18) ----------------------
+  usecase/.style={ellipse, draw, fill=iuFlaeche, minimum width=3.4cm, minimum height=1.0cm,
+                  align=center, inner sep=1pt, text width=3.1cm},
+  systemgrenze/.style={draw, rectangle, inner sep=10pt},
+  assoziation/.style={-},
+  include/.style={dashed, -{Straight Barb[length=2.2mm]}},   % «include»: vom Basis- zum inkludierten Use Case
+  extend/.style={dashed, -{Straight Barb[length=2.2mm]}},    % «extend»: vom erweiternden zum Basis-Use-Case
+  generalisierung/.style={-{Triangle[open,length=3mm,width=3mm]}},
+  stereotyp/.style={font=\fontsize{8pt}{9pt}\selectfont, fill=white, inner sep=1pt},
+  % ---- Klassendiagramm (UML 2.5.1, Kap. 9/11) -----------------------
+  klasse/.style={rectangle split, rectangle split parts=2, draw, fill=white, align=left,
+                 rectangle split part fill={iuFlaeche,white}, inner sep=3pt, font=\fontsize{8.5pt}{10pt}\selectfont},
+  enumklasse/.style={klasse},
+  komposition/.style={{Diamond[length=3mm,width=2.2mm]}-},
+  aggregation/.style={{Diamond[open,length=3mm,width=2.2mm]}-},
+  gerichtet/.style={-{Straight Barb[length=2.2mm]}},
+  mult/.style={font=\fontsize{8pt}{9pt}\selectfont, inner sep=1.5pt},
+  % ---- Aktivitätsdiagramm (UML 2.5.1, Kap. 15) ----------------------
+  aktion/.style={rectangle, rounded corners=6pt, draw, fill=iuFlaeche, align=center,
+                 minimum height=0.85cm, text width=4.2cm, inner sep=3pt},
+  startknoten/.style={circle, fill=iuLinie, draw=iuLinie, minimum size=4mm, inner sep=0pt},
+  endknoten/.style={circle, draw=iuLinie, fill=white, minimum size=4.6mm, inner sep=0pt,
+                    path picture={\fill[iuLinie] (path picture bounding box.center) circle (1.35mm);}},
+  entscheidung/.style={diamond, draw, fill=white, aspect=1, minimum size=6mm, inner sep=0pt},
+  balken/.style={rectangle, fill=iuLinie, minimum height=1.6mm, inner sep=0pt},
+  fluss/.style={-{Straight Barb[length=2.2mm]}},
+  waechter/.style={font=\fontsize{8pt}{9pt}\selectfont, inner sep=1.5pt, fill=white},
+  notiz/.style={draw, fill=white, align=left, font=\fontsize{8pt}{9.5pt}\selectfont, inner sep=3pt},
+  % ---- Mock-ups (Wireframes) ----------------------------------------
+  fenster/.style={draw, fill=white, rounded corners=2pt},
+  feld/.style={draw=iuGrau, fill=white, minimum height=0.55cm, inner sep=2pt, anchor=west, align=left},
+  knopf/.style={draw=iuAkzent, fill=iuAkzent!12, rounded corners=2pt, minimum height=0.55cm, inner sep=3pt},
+  hauptknopf/.style={draw=iuAkzent, fill=iuAkzent, text=white, rounded corners=2pt, minimum height=0.55cm, inner sep=3pt},
+  % ---- Dialogfluss (Zustandsdiagramm, UML 2.5.1, Kap. 14) ----------
+  zustand/.style={rectangle, rounded corners=8pt, draw, fill=iuFlaeche, align=center,
+                  minimum height=0.9cm, text width=2.9cm, inner sep=3pt},
+  uebergang/.style={-{Straight Barb[length=2.2mm]}},
+}
+
+% Akteur als Strichmännchen:  \akteur{<Knotenname>}{<Position x,y>}{<Beschriftung>}
+\newcommand{\akteur}[3]{%
+  \begin{scope}[shift={(#2)}]
+    \draw (0,0.55) circle (0.17);
+    \draw (0,0.38) -- (0,-0.1);
+    \draw (-0.3,0.22) -- (0.3,0.22);
+    \draw (0,-0.1) -- (-0.25,-0.5);
+    \draw (0,-0.1) -- (0.25,-0.5);
+    % Beschriftung leicht nach links versetzt, Assoziationen beginnen an der
+    % rechten Hand: So kreuzen die Linien die Beschriftung nicht.
+    \node[align=center, anchor=north] at (-0.2,-0.55) {#3};
+    \coordinate (#1) at (0.3,0.22);
+  \end{scope}}
+
+% Klasse:  \node[klasse] (n) {\textbf{Name}\nodepart{second}attribut : Typ\\ ...};
+% Abstrakte Klasse/Stereotyp: \textit{Name} bzw. «enumeration»\\\textbf{Name}
+\endinput

@@ -1,0 +1,247 @@
+% =====================================================================
+%  Fachliches Datenmodell BalanceOS als UML-Klassendiagramm (UML 2.5.1)
+%  Geschäftsobjekte mit Attributen (ohne Methoden), Assoziationen mit
+%  Multiplizitäten, Kompositionen und Aufzählungstypen.
+%  Export: docs/diagramme/export/datenmodell.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\tikzset{
+  kl/.style={klasse, rectangle split part align={center,left}},
+  en/.style={enumklasse, rectangle split part align={center,left}},
+  aname/.style={font=\fontsize{8pt}{9pt}\selectfont\itshape, inner sep=1.5pt},
+}
+% Leserichtung des Assoziationsnamens (gefülltes Dreieck, UML 2.5.1)
+\newcommand{\rechts}{\tikz[baseline=-0.55ex]\fill (0,-0.55ex) -- (1ex,0) -- (0,0.55ex) -- cycle;}
+\newcommand{\links}{\tikz[baseline=-0.55ex]\fill (1ex,-0.55ex) -- (0,0) -- (1ex,0.55ex) -- cycle;}
+\newcommand{\unten}{\tikz[baseline=-0.55ex]\fill (-0.55ex,0.45ex) -- (0.55ex,0.45ex) -- (0,-0.55ex) -- cycle;}
+
+\begin{document}
+\begin{tikzpicture}
+
+% ---------------------------------------------------------------------
+%  Obere Reihe: Kompass-Modelle, Regeln, Hinweise
+% ---------------------------------------------------------------------
+\node[kl, anchor=north west] (km) at (0,0) {%
+  \textbf{KompassModell}%
+  \nodepart{second}%
+  name : String\\
+  kurzbeschreibung : String\\
+  evidenzart : Evidenzart\\
+  quelle : String\\
+  grenzen : String};
+
+\node[kl, anchor=north west] (re) at (6.5,0) {%
+  \textbf{Regel}%
+  \nodepart{second}%
+  kennung : String\\
+  bezeichnung : String\\
+  aktiv : Boolean\\
+  schwelle : Dezimal\\
+  zeitraum : Ganzzahl};
+
+\node[kl, anchor=north west] (hi) at (12.9,0) {%
+  \textbf{Hinweis}%
+  \nodepart{second}%
+  art : Hinweisart\\
+  text : String\\
+  begruendung : String\\
+  kalenderwoche : Ganzzahl\\
+  jahr : Ganzzahl\\
+  ausgeblendet : Boolean};
+
+% ---------------------------------------------------------------------
+%  Mittlere Reihe: Wiederholungsserie, Lebensbereich, Bereichsbewertung
+% ---------------------------------------------------------------------
+\node[kl, anchor=north west] (ws) at (0,-3.8) {%
+  \textbf{Wiederholungsserie}%
+  \nodepart{second}%
+  titel : String\\
+  wochentage : Wochentag [1..7]\\
+  startdatum : Datum\\
+  enddatum : Datum [0..1]\\
+  beginn : Uhrzeit [0..1]\\
+  dauerMinuten : Ganzzahl};
+
+\node[kl, anchor=north west] (lb) at (6.5,-3.8) {%
+  \textbf{Lebensbereich}%
+  \nodepart{second}%
+  name : String\\
+  typ : Bereichstyp\\
+  farbe : Farbe\\
+  aktiv : Boolean\\
+  istStandard : Boolean\\
+  sollStundenProWoche : Dezimal\\
+  gewicht : Ganzzahl};
+
+\node[kl, anchor=north west] (bb) at (12.9,-5.6) {%
+  \textbf{Bereichsbewertung}%
+  \nodepart{second}%
+  istStunden : Dezimal\\
+  sollStunden : Dezimal\\
+  zielerfuellung : Dezimal\\
+  zufriedenheitsanteil : Dezimal [0..1]\\
+  score : Ganzzahl [0..1]};
+
+% ---------------------------------------------------------------------
+%  Untere Reihe: Ausnahme, Aktivitaet, Wochenbewertung, Einzelobjekte
+% ---------------------------------------------------------------------
+\node[kl, anchor=north west] (au) at (0,-8.0) {%
+  \textbf{Ausnahme}%
+  \nodepart{second}%
+  datum : Datum};
+
+\node[en, anchor=north west] (e6) at (2.65,-8.0) {%
+  «enumeration»\\\textbf{Wochentag}%
+  \nodepart{second}%
+  MO\\ DI\\ MI\\ DO\\ FR\\ SA\\ SO};
+
+\node[kl, anchor=north west] (ak) at (6.5,-8.2) {%
+  \textbf{Aktivitaet}%
+  \nodepart{second}%
+  titel : String\\
+  datum : Datum\\
+  beginn : Uhrzeit [0..1]\\
+  ende : Uhrzeit [0..1]\\
+  dauerMinuten : Ganzzahl\\
+  status : Aktivitaetsstatus\\
+  zufriedenheit : Ganzzahl [0..1]\\
+  belastung : Ganzzahl [0..1]\\
+  erholung : Ganzzahl [0..1]\\
+  bewegungsart : Bewegungsart [0..1]\\
+  notiz : String [0..1]\\
+  istDemo : Boolean};
+
+\node[kl, anchor=north west] (wb) at (12.9,-9.2) {%
+  \textbf{Wochenbewertung}%
+  \nodepart{second}%
+  jahr : Ganzzahl\\
+  kalenderwoche : Ganzzahl\\
+  vollstaendigkeitTage : Ganzzahl\\
+  ausreichendeDaten : Boolean\\
+  gesamtScore : Ganzzahl [0..1]};
+
+\node[kl, anchor=north west] (ei) at (12.9,-12.4) {%
+  \textbf{Einstellungen}%
+  \nodepart{second}%
+  alpha : Dezimal\\
+  gesamtScoreAnzeigen : Boolean};
+
+\node[kl, anchor=north west] (w5) at (0,-11.85) {%
+  \textbf{Who5Erhebung}%
+  \nodepart{second}%
+  datum : Datum\\
+  antworten : Ganzzahl [5]\\
+  rohwert : Ganzzahl\\
+  prozentwert : Ganzzahl};
+
+\node[kl, anchor=north west] (wr) at (0,-13.95) {%
+  \textbf{Wochenreflexion}%
+  \nodepart{second}%
+  jahr : Ganzzahl\\
+  kalenderwoche : Ganzzahl\\
+  antworten : String [1..*]\\
+  stimmung : Ganzzahl [0..1]};
+
+% Notizen
+\node[notiz, anchor=north west] (n1) at (4.3,-13.55) {Should-Umfang\\(US20, US22)};
+\draw[dashed] (n1.west) -- ++(-0.3,0) coordinate (n1k) |- (w5.east);
+\draw[dashed] (n1k) |- (wr.east);
+\node[notiz, anchor=north east] (n2) at (ei.east |- 0,-14.0) {genau eine Instanz};
+\draw[dashed] (n2.north) -- (n2.north |- ei.south);
+
+% ---------------------------------------------------------------------
+%  Aufzählungstypen
+% ---------------------------------------------------------------------
+\node[en, anchor=north west] (e1) at (0,-16.2) {%
+  «enumeration»\\\textbf{Bereichstyp}%
+  \nodepart{second}%
+  MINDESTZIEL\\
+  OBERGRENZE};
+\node[en, anchor=north west] (e2) at ([xshift=0.35cm]e1.north east) {%
+  «enumeration»\\\textbf{Aktivitaetsstatus}%
+  \nodepart{second}%
+  GEPLANT\\
+  DURCHGEFUEHRT\\
+  AUSGEFALLEN};
+\node[en, anchor=north west] (e3) at ([xshift=0.35cm]e2.north east) {%
+  «enumeration»\\\textbf{Bewegungsart}%
+  \nodepart{second}%
+  AUSDAUER\_MODERAT\\
+  AUSDAUER\_INTENSIV\\
+  KRAFT};
+\node[en, anchor=north west] (e4) at ([xshift=0.35cm]e3.north east) {%
+  «enumeration»\\\textbf{Evidenzart}%
+  \nodepart{second}%
+  THEORIE\\
+  EMPFEHLUNG\\
+  VALIDIERTES\_INSTRUMENT\\
+  PERSOENLICHE\_REGEL\\
+  PROGRAMMEIGEN};
+\node[en, anchor=north west] (e5) at ([xshift=0.35cm]e4.north east) {%
+  «enumeration»\\\textbf{Hinweisart}%
+  \nodepart{second}%
+  WARNUNG\\
+  POSITIV\\
+  SYSTEM};
+
+% ---------------------------------------------------------------------
+%  Assoziationen
+% ---------------------------------------------------------------------
+% KompassModell 1 -- 1..* Regel
+\draw (km.east |- 0,-1.3) coordinate (a1) -- (a1 -| re.west) coordinate (b1);
+\node[mult, above right] at (a1) {1};
+\node[mult, above left]  at (b1) {1..*};
+\node[aname, below] at ($(a1)!0.5!(b1)$) {enthält \rechts};
+
+% Regel 1 -- 0..* Hinweis
+\draw (re.east |- 0,-1.3) coordinate (a2) -- (a2 -| hi.west) coordinate (b2);
+\node[mult, above right] at (a2) {1};
+\node[mult, above left]  at (b2) {0..*};
+\node[aname, below] at ($(a2)!0.5!(b2)$) {erzeugt \rechts};
+
+% Hinweis 0..* -- 0..1 Lebensbereich
+\draw ([xshift=0.7cm]hi.south west) coordinate (a3) |- (lb.east |- 0,-4.6) coordinate (b3);
+\node[mult, right] at ([yshift=-0.25cm]a3) {0..*};
+\node[mult, above right] at (b3) {0..1};
+\node[aname, left] at ([yshift=-0.75cm]a3) {bezieht sich auf \unten};
+
+% Bereichsbewertung 0..* -- 1 Lebensbereich
+\draw (bb.west |- 0,-6.5) coordinate (a4) -- (a4 -| lb.east) coordinate (b4);
+\node[mult, above left]  at (a4) {0..*};
+\node[mult, above right] at (b4) {1};
+\node[aname, below] at ($(a4)!0.5!(b4)$) {\links\ bewertet};
+
+% Wochenbewertung 1 <>-- 1..* Bereichsbewertung (Komposition)
+\draw[komposition] ([xshift=1.2cm]wb.north west) coordinate (a5) -- (a5 |- bb.south) coordinate (b5);
+\node[mult, left] at ([yshift=0.4cm]a5) {1};
+\node[mult, right] at ([yshift=-0.2cm]b5) {1..*};
+\node[aname, right] at ([xshift=0.35cm]$(a5)!0.5!(b5)$) {besteht aus \unten};
+
+% Lebensbereich 1 -- 0..* Aktivitaet
+\draw ([xshift=1.2cm]lb.south west) coordinate (a6) -- (a6 |- ak.north) coordinate (b6);
+\node[mult, right] at ([yshift=-0.2cm]a6) {1};
+\node[mult, right] at ([yshift=0.2cm]b6) {0..*};
+\node[aname, right] at ($(a6)!0.5!(b6)$) {umfasst \unten};
+
+% Wiederholungsserie 0..* -- 1 Lebensbereich
+\draw (ws.east |- 0,-4.6) coordinate (a7) -- (a7 -| lb.west) coordinate (b7);
+\node[mult, above right] at (a7) {0..*};
+\node[mult, above left]  at (b7) {1};
+\node[aname, below] at ($(a7)!0.5!(b7)$) {gehört zu \rechts};
+
+% Wiederholungsserie 0..1 -- 0..* Aktivitaet (erzeugte Termine)
+\draw (ws.east |- 0,-6.1) coordinate (a8) -- (5.4,-6.1) |- (ak.west |- 0,-10.0) coordinate (b8);
+\node[mult, above right] at (a8) {0..1};
+\node[mult, above left] at (b8) {0..*};
+\node[mult, below left] at (b8) {termine};
+\node[aname, right] at (5.4,-7.6) {erzeugt \unten};
+
+% Wiederholungsserie 1 <>-- 0..* Ausnahme (Komposition)
+\draw[komposition] ([xshift=1.0cm]ws.south west) coordinate (a9) -- (a9 |- au.north) coordinate (b9);
+\node[mult, right] at ([yshift=-0.3cm]a9) {1};
+\node[mult, right] at ([yshift=0.2cm]b9) {0..*};
+
+\end{tikzpicture}
+\end{document}

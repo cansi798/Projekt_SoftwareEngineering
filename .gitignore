@@ -67,3 +67,6 @@ desktop.ini
 # Lokale Werkzeug-Konfiguration (nicht Teil der Abgabe)
 .claude/
 .remember/
+
+# TikZ-Zwischendateien der Diagramme
+docs/diagramme/.build/

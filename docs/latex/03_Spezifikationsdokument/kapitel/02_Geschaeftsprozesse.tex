@@ -3,19 +3,158 @@
 %  Funktionen und Prozesse der Anwendung (z. B. Algorithmus zur Berechnung
 %  …). Ein ausgewählter Kernprozess der Anwendung sollte zudem durch ein
 %  UML-Aktivitätsdiagramm visualisiert werden.“)
-%  Tipp: Berechnung eines Balance-Werts o. Ä. als Algorithmus beschreiben.
 % =====================================================================
-\section{Geschäftsprozesse}
-\TODO{Kurze Hinführung}
+\providecommand{\Ist}{\mathit{Ist}}
+\providecommand{\Soll}{\mathit{Soll}}
+\providecommand{\Score}{\mathit{Score}}
+\providecommand{\Gesamt}{\mathit{Gesamt}}
 
-\subsection{Übersicht der Geschäftsprozesse}
-\TODO{Zentrale Prozesse/Funktionen mit Bezug zu den User Stories (US-IDs)}
+\section{Geschäftsprozesse}\label{sec:geschaeftsprozesse}
+Dieses Kapitel beschreibt die zentralen Abläufe von BalanceOS so, wie sie von außen beobachtbar sind: Auslöser, Verarbeitungsschritte und Ergebnis. Im Mittelpunkt steht der Kernprozess \enquote{Wochenbewertung erstellen}, dessen Berechnung vollständig festgelegt wird, damit Ergebnisse nachvollziehbar und mit den Rechenbeispielen testbar sind (NFA06). Anschließend folgt die Regelauswertung, aus der die Hinweise mit Begründung entstehen.
 
-\subsection{Kernprozess}
-\TODO{Ausgewählten Kernprozess Schritt für Schritt beschreiben (inkl. Algorithmus/Berechnung); UML-Aktivitätsdiagramm in docs/diagramme/03\_Aktivitaetsdiagramm/ – Export als docs/diagramme/export/aktivitaet.pdf}
+\subsection{Übersicht der Geschäftsprozesse}\label{sec:prozessuebersicht}
+Tabelle~\ref{tab:prozesse} ordnet die Geschäftsprozesse den User Stories des Anforderungsdokuments zu. Die Pflege von Lebensbereichen und Wunschprofil (US01--US04) ist eine reine Datenpflege nach den Geschäftsregeln in Kapitel~\ref{sec:geschaeftsregeln} und wird deshalb nicht als eigener Prozess aufgeführt.
+
+\begin{longtable}{@{}L{1.0cm}L{3.1cm}L{4.2cm}L{4.9cm}L{1.6cm}@{}}
+  \caption{Übersicht der Geschäftsprozesse}\label{tab:prozesse}\\
+  \toprule
+  \textbf{Nr.} & \textbf{Prozess} & \textbf{Auslöser} & \textbf{Ergebnis} & \textbf{US} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Nr.} & \textbf{Prozess} & \textbf{Auslöser} & \textbf{Ergebnis} & \textbf{US} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  GP01 & Aktivität erfassen & Schaltfläche \enquote{+ Aktivität} oder Klick in die Wochenansicht & gespeicherte Aktivität mit berechneter Dauer & US05, US06 \\
+  GP02 & Wiederholungs\-serie auflösen & Speichern einer Serie, Programmstart, Überspringen eines Termins & Termine (Aktivitäten im Status GEPLANT) ohne übersprungene Daten & US07, US08 \\
+  GP03 & Wochenbewertung erstellen (Kernprozess) & Aufruf von Dashboard oder Statistik, Wechsel der Woche, jede Datenänderung & Wochenbewertung mit Bereichsbewertungen und Hinweisen & US10, US11 \\
+  GP04 & Hinweise erzeugen & Schritt von GP03 & sortierte Hinweise mit Begründung & US12, US13, US14 \\
+  GP05 & Gesamt-Score berechnen & Schritt von GP03, wenn die Anzeige aktiviert ist & gewichteter, als programmeigen gekennzeichneter Gesamt-Score & US19 \\
+  GP06 & WHO-5 auswerten & Abschluss des Fragebogens & Rohwert, Prozentwert, Hinweistext & US20 \\
+  GP07 & Daten exportieren & Export-Dialog & CSV- bzw. JSON-Datei am gewählten Ort & US16 \\
+  GP08 & Alle Daten löschen & Löschbestätigung mit dem Wort LÖSCHEN & Zustand wie beim ersten Start & US17 \\
+  GP09 & Demodaten laden und entfernen & Schaltfläche im Dashboard bzw. in den Einstellungen & acht Wochen Demodaten bzw. deren vollständige Entfernung & US18 \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+\textbf{GP01 Aktivität erfassen.} Nutzer:innen wählen einen aktiven Lebensbereich, geben Titel und Datum ein und erfassen entweder Beginn und Ende oder direkt die Dauer. Bei Beginn und Ende berechnet BalanceOS die Dauer; liegt das Ende vor dem Beginn, gilt die Aktivität als über Mitternacht und wird dem Datum des Beginns zugeordnet (Beispiel Schlaf von 23:00 bis 06:30: 450~min). Der Status ist für heutige und vergangene Tage mit DURCHGEFUEHRT, für zukünftige Tage mit GEPLANT vorbelegt. Selbsteinschätzungen sind freiwillig; fehlende Werte führen nicht zu einer Abwertung.
+
+\textbf{GP02 Wiederholungsserie auflösen.} Aus einer Serie erzeugt BalanceOS für jedes Datum zwischen Startdatum und Enddatum, dessen Wochentag gewählt ist, einen Termin mit Titel, Lebensbereich, Beginn und Dauer der Serie und dem Status GEPLANT. Termine entstehen höchstens 52~Wochen im Voraus; bei jedem Programmstart wird dieser Horizont fortgeschrieben. Daten mit Ausnahme werden übersprungen; wird ein Termin übersprungen (US08), legt BalanceOS eine Ausnahme an und entfernt den Termin.
+
+\textbf{GP06 WHO-5 auswerten.} Der WHO-5-Fragebogen gilt als kurzes, valides Instrument zur Erfassung des Wohlbefindens und eignet sich als Screening \parencite[S.~167]{topp2015}. Nach Beantwortung aller fünf Fragen (je 0--5) berechnet BalanceOS den Rohwert als Summe der Antworten (0--25) und den Prozentwert als Rohwert $\cdot$ 4 (0--100). Bei einem Prozentwert von höchstens 50 erscheint ein Hinweistext mit der Empfehlung, bei anhaltender Niedergeschlagenheit ärztliche oder psychotherapeutische Hilfe zu suchen. Das Ergebnis wird getrennt von den Scores angezeigt, als validiertes Instrument gekennzeichnet und ausdrücklich nicht als Diagnose bezeichnet.
+
+\textbf{GP07 bis GP09.} Der Export schreibt die Daten eines gewählten Zeitraums (CSV) oder alle Nutzdaten (JSON) in eine Datei; die Formate legt Kapitel~\ref{sec:systemschnittstellen} fest. \enquote{Alle Daten löschen} entfernt nach Bestätigung sämtliche Nutzdaten und stellt Standardbereiche, Regeln und Einstellungen wie beim ersten Start wieder her. Demodaten bilden acht Wochen aus dem Alltag der Persona Sarah Keller ab, die mit der aktuellen Woche enden; sie werden zusätzlich zu vorhandenen Daten geladen, mit istDemo gekennzeichnet und lassen sich später entfernen, ohne eigene Einträge zu verändern.
+
+\subsection{Kernprozess \enquote{Wochenbewertung erstellen}}\label{sec:kernprozess}
+Der Kernprozess berechnet für eine \ac{KW} je Lebensbereich einen Score von 0 bis 100, der die Zielerfüllung gegenüber dem eigenen Wunschprofil mit der eigenen Zufriedenheit verbindet. Grundlage ist das Lifestyle Balance Model, das Balance als befriedigendes Muster täglicher Betätigungen versteht, das gesund, bedeutsam und unter den aktuellen Lebensumständen nachhaltig ist \parencite[S.~11]{matuska2008}. Der Abgleich mit dem persönlichen Soll setzt diesen Gedanken um; die konkrete Score-Formel ist programmeigen und nicht validiert.
+
+\subsubsection{Ablauf und Berechnung}
+Betrachtet wird die Kalenderwoche nach \ac{ISO}~8601 von Montag bis Sonntag. Es zählen ausschließlich Aktivitäten mit dem Status DURCHGEFUEHRT in aktiven Lebensbereichen. Der Ablauf umfasst folgende Schritte:
+\begin{enumerate}
+  \item \textbf{Vollständigkeit:} $v$ ist die Anzahl der Tage der Woche mit mindestens einer durchgeführten Aktivität ($0 \leq v \leq 7$). Ist $v < 4$, entsteht eine Wochenbewertung mit ausreichendeDaten = falsch: Ist- und Soll-Stunden sowie die Zielerfüllung werden für die Soll-Ist-Balken weiterhin angezeigt, Scores entfallen jedoch vollständig, und als einziger Hinweis erscheint der Systemhinweis der Regel R10. Der Prozess endet mit der Anzeige. Diese Regel verhindert, dass fehlende Einträge als schlechte Balance missverstanden werden.
+  \item \textbf{Ist und Soll:} Für jeden aktiven Lebensbereich $b$ gilt
+  \[ \Ist_b = \frac{1}{60} \sum \mathit{dauerMinuten} \quad \text{(in Stunden)}, \qquad \Soll_b = \mathit{sollStundenProWoche}. \]
+  Ist $\Soll_b = 0$, wird der Bereich nicht bewertet und als \enquote{kein Soll festgelegt} angezeigt.
+  \item \textbf{Zielerfüllung:} Abhängig vom Bereichstyp gilt
+  \[ z_b = \begin{cases}
+      \min\left(\dfrac{\Ist_b}{\Soll_b},\ 1\right) & \text{bei MINDESTZIEL,}\\[2ex]
+      1 & \text{bei OBERGRENZE und } \Ist_b \leq \Soll_b,\\[1ex]
+      \max\left(0,\ 1 - \dfrac{\Ist_b - \Soll_b}{\Soll_b}\right) & \text{bei OBERGRENZE und } \Ist_b > \Soll_b.
+    \end{cases} \]
+  Ein Mindestziel ist also mit Erreichen des Solls voll erfüllt; Mehrstunden verbessern den Wert nicht. Bei einer Obergrenze sinkt die Zielerfüllung linear mit der Überschreitung und erreicht bei doppeltem Soll den Wert~0.
+  \item \textbf{Zufriedenheitsanteil:} Mit $\bar{x}_b$ als Mittelwert der vorhandenen Zufriedenheitswerte (1--5) der durchgeführten Aktivitäten des Bereichs gilt
+  \[ s_b = \frac{\bar{x}_b - 1}{4} \in [0,\,1]. \]
+  Liegen keine Zufriedenheitswerte vor, ist $s_b$ undefiniert.
+  \item \textbf{Bereichs-Score:} Mit $\alpha$ aus den Einstellungen (Standard $0{,}6$) gilt
+  \[ \Score_b = \mathrm{round}\bigl(100 \cdot (\alpha \cdot z_b + (1-\alpha) \cdot s_b)\bigr), \qquad \text{ohne } s_b\text{:} \quad \Score_b = \mathrm{round}(100 \cdot z_b). \]
+  Gerundet wird kaufmännisch auf eine ganze Zahl: Ein Nachkommaanteil von genau 0,5 wird stets aufgerundet (72,5 ergibt 73), abweichend vom Runden auf die nächste gerade Zahl. Zwischenergebnisse werden ungerundet weiterverwendet; Stunden werden in der Oberfläche mit einer Nachkommastelle angezeigt.
+  \item \textbf{Gesamt-Score (optional, US19):} Nur wenn gesamtScoreAnzeigen aktiviert ist, gilt über alle bewerteten Bereiche mit Gewicht $g_b > 0$
+  \[ \Gesamt = \mathrm{round}\left(\frac{\sum_b g_b \cdot \Score_b}{\sum_b g_b}\right). \]
+  Der Wert trägt die Kennzeichnung \enquote{programmeigener Score, nicht validiert}. Haben alle bewerteten Bereiche das Gewicht~0, entfällt der Gesamt-Score.
+  \item \textbf{Abweichung:} Je Bereich wird $\Ist_b - \Soll_b$ in Stunden für den Soll-Ist-Balken des Dashboards ermittelt. Die Abweichung dient der Anschauung und geht nicht in den Score ein.
+  \item \textbf{Regelprüfung und Anzeige:} Die aktiven Regeln R01--R10 werden geprüft (Abschnitt~\ref{sec:regelauswertung}). Die erzeugten Hinweise werden nach Hinweisart (WARNUNG vor POSITIV vor SYSTEM) und innerhalb derselben Art nach Regelkennung sortiert. Das Dashboard zeigt höchstens fünf Hinweise, alle weiteren erscheinen unter \enquote{Alle Hinweise}.
+\end{enumerate}
+
+Abbildung~\ref{abb:aktivitaet} zeigt diesen Ablauf als \ac{UML}-Aktivitätsdiagramm. Der Ablauf beginnt am Startknoten und endet am Aktivitätsendknoten; Entscheidungs- und Zusammenführungsknoten sind als Rauten dargestellt, die Wächterbedingungen der ausgehenden Kanten stehen in eckigen Klammern \parencite[S.~379, 391]{omg2017uml}. Die Schleife über alle aktiven Lebensbereiche ist als iterativer Expansionsbereich modelliert: Die Lebensbereiche werden nacheinander verarbeitet, die Ergebnisse als Bereichsbewertungen gesammelt.
+
 \begin{figure}[H]
-  \caption{Kernprozess als UML-Aktivitätsdiagramm}\label{abb:aktivitaet}
+  \caption{Kernprozess \enquote{Wochenbewertung erstellen} als UML-Aktivitätsdiagramm}\label{abb:aktivitaet}
   \centering
   \grafik{aktivitaet}
   \quelle{Eigene Darstellung.}
 \end{figure}
+
+\subsubsection{Rechenbeispiele}
+Die folgenden Beispiele verwenden den Standardwert $\alpha = 0{,}6$ und dienen später als Referenz für automatisierte Tests (NFA06).
+
+\textbf{Beispiel 1 -- Mindestziel mit Zufriedenheit.} Im Bereich Bewegung (MINDESTZIEL, $\Soll = 3$~h) wurden 1,5~h durchgeführt; die beiden Aktivitäten haben die Zufriedenheitswerte 4 und 5:
+\[ z = \min\left(\frac{1{,}5}{3},\ 1\right) = 0{,}5, \qquad \bar{x} = \frac{4+5}{2} = 4{,}5, \qquad s = \frac{4{,}5 - 1}{4} = 0{,}875, \]
+\[ \Score = \mathrm{round}\bigl(100 \cdot (0{,}6 \cdot 0{,}5 + 0{,}4 \cdot 0{,}875)\bigr) = \mathrm{round}\bigl(100 \cdot (0{,}30 + 0{,}35)\bigr) = \mathrm{round}(65{,}0) = 65. \]
+
+\textbf{Beispiel 2 -- Obergrenze ohne Zufriedenheit.} Im Bereich Arbeit (OBERGRENZE, $\Soll = 40$~h) wurden 46~h erfasst, ohne Zufriedenheitswerte:
+\[ z = \max\left(0,\ 1 - \frac{46 - 40}{40}\right) = 1 - 0{,}15 = 0{,}85, \qquad \Score = \mathrm{round}(100 \cdot 0{,}85) = 85. \]
+Die Abweichung für den Soll-Ist-Balken beträgt $+6$~h.
+
+\textbf{Beispiel 3 -- Gesamt-Score.} Wären Bewegung und Arbeit die einzigen bewerteten Bereiche und hätten beide das Standardgewicht~1, ergäbe sich
+\[ \Gesamt = \mathrm{round}\left(\frac{1 \cdot 65 + 1 \cdot 85}{1 + 1}\right) = \mathrm{round}(75{,}0) = 75. \]
+
+\subsection{Regelauswertung und Hinweise}\label{sec:regelauswertung}
+Die Hinweisregeln übertragen wissenschaftliche Modelle und Empfehlungen in prüfbare, deterministische Bedingungen. Tabelle~\ref{tab:regeln} legt für jede Regel Quelle, Datenbasis, Bedingung und Hinweisart fest. Für alle Regeln gilt: Ausgewertet werden nur durchgeführte Aktivitäten; deaktivierte Regeln (US14) werden übersprungen. R01--R09 werden nur bei ausreichenden Daten geprüft. Regeln über mehrere Wochen (R04, R07, R09) berücksichtigen nur Wochen mit ausreichenden Daten; fehlt eine solche Woche, wird die Regel nicht ausgelöst. Regeln zu Bewegung, Schlaf, Erholung und Arbeit beziehen sich auf den jeweiligen Standardbereich, auch wenn er umbenannt wurde; ist er deaktiviert, wird die Regel nicht geprüft.
+
+\begin{longtable}{@{}L{0.9cm}L{4.1cm}L{7.6cm}L{2.6cm}@{}}
+  \caption{Regelkatalog der Hinweisregeln}\label{tab:regeln}\\
+  \toprule
+  \textbf{ID} & \textbf{Modell und Quelle} & \textbf{Datenbasis, Bedingung und Schwelle} & \textbf{Hinweisart, Zeitraum} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Modell und Quelle} & \textbf{Datenbasis, Bedingung und Schwelle} & \textbf{Hinweisart, Zeitraum} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  R01 & WHO-Bewegungs\-leitlinie \parencite[S.~1451]{bull2020} & Bereich Bewegung; Minuten AUSDAUER\_MODERAT $+\ 2 \cdot$ Minuten AUSDAUER\_INTENSIV $< 150$ & WARNUNG, 1~Woche \\
+  R02 & WHO-Bewegungs\-leitlinie \parencite[S.~1451]{bull2020} & Bereich Bewegung; Anzahl der Tage mit Bewegungsart KRAFT $< 2$ & WARNUNG, 1~Woche \\
+  R03 & Schlafempfehlung \parencite[S.~843]{watson2015} & Bereich Schlaf; Summe je Tag, gemittelt über die Tage mit Schlafeintrag; nur bei mindestens 4~Tagen mit Eintrag; Mittelwert $< 7$~h & WARNUNG, 1~Woche \\
+  R04 & Lifestyle Balance Model \parencite[S.~11]{matuska2008} & jeder Mindestziel-Bereich; $\Ist_b < 0{,}5 \cdot \Soll_b$ in drei aufeinanderfolgenden Wochen (aktuelle und zwei vorherige) & WARNUNG, 3~Wochen \\
+  R05 & Effort-Recovery-Modell \parencite[S.~5--33]{meijman1998} & alle Bereiche; Tage mit Ø Belastung $\geq 4$ und Ø Erholung $\leq 2$ (je Tag über die bewerteten Aktivitäten); Anzahl solcher Tage $\geq 4$ von 7 & WARNUNG, 1~Woche \\
+  R06 & Effort-Recovery-Modell \parencite[S.~5--33]{meijman1998} & Bereich Erholung am Samstag und Sonntag zusammen 0~h, während alle Obergrenze-Bereiche am Wochenende zusammen $\geq 6$~h erreichen & WARNUNG, 1~Woche \\
+  R07 & Job-Demands-Resources-Theorie \parencite[S.~274]{bakker2017} & Bereich Arbeit; $\Ist > \Soll$ in mindestens 2 der letzten 3~Wochen und Ø Belastung der Arbeitsaktivitäten dieser Wochen $\geq 4$ & WARNUNG, 3~Wochen \\
+  R08 & Lifestyle Balance Model \parencite[S.~11]{matuska2008} & jeder Mindestziel-Bereich mit $z_b = 1$ & POSITIV, 1~Woche \\
+  R09 & Lifestyle Balance Model \parencite[S.~11]{matuska2008} & jeder Bereich mit Zufriedenheitswerten in beiden Wochen; Ø Zufriedenheit gegenüber der Vorwoche um $\geq 1$ Punkt gestiegen & POSITIV, 2~Wochen \\
+  R10 & BalanceOS-System\-regeln (programmeigen) & Vollständigkeit $v < 4$ von 7 Tagen & SYSTEM, 1~Woche \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+R01 und R02 setzen die Empfehlung um, nach der Erwachsene pro Woche 150--300~min moderate oder 75--150~min intensive Ausdaueraktivität ausüben und an mindestens zwei Tagen muskelkräftigende Aktivitäten durchführen sollen \parencite[S.~1451]{bull2020}; intensive Minuten zählen deshalb doppelt. R03 beruht auf der Empfehlung, regelmäßig mindestens sieben Stunden pro Nacht zu schlafen \parencite[S.~843]{watson2015}. R05 und R06 greifen den Gedanken des Effort-Recovery-Modells auf, dass Beanspruchung ausreichende Erholung erfordert \parencite[S.~5--33]{meijman1998}. R07 bezieht sich auf die Unterscheidung von Arbeitsanforderungen und Arbeitsressourcen in der Job-Demands-Resources-Theorie \parencite[S.~274]{bakker2017}.
+
+Je Regel und Kalenderwoche entsteht höchstens ein Hinweis, bei bereichsbezogenen Regeln (R04, R08, R09) höchstens einer je Lebensbereich. Jeder Hinweis nennt die ermittelten Werte und lässt sich über \enquote{Warum sehe ich das?} begründen (US13, NFA11). Die Begründung enthält stets dieselben Angaben: Regel (Kennung und Bezeichnung), Datenbasis, Zeitraum, Schwelle, ermittelter Wert, Quelle und Evidenzart sowie die Grenzen der Aussage. Für R01 lautet sie beispielsweise: \enquote{Regel R01 -- Ausdauerbewegung unter Richtwert. Datenbasis: durchgeführte Aktivitäten im Bereich Bewegung mit Bewegungsart. Zeitraum: \ac{KW}~46/2026 (09.11.--15.11.2026). Schwelle: 150~min (intensive Minuten zählen doppelt). Ermittelt: 90~min. Quelle: WHO-Bewegungsleitlinie (Bull et al., 2020, S.~1451). Evidenzart: Empfehlung. Grenze: Nur erfasste Aktivitäten werden berücksichtigt; der Hinweis ersetzt keine ärztliche Beratung.} Tabelle~\ref{tab:hinweistexte} enthält die Beispieltexte aller Regeln und deren Evidenzkennzeichnung.
+
+\begin{longtable}{@{}L{1.0cm}L{9.6cm}L{4.6cm}@{}}
+  \caption{Beispieltexte und Evidenzkennzeichnung der Hinweise}\label{tab:hinweistexte}\\
+  \toprule
+  \textbf{ID} & \textbf{Beispieltext des Hinweises} & \textbf{Evidenzkennzeichnung} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Beispieltext des Hinweises} & \textbf{Evidenzkennzeichnung} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  R01 & \enquote{Ausdauerbewegung in KW~46: 90 von 150~Minuten -- unter dem WHO-Richtwert.} & Empfehlung \\
+  R02 & \enquote{Muskelkräftigende Aktivität in KW~46 an 0 von 2 empfohlenen Tagen.} & Empfehlung \\
+  R03 & \enquote{Durchschnittliche Schlafdauer in KW~46: 6,5~h an 6 Tagen mit Eintrag -- unter der Empfehlung von mindestens 7~h.} & Empfehlung \\
+  R04 & \enquote{Soziale Kontakte liegen seit 3 Wochen unter der Hälfte des eigenen Wunsches (zuletzt 1,5 von 4~h).} & Theorie; Soll als persönliche Regel \\
+  R05 & \enquote{An 5 von 7 Tagen hohe Belastung bei geringer Erholung.} & Theorie; Skalen programmeigen, theoriegeleitet \\
+  R06 & \enquote{Wochenende ohne Erholung bei 7,5~h Arbeit und Verpflichtungen.} & Theorie; Regel programmeigen, theoriegeleitet \\
+  R07 & \enquote{Arbeit in 2 der letzten 3 Wochen über dem Soll bei hoher Belastung (Ø 4,2) -- Anforderungen und Ressourcen prüfen.} & Theorie; Skala programmeigen, theoriegeleitet \\
+  R08 & \enquote{Wunsch im Bereich Familie in KW~46 erreicht: 12 von 10~h.} & Theorie; Soll als persönliche Regel \\
+  R09 & \enquote{Zufriedenheit im Bereich Hobbys gegenüber KW~45 gestiegen (von 3,0 auf 4,5).} & Theorie; Skala programmeigen, theoriegeleitet \\
+  R10 & \enquote{Für KW~46 liegen Einträge an 3 von 7 Tagen vor -- zu wenig Daten für eine Bewertung.} & programmeigen \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+Die Evidenzkennzeichnung ist ein zentrales Merkmal des Balance-Kompasses. Sie macht sichtbar, dass die Modelle unterschiedlich belastbar sind: Bewegungs- und Schlafregeln beruhen auf evidenzbasierten Empfehlungen, die übrigen Regeln übertragen Theorien in programmeigene Schwellenwerte. Die Skalen für Zufriedenheit, Belastung und Erholung (1--5) sind keine validierten Instrumente; Regeln und Scores, die darauf aufbauen, tragen deshalb die Kennzeichnung \enquote{programmeigen, theoriegeleitet}. Hinweise beschreiben Zusammenhänge in den eigenen Daten, keine Ursachen. BalanceOS stellt keine Diagnosen, ist kein Medizinprodukt und weist im Balance-Kompass auf diese Grenzen hin. Da Nutzer:innen jede Regel einzeln abschalten können, entscheiden sie selbst, welche Maßstäbe für sie gelten.

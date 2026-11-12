@@ -35,6 +35,10 @@ ABGABE = {
     3: ROOT / "abgabe" / "Phase3_Finalisierung",
 }
 DIST = ROOT / "dist"
+DIAGRAMME = ROOT / "docs" / "diagramme"
+DIAGRAMM_EXPORT = DIAGRAMME / "export"
+DIAGRAMM_BUILD = DIAGRAMME / ".build"
+DIAGRAMM_VORLAGE = DIAGRAMME / "_vorlage"
 
 
 @dataclass(frozen=True)
@@ -136,6 +140,34 @@ def quellcode_anhang(build_dir: Path) -> int:
 # ---------------------------------------------------------------------------
 # Bauen und prüfen
 # ---------------------------------------------------------------------------
+def baue_diagramme(alle: bool = False) -> None:
+    """Übersetzt jede TikZ-Quelldatei docs/diagramme/<Ordner>/<name>.tex nach
+    docs/diagramme/export/<name>.pdf (nur wenn Quelle oder Stil neuer ist)."""
+    quellen = sorted(q for q in DIAGRAMME.glob("*/*.tex")
+                     if q.parent.name not in {"export", ".build", "_vorlage"})
+    if not quellen:
+        return
+    stil = DIAGRAMM_VORLAGE / "iu-diagramm.sty"
+    DIAGRAMM_BUILD.mkdir(exist_ok=True)
+    DIAGRAMM_EXPORT.mkdir(exist_ok=True)
+    env = dict(os.environ, TEXINPUTS=f"{DIAGRAMM_VORLAGE}{os.pathsep}")
+    neu = 0
+    for q in quellen:
+        ziel = DIAGRAMM_EXPORT / f"{q.stem}.pdf"
+        aktuell = ziel.exists() and ziel.stat().st_mtime >= max(q.stat().st_mtime, stil.stat().st_mtime)
+        if aktuell and not alle:
+            continue
+        erg = run(["lualatex", "-interaction=nonstopmode", "-halt-on-error",
+                   f"-output-directory={DIAGRAMM_BUILD}", q.name], q.parent, env)
+        pdf = DIAGRAMM_BUILD / f"{q.stem}.pdf"
+        if erg.returncode != 0 or not pdf.exists():
+            fehler = [z for z in erg.stdout.splitlines() if z.startswith("!") or ".tex:" in z]
+            raise Fehler(f"Diagramm {q.relative_to(ROOT)} fehlerhaft: " + " | ".join(fehler[:5]))
+        shutil.copy2(pdf, ziel)
+        neu += 1
+    print(f"Diagramme: {len(quellen)} Quelle(n), {neu} neu übersetzt")
+
+
 def baue(dok: Dokument, phase: int) -> Path:
     ordner = LATEX / dok.ordner
     build = ordner / "build"
@@ -171,14 +203,9 @@ def pruefe(dok: Dokument, ordner: Path, log: Path) -> None:
     platzhalter = sorted(set(re.findall(r"IU-PSE-PLATZHALTER: (\S+)", text)))
     undefiniert = "There were undefined references" in text or "Citation" in text and "undefined" in text
 
-    # \TODO in den Quelltexten (ohne Kommentarzeilen)
-    todos = 0
-    for tex in ordner.rglob("*.tex"):
-        if "build" in tex.parts:
-            continue
-        for zeile in tex.read_text(encoding="utf-8").splitlines():
-            code = re.split(r"(?<!\\)%", zeile, maxsplit=1)[0]
-            todos += code.count("\\TODO{")
+    # \TODO, die tatsächlich im PDF stehen (die Klasse schreibt je \TODO
+    # „IU-PSE-TODO“ ins Log; Kapitel späterer Phasen zählen so nicht mit)
+    todos = text.count("IU-PSE-TODO")
 
     # Abbildungs-/Tabellenverzeichnis ab drei Einträgen Pflicht (Richtlinien 3.1)
     haupt = (ordner / f"{dok.name}.tex").read_text(encoding="utf-8")
@@ -292,6 +319,7 @@ def main() -> int:
     parser.add_argument("--zip", action="store_true", help="(Phase 3) ZIP des Repositorys in dist/ erzeugen")
     parser.add_argument("--anlage", action="store_true",
                         help="(Phase 3) ZIP als .zip.txt-Dateianlage oben links auf dem Deckblatt einbetten")
+    parser.add_argument("--diagramme", action="store_true", help="alle TikZ-Diagramme neu übersetzen")
     parser.add_argument("--force", action="store_true", help="eingefrorene Abgabe-PDF trotzdem überschreiben")
     args = parser.parse_args()
 
@@ -307,6 +335,7 @@ def main() -> int:
             if not auswahl:
                 raise Fehler(f"Unbekanntes Dokument: {args.doc}")
 
+        baue_diagramme(args.diagramme)
         print(f"Phase {args.phase}: baue {len(auswahl)} Dokument(e) …")
         pdfs = {d.name: baue(d, args.phase) for d in auswahl}
 

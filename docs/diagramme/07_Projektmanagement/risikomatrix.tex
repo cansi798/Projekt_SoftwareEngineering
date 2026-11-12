@@ -1,0 +1,66 @@
+% =====================================================================
+%  Risikomatrix (Projektdokumentation, Kap. 2.3)
+%  5x5-Matrix: Eintrittswahrscheinlichkeit W (senkrecht) über Schwere S
+%  (waagerecht); Risikowert R = W x S.
+%  Ampel: R <= 7 niedrig (grün), 8-14 mittel (gelb), >= 15 hoch (rot).
+%  Export: docs/diagramme/export/risikomatrix.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\begin{document}
+\begin{tikzpicture}[x=2.0cm, y=1.25cm]
+  % --- Zellen mit Ampelfarbe und Risikowert ---------------------------
+  \foreach \w in {1,...,5}{
+    \foreach \s in {1,...,5}{
+      \pgfmathtruncatemacro{\r}{\w*\s}
+      \ifnum\r<8
+        \def\farbe{iuGruen!22}
+      \else\ifnum\r<15
+        \def\farbe{iuGelb!30}
+      \else
+        \def\farbe{iuRot!25}
+      \fi\fi
+      \fill[\farbe] (\s-1,\w-1) rectangle (\s,\w);
+      \node[anchor=north east, font=\fontsize{7pt}{8pt}\selectfont, text=iuGrau, inner sep=2pt]
+        at (\s,\w) {R\,=\,\r};
+    }
+  }
+  \foreach \i in {1,...,4}{
+    \draw[iuLinie, line width=0.5pt] (\i,0) -- (\i,5);
+    \draw[iuLinie, line width=0.5pt] (0,\i) -- (5,\i);
+  }
+  \draw[iuLinie, line width=0.8pt] (0,0) rectangle (5,5);
+
+  % --- Risiken (Spalte = S, Zeile = W) ---------------------------------
+  \tikzset{ri/.style={font=\fontsize{8.5pt}{10pt}\selectfont\bfseries, align=center, inner sep=1pt}}
+  \node[ri] at (3.5,3.42) {RI01};                    % W4, S4
+  \node[ri] at (3.5,2.38) {RI02\\RI05\\RI06};        % W3, S4
+  \node[ri] at (2.5,2.42) {RI03\\RI04};              % W3, S3
+  \node[ri] at (3.5,1.38) {RI07\\RI09\\RI10};        % W2, S4
+  \node[ri] at (4.5,1.42) {RI08};                    % W2, S5
+  \node[ri] at (2.5,1.42) {RI11};                    % W2, S3
+  \node[ri] at (4.5,0.42) {RI12};                    % W1, S5
+
+  % --- Achsenbeschriftung ------------------------------------------------
+  \tikzset{stufe/.style={font=\fontsize{8pt}{9.5pt}\selectfont, align=center}}
+  \foreach \s/\txt in {1/unbedeutend, 2/gering, 3/spürbar, 4/schwer, 5/kritisch}{
+    \node[stufe, anchor=north] at (\s-0.5,-0.05) {\textbf{\s}\\\txt};
+  }
+  \foreach \w/\txt in {1/sehr gering, 2/gering, 3/mittel, 4/hoch, 5/sehr hoch}{
+    \node[stufe, anchor=east, text width=1.55cm, align=right] at (-0.05,\w-0.5) {\textbf{\w}\\\txt};
+  }
+  \node[font=\bfseries, anchor=north] at (2.5,-0.85) {Schwere der Auswirkung S};
+  \node[font=\bfseries, rotate=90, anchor=south] at (-0.95,2.5) {Eintrittswahrscheinlichkeit W};
+
+  % --- Legende -----------------------------------------------------------
+  \begin{scope}[shift={(0.9,-1.65)}, font=\fontsize{8pt}{9.5pt}\selectfont]
+    \fill[iuGruen!22] (0,0) rectangle (0.18,0.24); \draw (0,0) rectangle (0.18,0.24);
+    \node[anchor=west] at (0.2,0.12) {niedrig (R\,$\leq$\,7)};
+    \fill[iuGelb!30] (1.75,0) rectangle (1.93,0.24); \draw (1.75,0) rectangle (1.93,0.24);
+    \node[anchor=west] at (1.95,0.12) {mittel (R\,=\,8--14)};
+    \fill[iuRot!25] (3.7,0) rectangle (3.88,0.24); \draw (3.7,0) rectangle (3.88,0.24);
+    \node[anchor=west] at (3.9,0.12) {hoch (R\,$\geq$\,15)};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

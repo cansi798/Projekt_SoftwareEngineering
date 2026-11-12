@@ -1,0 +1,139 @@
+% =====================================================================
+%  Mock-up (Wireframe): modaler Dialog „Aktivität erfassen“
+%  Beispiel: Sarah erfasst eine Laufrunde mit wöchentlicher Wiederholung;
+%  das Enddatum der Wiederholung ist ungültig (Fehlermeldung am Feld).
+%  Spezifikationsdokument, Kapitel 5 (Abbildung abb:mockup-aktivitaet)
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\newcommand{\sz}[1]{\fontsize{#1pt}{\fpeval{#1*1.2}pt}\selectfont}
+\definecolor{bBewegung}{HTML}{59A14F}
+
+% Beschriftung links vom Feld:  \beschriftung{y}{x}{Text}
+\newcommand{\beschriftung}[3]{\node[anchor=west, font=\sz{8.5}] at (#2,#1) {#3};}
+% Eingabefeld: \eingabe{x}{y}{Breite}{Inhalt}
+\newcommand{\eingabe}[4]{\node[feld, minimum width=#3cm, text width=\fpeval{#3-0.2}cm, font=\sz{8.5}] at (#1,#2) {#4};}
+% Auswahlpfeil (Klappliste) am rechten Feldrand
+\newcommand{\klappe}[1]{\fill[iuLinie] ($(#1)+(-0.09,0.04)$) -- ($(#1)+(0.09,0.04)$) -- ($(#1)+(0,-0.06)$) -- cycle;}
+% Kalendersymbol
+\newcommand{\kalender}[1]{%
+  \draw[iuGrau, line width=0.5pt] ($(#1)+(-0.12,-0.1)$) rectangle ($(#1)+(0.12,0.11)$);
+  \draw[iuGrau, line width=0.5pt] ($(#1)+(-0.12,0.05)$) -- ($(#1)+(0.12,0.05)$);}
+% Optionsfeld (Radio):  \option{x}{y}{gewählt 1/0}{Text}
+\newcommand{\option}[4]{%
+  \draw[iuGrau, fill=white] (#1,#2) circle (0.11);
+  \ifnum#3=1 \fill[iuAkzent] (#1,#2) circle (0.06); \fi
+  \node[anchor=west, font=\sz{8.5}] at (#1+0.16,#2) {#4};}
+% Bewertungsskala 1–5: \skala{x}{y}{gewählter Wert}
+\newcommand{\skala}[3]{%
+  \foreach \w in {1,...,5}{
+    \pgfmathsetmacro{\xx}{#1+0.55*(\w-1)}
+    \ifnum\w=#3
+      \node[circle, fill=iuAkzent, draw=iuAkzent, text=white, minimum size=0.42cm, inner sep=0pt,
+            font=\sz{8}\bfseries] at (\xx,#2) {\w};
+    \else
+      \node[circle, draw=iuGrau, fill=white, minimum size=0.42cm, inner sep=0pt, font=\sz{8}] at (\xx,#2) {\w};
+    \fi}}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% ---------------- Dialograhmen ----------------------------------------
+\draw[fenster, fill=white] (0,0) rectangle (16.6,8.9);
+\fill[iuFlaeche!60!white] (0.02,8.32) rectangle (16.58,8.88);
+\draw[iuGrau!60] (0,8.3) -- (16.6,8.3);
+\node[anchor=west, font=\sz{9.5}\bfseries] at (0.3,8.6) {Aktivität erfassen};
+\draw[iuLinie, line width=0.6pt] (16.15,8.48) -- (16.37,8.7) (16.15,8.7) -- (16.37,8.48);
+\draw[iuGrau!50] (8.25,1.55) -- (8.25,8.0);
+
+% ---------------- linke Spalte: Grunddaten ----------------------------
+\beschriftung{7.75}{0.3}{Titel *}
+\eingabe{2.75}{7.75}{5.2}{Laufrunde im Park}
+\node[anchor=east, font=\sz{7.2}, text=iuGrau] at (7.9,7.75) {17/80};
+
+\beschriftung{7.05}{0.3}{Lebensbereich *}
+\eingabe{2.75}{7.05}{5.2}{\hspace*{0.3cm}Bewegung}
+\fill[bBewegung] (3.0,7.05) circle (0.09);
+\klappe{7.7,7.05}
+
+\beschriftung{6.35}{0.3}{Datum *}
+\eingabe{2.75}{6.35}{2.6}{11.11.2026}
+\kalender{5.1,6.35}
+
+\beschriftung{5.65}{0.3}{Zeitangabe}
+\option{2.9}{5.65}{1}{Beginn und Ende}
+\option{5.9}{5.65}{0}{Dauer}
+
+\beschriftung{4.95}{0.3}{Beginn / Ende *}
+\eingabe{2.75}{4.95}{1.3}{18:30}
+\node[font=\sz{8.5}] at (4.3,4.95) {--};
+\eingabe{4.55}{4.95}{1.3}{19:15}
+\node[anchor=west, font=\sz{8}, text=iuGrau] at (6.0,4.95) {= 45 min};
+
+\beschriftung{4.25}{0.3}{Dauer (min)}
+\node[feld, minimum width=1.3cm, text width=1.1cm, font=\sz{8.5}, fill=iuFlaeche, text=iuGrau] at (2.75,4.25) {45};
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (4.2,4.25) {aus Beginn und Ende berechnet};
+
+\beschriftung{3.55}{0.3}{Status *}
+\node[draw=iuGrau, fill=white, minimum height=0.5cm, inner xsep=4pt, font=\sz{8}, anchor=west] (s1) at (2.75,3.55) {Geplant};
+\node[draw=iuAkzent, fill=iuAkzent, text=white, minimum height=0.5cm, inner xsep=4pt, font=\sz{8}\bfseries, anchor=west] (s2) at (s1.east) {Durchgeführt};
+\node[draw=iuGrau, fill=white, minimum height=0.5cm, inner xsep=4pt, font=\sz{8}, anchor=west] at (s2.east) {Ausgefallen};
+
+\beschriftung{2.85}{0.3}{Bewegungsart}
+\eingabe{2.75}{2.85}{5.2}{Ausdauer, moderat}
+\klappe{7.7,2.85}
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (2.75,2.38) {nur sichtbar beim Lebensbereich Bewegung};
+
+% ---------------- rechte Spalte: Bewertung, Notiz, Wiederholung --------
+\node[anchor=west, font=\sz{8.5}\bfseries] at (8.55,7.75) {Bewertung (nur bei Status „Durchgeführt“)};
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (8.55,7.35) {Skala 1 = sehr gering bis 5 = sehr hoch · programmeigen};
+
+\beschriftung{6.85}{8.55}{Zufriedenheit}
+\skala{10.95}{6.85}{4}
+\beschriftung{6.3}{8.55}{Belastung}
+\skala{10.95}{6.3}{2}
+\beschriftung{5.75}{8.55}{Erholung}
+\skala{10.95}{5.75}{4}
+
+\beschriftung{5.15}{8.55}{Notiz}
+\node[draw=iuGrau, fill=white, anchor=north west, minimum width=5.6cm, minimum height=0.95cm,
+      text width=5.4cm, align=left, font=\sz{8.5}, inner sep=3pt] at (10.7,5.38) {Mit der Nachbarin gelaufen.};
+\node[anchor=south east, font=\sz{7.2}, text=iuGrau] at (16.25,4.46) {26/500};
+
+% Wiederholung
+\draw[iuGrau, fill=white] (8.6,3.88) rectangle (8.86,4.14);
+\draw[iuAkzent, line width=1pt, line cap=round, line join=round] (8.65,4.01) -- (8.71,3.94) -- (8.82,4.09);
+\node[anchor=west, font=\sz{8.5}] at (8.95,4.01) {Wöchentlich wiederholen};
+
+\beschriftung{3.4}{8.55}{Wochentage *}
+\foreach \tag/\an [count=\i] in {Mo/0,Di/0,Mi/1,Do/0,Fr/1,Sa/0,So/0}{
+  \pgfmathsetmacro{\xx}{10.7+0.62*(\i-1)}
+  \ifnum\an=1
+    \node[draw=iuAkzent, fill=iuAkzent, text=white, minimum width=0.55cm, minimum height=0.45cm, inner sep=0pt,
+          rounded corners=1.5pt, font=\sz{8}\bfseries, anchor=west] at (\xx,3.4) {\tag};
+  \else
+    \node[draw=iuGrau, fill=white, minimum width=0.55cm, minimum height=0.45cm, inner sep=0pt,
+          rounded corners=1.5pt, font=\sz{8}, anchor=west] at (\xx,3.4) {\tag};
+  \fi
+}
+
+\beschriftung{2.75}{8.55}{Enddatum *}
+\node[feld, draw=iuRot, line width=1pt, minimum width=2.6cm, text width=2.4cm, font=\sz{8.5}] at (10.7,2.75) {05.11.2026};
+\kalender{13.05,2.75}
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (13.4,2.75) {letzter möglicher Termin};
+% Fehlermeldung direkt unter dem Feld
+\fill[iuRot] (10.8,2.29) circle (0.1);
+\node[font=\sz{7.2}\bfseries, text=white, inner sep=0] at (10.8,2.29) {!};
+\node[anchor=west, font=\sz{7.8}, text=iuRot, inner xsep=1pt] at (10.92,2.29) {Enddatum darf nicht vor dem Datum liegen.};
+
+% ---------------- Fußzeile --------------------------------------------
+\draw[iuGrau!60] (0,1.4) -- (16.6,1.4);
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (0.3,0.7) {* Pflichtfeld};
+\node[anchor=east, font=\sz{7.5}, text=iuGrau] at (12.0,0.7) {Speichern ist erst bei gültigen Eingaben möglich};
+\node[knopf, font=\sz{8.5}, minimum width=2.0cm, anchor=east] at (14.3,0.7) {Abbrechen};
+\node[draw=iuGrau!70, fill=iuFlaeche, text=iuGrau, rounded corners=2pt, minimum height=0.55cm, inner sep=3pt,
+      font=\sz{8.5}\bfseries, minimum width=1.7cm, anchor=east] at (16.3,0.7) {Speichern};
+
+\end{tikzpicture}
+\end{document}

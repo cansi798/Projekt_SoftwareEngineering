@@ -1,0 +1,210 @@
+% =====================================================================
+%  Mock-up (Wireframe): Hauptfenster mit Dashboard, KW 46/2026
+%  Beispieldaten: Persona Sarah Keller (Wunschprofil angepasst, Summe 140 h)
+%  Spezifikationsdokument, Kapitel 5 (Abbildung abb:mockup-haupt)
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+% Schriftgrößen
+\newcommand{\sz}[1]{\fontsize{#1pt}{\fpeval{#1*1.2}pt}\selectfont}
+
+% Farben der zehn Standard-Lebensbereiche (identisch in allen Mock-ups)
+\definecolor{bArbeit}{HTML}{4E79A7}
+\definecolor{bSchlaf}{HTML}{8E7CC3}
+\definecolor{bBewegung}{HTML}{59A14F}
+\definecolor{bFamilie}{HTML}{F28E2B}
+\definecolor{bHobbys}{HTML}{EDC948}
+\definecolor{bSozial}{HTML}{FF9DA7}
+\definecolor{bFreizeit}{HTML}{76B7B2}
+\definecolor{bErholung}{HTML}{8CD17D}
+\definecolor{bEntwicklung}{HTML}{9C755F}
+\definecolor{bAlltag}{HTML}{BAB0AC}
+
+% Symbole (gezeichnet, da Arial sie nicht enthält)
+\newcommand{\pfeillinks}[1]{\fill[iuLinie] ($(#1)+(0.07,0.11)$) -- ($(#1)+(-0.09,0)$) -- ($(#1)+(0.07,-0.11)$) -- cycle;}
+\newcommand{\pfeilrechts}[1]{\fill[iuLinie] ($(#1)+(-0.07,0.11)$) -- ($(#1)+(0.09,0)$) -- ($(#1)+(-0.07,-0.11)$) -- cycle;}
+\newcommand{\warnsymbol}[1]{%
+  \fill[iuGelb, draw=iuLinie!70, line width=0.4pt, line join=round]
+    ($(#1)+(0,0.17)$) -- ($(#1)+(0.19,-0.15)$) -- ($(#1)+(-0.19,-0.15)$) -- cycle;
+  \node[font=\sz{7}\bfseries, inner sep=0] at ($(#1)+(0,-0.03)$) {!};}
+\newcommand{\positivsymbol}[1]{%
+  \fill[iuGruen] (#1) circle (0.16);
+  \draw[white, line width=1.1pt, line cap=round, line join=round]
+    ($(#1)+(-0.08,0)$) -- ($(#1)+(-0.02,-0.07)$) -- ($(#1)+(0.09,0.07)$);}
+\newcommand{\haken}[2][white]{%
+  \draw[#1, line width=0.9pt, line cap=round, line join=round]
+    ($(#2)+(-0.08,0)$) -- ($(#2)+(-0.025,-0.06)$) -- ($(#2)+(0.08,0.07)$);}
+\newcommand{\infosymbol}[1]{%
+  \draw[iuGrau, line width=0.5pt] (#1) circle (0.12);
+  \node[font=\sz{7}\bfseries, text=iuGrau, inner sep=0] at (#1) {i};}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% ---------------- Fensterrahmen und Titelleiste ----------------------
+\draw[fenster, fill=white] (0,0) rectangle (17,12.6);
+\fill[iuFlaeche!60!white] (0.02,12.0) rectangle (16.98,12.58);
+\draw[iuGrau!60] (0,12.0) -- (17,12.0);
+\fill[iuAkzent] (0.25,12.15) rectangle (0.53,12.43);
+\node[anchor=west, font=\sz{8}] at (0.62,12.29) {BalanceOS};
+% Fenstersteuerung
+\draw[iuLinie, line width=0.6pt] (15.35,12.29) -- (15.6,12.29);
+\draw[iuLinie, line width=0.6pt] (15.95,12.18) rectangle (16.17,12.4);
+\draw[iuLinie, line width=0.6pt] (16.5,12.18) -- (16.72,12.4) (16.5,12.4) -- (16.72,12.18);
+
+% ---------------- Seitenleiste ----------------------------------------
+\fill[iuFlaeche] (0.02,0.02) rectangle (3.2,11.98);
+\draw[iuGrau!60] (3.2,0) -- (3.2,12.0);
+\node[anchor=west, font=\sz{11}\bfseries] at (0.3,11.35) {BalanceOS};
+\node[anchor=west, font=\sz{7}, text=iuGrau] at (0.3,10.92) {Lebensbalance im Blick};
+
+% Navigationseinträge: Name, y-Position
+\fill[iuAkzent, rounded corners=2pt] (0.15,9.93) rectangle (3.05,10.47);
+\foreach \name/\y/\farbe in {Dashboard/10.2/white, Woche/9.5/iuLinie, Aktivitäten/8.8/iuLinie,
+                             Statistik/8.1/iuLinie, Reflexion/7.4/iuLinie, Kompass/6.7/iuLinie}{
+  \node[anchor=west, font=\sz{9}, text=\farbe] at (0.85,\y) {\name};
+}
+% kleine Symbole der Einträge
+\begin{scope}[line width=0.5pt]
+  % Dashboard (Kacheln)
+  \foreach \dx/\dy in {0/0,0.15/0,0/0.15,0.15/0.15}
+    \fill[white] (0.4+\dx,10.07+\dy) rectangle ++(0.11,0.11);
+  % Woche (Kalender)
+  \draw[iuGrau] (0.4,9.38) rectangle (0.66,9.62); \draw[iuGrau] (0.4,9.55) -- (0.66,9.55);
+  % Aktivitäten (Liste)
+  \foreach \dy in {0,0.09,0.18} \draw[iuGrau] (0.4,8.71+\dy) -- (0.66,8.71+\dy);
+  % Statistik (Balken)
+  \fill[iuGrau] (0.4,7.98) rectangle (0.46,8.1) (0.5,7.98) rectangle (0.56,8.2) (0.6,7.98) rectangle (0.66,8.24);
+  % Reflexion (Sprechblase)
+  \draw[iuGrau, rounded corners=1pt] (0.4,7.33) rectangle (0.66,7.52); \draw[iuGrau] (0.46,7.33) -- (0.44,7.26) -- (0.53,7.33);
+  % Kompass
+  \draw[iuGrau] (0.53,6.7) circle (0.13); \fill[iuGrau] (0.53,6.81) -- (0.57,6.7) -- (0.53,6.59) -- (0.49,6.7) -- cycle;
+  % Einstellungen (Zahnrad vereinfacht)
+  \draw[iuGrau] (0.53,1.3) circle (0.08);
+  \foreach \w in {0,45,...,315} \draw[iuGrau, line width=0.9pt] ($(0.53,1.3)+(\w:0.1)$) -- ($(0.53,1.3)+(\w:0.15)$);
+\end{scope}
+\draw[iuGrau!60] (0.3,1.75) -- (2.9,1.75);
+\node[anchor=west, font=\sz{9}] at (0.85,1.3) {Einstellungen};
+\node[anchor=west, font=\sz{7}, text=iuGrau, align=left] at (0.3,0.5) {Alle Daten bleiben\\auf diesem Rechner};
+
+% ---------------- Kopfzeile -------------------------------------------
+\node[anchor=west, font=\sz{12}\bfseries] at (3.55,11.45) {Dashboard};
+\node[knopf, minimum width=0.55cm, minimum height=0.5cm] (zur) at (7.75,11.45) {};
+\pfeillinks{zur}
+\node[font=\sz{9}\bfseries] at (10.0,11.45) {KW 46 · 09.11.–15.11.2026};
+\node[knopf, minimum width=0.55cm, minimum height=0.5cm] (vor) at (12.25,11.45) {};
+\pfeilrechts{vor}
+\node[hauptknopf, font=\sz{9}\bfseries, anchor=east, minimum height=0.55cm] at (16.6,11.45) {+ Aktivität};
+\draw[iuGrau!50] (3.2,10.9) -- (17,10.9);
+
+% ---------------- Kachel Datenvollständigkeit -------------------------
+\draw[iuGrau, rounded corners=2pt] (3.55,8.85) rectangle (9.95,10.65);
+\node[anchor=north west, font=\sz{8.5}\bfseries] at (3.7,10.55) {Datenvollständigkeit};
+\node[anchor=west, font=\sz{15}\bfseries] at (3.7,9.65) {6/7};
+\node[anchor=west, font=\sz{8}] at (4.62,9.58) {Tage};
+\foreach \tag [count=\i] in {Mo,Di,Mi,Do,Fr,Sa,So}{
+  \pgfmathsetmacro{\xx}{5.75+0.55*(\i-1)}
+  \ifnum\i<7
+    \fill[iuGruen, rounded corners=1pt] (\xx,9.5) rectangle ++(0.42,0.42);
+    \haken{\xx+0.21,9.71}
+  \else
+    \draw[iuGrau, dashed, rounded corners=1pt] (\xx,9.5) rectangle ++(0.42,0.42);
+  \fi
+  \node[font=\sz{7}, text=iuGrau] at (\xx+0.21,9.3) {\tag};
+}
+\node[anchor=west, font=\sz{7.5}, text=iuGrau] at (3.7,9.03) {ausreichend für die Bewertung (mindestens 4 Tage)};
+
+% ---------------- Kachel Gesamt-Score (optional, US19) ----------------
+\draw[iuGrau, rounded corners=2pt] (10.2,8.85) rectangle (16.6,10.65);
+\node[anchor=north west, font=\sz{8.5}\bfseries] at (10.35,10.55) {Gesamt-Score (optional)};
+\infosymbol{16.3,10.38}
+\node[anchor=west, font=\sz{20}\bfseries, text=iuAkzent] at (10.3,9.6) {69};
+\node[anchor=west, font=\sz{8}, text=iuGrau] at (11.15,9.5) {/ 100};
+\node[anchor=west, draw=iuGelb!90!black, fill=iuGelb!18, rounded corners=1.5pt, font=\sz{7.5},
+      inner sep=2.5pt] at (12.35,9.82) {programmeigen, nicht validiert};
+\node[anchor=north west, font=\sz{7.5}, text=iuGrau, align=left] at (12.35,9.5) {gewichteter Mittelwert der\\Bereichs-Scores (Gewichte 0--10)};
+
+% ---------------- Bereichsliste mit Soll-Ist-Balken -------------------
+\draw[iuGrau, rounded corners=2pt] (3.55,3.75) rectangle (16.6,8.6);
+\node[anchor=north west, font=\sz{8.5}\bfseries] at (3.7,8.5) {Lebensbereiche: Wunsch und Wirklichkeit};
+% Legende
+\begin{scope}[font=\sz{7}, text=iuGrau]
+  \fill[iuAkzent] (10.0,8.2) rectangle ++(0.3,0.13);   \node[anchor=west] at (10.32,8.265) {Ist};
+  \fill[iuGruen]  (10.95,8.2) rectangle ++(0.3,0.13);  \node[anchor=west] at (11.27,8.265) {Soll erreicht};
+  \fill[iuRot]    (12.85,8.2) rectangle ++(0.3,0.13);  \node[anchor=west] at (13.17,8.265) {über Obergrenze};
+  \draw[iuLinie, line width=1pt] (15.55,8.15) -- (15.55,8.38); \node[anchor=west] at (15.62,8.265) {Soll};
+\end{scope}
+% Spaltenköpfe
+\begin{scope}[font=\sz{7.5}, text=iuGrau]
+  \node[anchor=west] at (3.7,7.8) {Lebensbereich};
+  \node[anchor=west] at (7.75,7.8) {Typ};
+  \node[anchor=west] at (9.55,7.8) {Soll-Ist-Balken (bis 150 \% des Solls)};
+  \node[anchor=east] at (15.55,7.8) {Ist / Soll};
+  \node[anchor=east] at (16.45,7.8) {Score};
+\end{scope}
+\draw[iuGrau!50] (3.7,7.6) -- (16.45,7.6);
+% Zeilen: Name / Farbe / Typ (M = Mindestziel, O = Obergrenze) / Ist / Soll / Score
+\foreach \name/\farbe/\typ/\ist/\istt/\soll/\score [count=\i] in {
+    Arbeit/bArbeit/O/33/33/30/74,
+    Schlaf/bSchlaf/M/39/39/56/62,
+    Bewegung/bBewegung/M/1.5/{1,5}/3/65,
+    Familie/bFamilie/M/12/12/10/95,
+    Hobbys/bHobbys/M/2/2/4/60,
+    Soziale Kontakte/bSozial/M/1/1/4/45,
+    Freizeit/bFreizeit/M/5/5/6/75,
+    Erholung/bErholung/M/3/3/5/56,
+    Persönliche Entwicklung/bEntwicklung/M/9/9/10/74,
+    Alltägliche Verpflichtungen/bAlltag/O/14/14/12/83}{
+  \pgfmathsetmacro{\y}{7.36-0.36*(\i-1)}
+  \pgfmathsetmacro{\r}{min(\ist/\soll,1.5)}
+  \fill[\farbe] (3.82,\y) circle (0.08);
+  \node[anchor=west, font=\sz{8}] at (3.95,\y) {\name};
+  \node[anchor=west, font=\sz{7.5}, text=iuGrau] at (7.75,\y)
+    {\if\typ M Mindestziel\else Obergrenze\fi};
+  % Balkenspur 0 … 150 % (3,6 cm), Soll bei 100 % = 2,4 cm
+  \fill[iuFlaeche] (9.6,\y-0.08) rectangle (13.2,\y+0.08);
+  \if\typ M
+    \pgfmathsetmacro{\farbwahl}{\r>=1 ? 1 : 0}
+    \ifdim\farbwahl pt=1pt
+      \fill[iuGruen] (9.6,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+    \else
+      \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+    \fi
+  \else
+    \pgfmathsetmacro{\basis}{min(\r,1)}
+    \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.4*\basis,\y+0.08);
+    \pgfmathsetmacro{\ueber}{\r>1 ? 1 : 0}
+    \ifdim\ueber pt=1pt
+      \fill[iuRot] (12.0,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+    \fi
+  \fi
+  \draw[iuLinie, line width=1pt] (12.0,\y-0.13) -- (12.0,\y+0.13);
+  \node[anchor=east, font=\sz{8}] at (15.55,\y) {\istt\,/\,\soll~h};
+  \node[anchor=east, font=\sz{8.5}\bfseries] at (16.45,\y) {\score};
+}
+
+% ---------------- Hinweisliste -----------------------------------------
+\draw[iuGrau, rounded corners=2pt] (3.55,0.25) rectangle (16.6,3.5);
+\node[anchor=north west, font=\sz{8.5}\bfseries] at (3.7,3.4) {Hinweise der Woche (4)};
+\node[anchor=north east, font=\sz{8}, text=iuAkzent] at (16.45,3.4) {\underline{Alle Hinweise anzeigen}};
+\foreach \art/\regel/\text [count=\i] in {
+    W/R01/{Ausdauerbewegung: 90 von 150~min -- unter dem WHO-Richtwert},
+    W/R02/{Muskelkräftigende Aktivität an 0 von 2 empfohlenen Tagen},
+    W/R03/{Schlaf: Ø 6,5~h an 6 Tagen mit Eintrag -- unter 7~h (Empfehlung)},
+    P/R08/{Wunsch im Bereich Familie erreicht: 12 von 10~h}}{
+  \pgfmathsetmacro{\y}{2.72-0.52*(\i-1)}
+  \if\art W \warnsymbol{3.92,\y} \else \positivsymbol{3.92,\y} \fi
+  \node[anchor=west, font=\sz{8}] at (4.25,\y) {\text};
+  \node[anchor=east, font=\sz{7}, text=iuGrau] at (14.3,\y) {\regel};
+  \node[knopf, font=\sz{8}, minimum height=0.4cm, inner sep=2pt, anchor=east] at (15.85,\y) {Warum?};
+  \node[draw=iuGrau, rounded corners=1.5pt, minimum size=0.4cm, inner sep=0pt] (x\i) at (16.2,\y) {};
+  \draw[iuGrau, line width=0.6pt] ($(x\i)+(-0.08,-0.08)$) -- ($(x\i)+(0.08,0.08)$)
+                                   ($(x\i)+(-0.08,0.08)$) -- ($(x\i)+(0.08,-0.08)$);
+}
+\draw[iuGrau!50] (3.7,0.68) -- (16.45,0.68);
+\node[anchor=west, font=\sz{7}, text=iuGrau] at (3.7,0.46)
+  {Hinweise zeigen Zusammenhänge in den eigenen Einträgen, keine Ursachen und keine medizinische Diagnose.};
+
+\end{tikzpicture}
+\end{document}

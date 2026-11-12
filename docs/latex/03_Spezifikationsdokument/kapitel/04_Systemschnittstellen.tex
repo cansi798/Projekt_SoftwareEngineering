@@ -3,20 +3,107 @@
 %  Schnittstellen zu anderen Systemen (falls vorhanden). Umfasst Zweck,
 %  verwendetes Protokoll (z. B. HTTP, FTP) und Datenformat (z. B. XML,
 %  CSV, JSON).“)
-%  Auch wenn es keine externen Systeme gibt: das explizit begründen und
-%  ggf. Datei-Import/-Export (CSV/JSON) beschreiben.
 % =====================================================================
-\section{Systemschnittstellen}
-\TODO{Kurze Hinführung; falls keine Schnittstellen: begründen}
+\section{Systemschnittstellen}\label{sec:systemschnittstellen}
+Dieses Kapitel legt fest, über welche Wege Daten BalanceOS verlassen oder dauerhaft abgelegt werden. Da BalanceOS bewusst ohne Verbindung zu anderen Systemen arbeitet, beschränken sich die Schnittstellen auf das lokale Dateisystem; beschrieben werden deshalb die Abgrenzung, die Dateischnittstellen und die Exportformate.
 
-\begin{longtable}{@{}L{2.6cm}L{5.2cm}L{3.0cm}L{4.4cm}@{}}
+\subsection{Abgrenzung: keine Schnittstellen zu externen Systemen}
+BalanceOS besitzt in Version~1 keine Schnittstelle zu einem anderen System: Es gibt keinen Server, keine Cloud-Synchronisation, kein Benutzerkonto, keine Programmierschnittstelle für Dritte und keinen Netzwerkzugriff über \ac{HTTP} oder andere Protokolle. Diese Entscheidung folgt aus der Anforderung NFA05 und hat drei Gründe. Erstens handelt es sich bei Schlafdauer, Belastung, Zufriedenheit und WHO-5-Antworten um sehr persönliche, teilweise gesundheitsbezogene Selbstauskünfte, die das Gerät nicht verlassen sollen. Zweitens ist ein vertrauenswürdiger Umgang mit diesen Daten Teil des Kundennutzens: Nutzer:innen sollen ihre Woche ohne Rechtfertigungsdruck und ohne Sorge um Weitergabe erfassen können. Drittens entfallen ohne Netzwerkverbindung Anmeldung, Übertragungssicherheit und Datenhaltung bei Dritten, was den Umfang des Projekts beherrschbar hält. Cloud-Synchronisation und Benutzerkonten sind daher ausdrücklich als Won't-Anforderungen ausgeschlossen.
+
+Auch ein Datenimport ist in Version~1 nicht vorgesehen. Daten gelangen ausschließlich über die Oberfläche oder über die mitgelieferten Demodaten in die Anwendung. Das JSON-Exportformat ist jedoch versioniert und vollständig, sodass eine spätere Wiederherstellung (Could-Anforderung \enquote{Datensicherung und Wiederherstellung}) darauf aufbauen kann.
+
+\subsection{Dateischnittstellen}
+Tabelle~\ref{tab:schnittstellen} beschreibt die drei Dateischnittstellen mit Zweck, Zugriffsart und Datenformat. Zugriffsprotokoll ist in allen Fällen der Dateizugriff des Betriebssystems auf dem lokalen Rechner; die Exportdateien werden über den Speichern-Dialog von Windows an einem frei gewählten Ort abgelegt (Vorschlag: Ordner \enquote{Dokumente}). Exportiert wird als \ac{CSV}-Datei in der Zeichenkodierung \ac{UTF-8} mit \ac{BOM} oder als JSON-Datei.
+
+\begin{longtable}{@{}L{2.4cm}L{4.6cm}L{3.8cm}L{4.4cm}@{}}
   \caption{Systemschnittstellen}\label{tab:schnittstellen}\\
   \toprule
-  \textbf{Schnittstelle} & \textbf{Zweck} & \textbf{Protokoll} & \textbf{Datenformat} \\
+  \textbf{Schnittstelle} & \textbf{Zweck} & \textbf{Protokoll und Zugriff} & \textbf{Datenformat} \\
   \midrule
   \endfirsthead
+  \toprule
+  \textbf{Schnittstelle} & \textbf{Zweck} & \textbf{Protokoll und Zugriff} & \textbf{Datenformat} \\
+  \midrule
+  \endhead
   \bottomrule
   \endfoot
-  \TODO{z. B. Export} & \TODO{} & \TODO{z. B. Dateisystem} & \TODO{z. B. CSV} \\
+  CSV-Export & Aktivitäten eines Zeitraums in einer Tabellenkalkulation auswerten (US16, NFA10) & Dateisystem, schreibend, nur auf Auslösung & CSV (Abschnitt~\ref{sec:csv}): UTF-8 mit BOM, Semikolon, Kopfzeile \\
+  JSON-Export & vollständige Kopie aller Nutzdaten zur Datenportabilität (US16, NFA10) & Dateisystem, schreibend, nur auf Auslösung & JSON (Abschnitt~\ref{sec:json}): UTF-8 ohne BOM, Formatversion~1 \\
+  Lokale Datenablage & dauerhafte Speicherung zwischen Programmstarts (NFA04, NFA05) & Dateisystem im Benutzerprofil (\texttt{\%APPDATA\%\textbackslash\allowbreak BalanceOS}), nur durch BalanceOS & anwendungsintern, kein Austauschformat (Architekturdokument) \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
+
+Die lokale Datenablage ist für Nutzer:innen nur insofern sichtbar, als sich alle Daten in einem eigenen Ordner des Windows-Benutzerprofils befinden (in der Regel \texttt{C:\textbackslash\allowbreak Users\textbackslash\allowbreak <Name>\textbackslash\allowbreak AppData\textbackslash\allowbreak Roaming\textbackslash\allowbreak BalanceOS}). Andere Benutzerkonten des Rechners haben darauf keinen Zugriff. \enquote{Alle Daten löschen} entfernt sämtliche Nutzdaten aus diesem Ordner. Bereits exportierte Dateien liegen außerhalb der Anwendung und bleiben davon unberührt; darauf weist der Löschdialog hin.
+
+\subsection{Exportformate}
+Beide Exporte verwenden dieselben Bezeichner wie das Datenmodell (Kapitel~\ref{sec:geschaeftsobjekte}) und dieselben Literale der Aufzählungstypen. Datumsangaben folgen \ac{ISO}~8601 im Format JJJJ-MM-TT, Uhrzeiten dem Format HH:MM. Das ISO-Format ist eindeutig, sortierbar und wird von Tabellenkalkulationen als Datum erkannt. Wochenbewertungen und Hinweise werden nicht exportiert, weil sie jederzeit aus den exportierten Daten neu berechnet werden können.
+
+\subsubsection{CSV-Export}\label{sec:csv}
+Der CSV-Export erzeugt eine Datei \texttt{BalanceOS\_Aktivitaeten\_<von>\_<bis>.csv} mit einer Zeile je Aktivität im gewählten Zeitraum, sortiert nach Datum und Beginn. Für eine fehlerfreie Anzeige in Excel gelten folgende Festlegungen: Zeichenkodierung UTF-8 mit BOM, damit Umlaute korrekt erscheinen; Semikolon als Trennzeichen, wie es deutschsprachige Tabellenkalkulationen erwarten; Zeilenende im Windows-Format (Wagenrücklauf und Zeilenvorschub); erste Zeile als Kopfzeile mit den Spaltennamen. Felder, die ein Semikolon, ein Anführungszeichen oder einen Zeilenumbruch enthalten, werden in doppelte Anführungszeichen gesetzt, enthaltene Anführungszeichen werden verdoppelt. Leere optionale Werte bleiben leer. Tabelle~\ref{tab:csv} legt die Spalten fest.
+
+\begin{longtable}{@{}L{3.5cm}L{7.0cm}L{4.7cm}@{}}
+  \caption{Spalten des CSV-Exports}\label{tab:csv}\\
+  \toprule
+  \textbf{Spalte} & \textbf{Inhalt} & \textbf{Format, Beispiel} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Spalte} & \textbf{Inhalt} & \textbf{Format, Beispiel} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  datum & Datum der Aktivität & JJJJ-MM-TT, 2026-11-10 \\
+  kalenderwoche & Kalenderwoche nach ISO~8601 & JJJJ-Www, 2026-W46 \\
+  lebensbereich & Name des Lebensbereichs & Text, Bewegung \\
+  bereichstyp & Typ des Lebensbereichs & MINDESTZIEL \\
+  titel & Titel der Aktivität & Text, Joggen \\
+  beginn & Beginn (optional) & HH:MM, 18:00 \\
+  ende & Ende (optional) & HH:MM, 18:45 \\
+  dauerMinuten & Dauer in Minuten & Ganzzahl, 45 \\
+  status & Status & DURCHGEFUEHRT \\
+  zufriedenheit & Zufriedenheit (optional) & 1--5, 4 \\
+  belastung & Belastung (optional) & 1--5, 2 \\
+  erholung & Erholungswirkung (optional) & 1--5, 4 \\
+  bewegungsart & Bewegungsart (optional) & AUSDAUER\_MODERAT \\
+  notiz & Notiz (optional) & Text \\
+  ausSerie & Termin einer Wiederholungsserie & ja/nein \\
+  istDemo & Demodatensatz & ja/nein \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+\subsubsection{JSON-Export}\label{sec:json}
+Der JSON-Export erzeugt eine Datei \texttt{BalanceOS\_Export\_<Datum>.json} mit allen Nutzdaten unabhängig vom angezeigten Zeitraum. Die Datei ist UTF-8-kodiert, Schlüssel entsprechen den Attributnamen des Datenmodells, Dezimalzahlen verwenden den Punkt als Dezimaltrennzeichen, Wahrheitswerte die Literale \texttt{true} und \texttt{false}, fehlende optionale Werte den Wert \texttt{null}. Beziehungen werden über den eindeutigen Namen des Lebensbereichs bzw. über die laufende Nummer \texttt{nr} einer Serie hergestellt. Die Kopfangaben \texttt{format} und \texttt{version} kennzeichnen Dateityp und Formatversion. Das folgende gekürzte Beispiel zeigt die Struktur; jede Liste enthält in der Datei alle vorhandenen Einträge.
+
+\begin{lstlisting}
+{
+  "format": "BalanceOS-Export",
+  "version": 1,
+  "exportiertAm": "2026-11-16T18:30:00",
+  "einstellungen": { "alpha": 0.6, "gesamtScoreAnzeigen": false },
+  "lebensbereiche": [
+    { "name": "Bewegung", "typ": "MINDESTZIEL", "farbe": "#3A7D44",
+      "aktiv": true, "istStandard": true,
+      "sollStundenProWoche": 3.0, "gewicht": 1 }
+  ],
+  "aktivitaeten": [
+    { "titel": "Joggen", "lebensbereich": "Bewegung",
+      "datum": "2026-11-10", "beginn": "18:00", "ende": "18:45",
+      "dauerMinuten": 45, "status": "DURCHGEFUEHRT",
+      "zufriedenheit": 4, "belastung": 2, "erholung": 4,
+      "bewegungsart": "AUSDAUER_MODERAT", "notiz": null,
+      "istDemo": false, "serie": 1 }
+  ],
+  "wiederholungsserien": [
+    { "nr": 1, "titel": "Joggen", "lebensbereich": "Bewegung",
+      "wochentage": ["DI", "DO"], "startdatum": "2026-11-03",
+      "enddatum": null, "beginn": "18:00", "dauerMinuten": 45,
+      "ausnahmen": ["2026-11-19"] }
+  ],
+  "regeln": [ { "kennung": "R01", "aktiv": true } ],
+  "who5Erhebungen": [ { "datum": "2026-11-15",
+      "antworten": [3, 4, 3, 2, 4], "rohwert": 16, "prozentwert": 64 } ],
+  "wochenreflexionen": [ { "jahr": 2026, "kalenderwoche": 46,
+      "antworten": ["Mehr Zeit draußen verbracht."], "stimmung": 4 } ]
+}
+\end{lstlisting}

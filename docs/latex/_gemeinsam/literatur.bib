@@ -8,7 +8,8 @@
 %   - Wikipedia und KI-Tools sind keine zitierfähigen Quellen
 %   - Internetquellen: Datum der letzten Aktualisierung, KEIN Abrufdatum,
 %     ohne Datum -> n.d.; DOI vor URL
-%   - Englische Titel im „Sentence case“ (biblatex-apa erledigt das)
+%   - Englische Titel im „Sentence case“ EINTRAGEN (biblatex-apa wandelt nicht um);
+%     Eigennamen in {…} schützen
 %   - Übliche Software nur im Text nennen; wenig bekannte oder untersuchte
 %     Software (z. B. verwendete Bibliotheken) ins Literaturverzeichnis
 %
@@ -20,7 +21,7 @@
 % --- Software Engineering allgemein ----------------------------------
 @book{sommerville2016,
   author    = {Sommerville, Ian},
-  title     = {Software Engineering},
+  title     = {Software engineering},
   edition   = {10},
   year      = {2016},
   publisher = {Pearson},
@@ -37,7 +38,7 @@
 
 @book{cohn2004,
   author    = {Cohn, Mike},
-  title     = {User Stories Applied: For Agile Software Development},
+  title     = {User stories applied: For agile software development},
   year      = {2004},
   publisher = {Addison-Wesley},
 }
@@ -45,7 +46,7 @@
 % --- Qualitätsmodell (Norm) -----------------------------------------------
 @report{iso25010,
   author      = {{International Organization for Standardization}},
-  title       = {Systems and Software Engineering -- Systems and Software Quality Requirements and Evaluation (SQuaRE) -- Product Quality Model},
+  title       = {Systems and software engineering -- Systems and software quality requirements and evaluation ({SQuaRE}) -- Product quality model},
   number      = {ISO/IEC 25010:2023},
   type        = {Norm},
   year        = {2023},
@@ -54,7 +55,7 @@
 % --- Modellierung -----------------------------------------------------------
 @online{omg2017uml,
   author  = {{Object Management Group}},
-  title   = {OMG Unified Modeling Language (OMG UML), Version 2.5.1},
+  title   = {{OMG} {Unified Modeling Language} ({OMG} {UML}), version 2.5.1},
   year    = {2017},
   url     = {https://www.omg.org/spec/UML/2.5.1},
 }
@@ -74,7 +75,7 @@
 % =====================================================================
 @article{matuska2008,
   author  = {Matuska, Kathleen M. and Christiansen, Charles H.},
-  title   = {A Proposed Model of Lifestyle Balance},
+  title   = {A proposed model of lifestyle balance},
   journal = {Journal of Occupational Science},
   volume  = {15},
   number  = {1},
@@ -85,7 +86,7 @@
 
 @article{matuska2012,
   author  = {Matuska, Kathleen},
-  title   = {Validity Evidence of a Model and Measure of Life Balance},
+  title   = {Validity evidence of a model and measure of life balance},
   journal = {OTJR: Occupation, Participation and Health},
   volume  = {32},
   number  = {1},
@@ -96,14 +97,14 @@
 
 @book{seligman2011,
   author    = {Seligman, Martin E. P.},
-  title     = {Flourish: A Visionary New Understanding of Happiness and Well-Being},
+  title     = {Flourish: A visionary new understanding of happiness and well-being},
   year      = {2011},
   publisher = {Free Press},
 }
 
 @article{ryan2000,
   author  = {Ryan, Richard M. and Deci, Edward L.},
-  title   = {Self-Determination Theory and the Facilitation of Intrinsic Motivation, Social Development, and Well-Being},
+  title   = {Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being},
   journal = {American Psychologist},
   volume  = {55},
   number  = {1},
@@ -114,7 +115,7 @@
 
 @article{bakker2017,
   author  = {Bakker, Arnold B. and Demerouti, Evangelia},
-  title   = {Job Demands--Resources Theory: Taking Stock and Looking Forward},
+  title   = {Job demands--resources theory: Taking stock and looking forward},
   journal = {Journal of Occupational Health Psychology},
   volume  = {22},
   number  = {3},
@@ -125,8 +126,8 @@
 
 @incollection{meijman1998,
   author    = {Meijman, Theo F. and Mulder, Gijsbertus},
-  title     = {Psychological Aspects of Workload},
-  booktitle = {Handbook of Work and Organizational Psychology: Vol. 2. Work Psychology},
+  title     = {Psychological aspects of workload},
+  booktitle = {Handbook of work and organizational psychology: Vol. 2. Work psychology},
   editor    = {Drenth, Pieter J. D. and Thierry, Henk and de Wolff, Charles J.},
   edition   = {2},
   pages     = {5--33},
@@ -136,21 +137,21 @@
 
 @online{who2020,
   author = {{World Health Organization}},
-  title  = {WHO Guidelines on Physical Activity and Sedentary Behaviour},
+  title  = {{WHO} guidelines on physical activity and sedentary behaviour},
   year   = {2020},
   url    = {https://www.who.int/publications/i/item/9789240015128},
 }
 
 @online{who2024,
   author = {{World Health Organization}},
-  title  = {The World Health Organization-Five Well-Being Index (WHO-5)},
+  title  = {The {World Health Organization-Five Well-Being Index} ({WHO-5})},
   year   = {2024},
   url    = {https://www.who.int/publications/m/item/WHO-UCN-MSD-MHE-2024.01},
 }
 
 @article{topp2015,
   author  = {Topp, Christian Winther and Østergaard, Søren Dinesen and Søndergaard, Susan and Bech, Per},
-  title   = {The WHO-5 Well-Being Index: A Systematic Review of the Literature},
+  title   = {The {WHO-5 Well-Being Index}: A systematic review of the literature},
   journal = {Psychotherapy and Psychosomatics},
   volume  = {84},
   number  = {3},
@@ -161,13 +162,64 @@
 
 @article{watson2015,
   author  = {Watson, Nathaniel F. and Badr, M. Safwan and Belenky, Gregory and Bliwise, Donald L. and Buxton, Orfeu M. and Buysse, Daniel and Dinges, David F. and Gangwisch, James and Grandner, Michael A. and Kushida, Clete and Malhotra, Raman K. and Martin, Jennifer L. and Patel, Sanjay R. and Quan, Stuart F. and Tasali, Esra},
-  title   = {Recommended Amount of Sleep for a Healthy Adult: A Joint Consensus Statement of the American Academy of Sleep Medicine and Sleep Research Society},
+  title   = {Recommended amount of sleep for a healthy adult: A joint consensus statement of the {American Academy of Sleep Medicine} and {Sleep Research Society}},
   journal = {Sleep},
   volume  = {38},
   number  = {6},
   pages   = {843--844},
   year    = {2015},
   doi     = {10.5665/sleep.4716},
+}
+
+% --- Geprüfte, frei zugängliche Quellen (Seiten am Original verifiziert) -----
+% SWEBOK Guide V4.0a (IEEE Computer Society, freier Download).
+% Seitenzählung kapitelweise, z. B. S.~1-12 (Kap. 1, Seite 12):
+%   1-4  nichtfunktionale Anforderungen      1-7  Erhebungstechniken (Prototyping, Story Mapping)
+%   1-12 User-Story-Format                   1-18 Priorisierung von Anforderungen
+%   9-9  Risikomanagement (Wahrscheinlichkeit, Auswirkung, Risikoregister)
+%   10-5 inkrementelle Entwicklung           12-11 ISO/IEC 25010 als Qualitätsmodell
+@book{swebok2026,
+  editor    = {Washizaki, Hironori},
+  title     = {Guide to the {Software Engineering Body of Knowledge} ({SWEBOK} {Guide}), version 4.0a},
+  year      = {2026},
+  publisher = {IEEE Computer Society},
+  url       = {https://www.computer.org/education/bodies-of-knowledge/software-engineering},
+}
+
+% UML 2.5.1 (omg2017uml oben): Seiten der Spezifikation
+%   S. 201 Assoziationen (Notation)     S. 379 Aktivitäten (Notation)
+%   S. 391 Kontrollknoten (Start/Ende/Entscheidung)
+%   S. 319 Zustandsdiagramme            S. 639 Use Cases/Akteure (Semantik)
+%   S. 641 Use-Case-Notation (Systemgrenze, include, extend)
+
+% WHO-Bewegungsleitlinie als Zeitschriftenartikel (Empfehlungen im Abstract, S. 1451)
+@article{bull2020,
+  author  = {Bull, Fiona C. and Al-Ansari, Salih S. and Biddle, Stuart and Borodulin, Katja and Buman, Matthew P. and Cardon, Greet and Carty, Catherine and Chaput, Jean-Philippe and Chastin, Sebastien and Chou, Roger and Dempsey, Paddy C. and DiPietro, Loretta and Ekelund, Ulf and Firth, Joseph and Friedenreich, Christine M. and Garcia, Leandro and Gichu, Muthoni and Jago, Russell and Katzmarzyk, Peter T. and Lambert, Estelle and Leitzmann, Michael and Milton, Karen and Ortega, Francisco B. and Ranasinghe, Chathuranga and Stamatakis, Emmanuel and Tiedemann, Anne and Troiano, Richard P. and van der Ploeg, Hidde P. and Wari, Vicky and Willumsen, Juana F.},
+  title   = {{World Health Organization} 2020 guidelines on physical activity and sedentary behaviour},
+  journal = {British Journal of Sports Medicine},
+  volume  = {54},
+  number  = {24},
+  pages   = {1451--1462},
+  year    = {2020},
+  doi     = {10.1136/bjsports-2020-102955},
+}
+
+% MoSCoW-Priorisierung (Online-Handbuch ohne Seitenzahlen -> Kapitelangabe)
+@online{dsdm2014,
+  author = {{Agile Business Consortium}},
+  title  = {The {DSDM} agile project framework handbook: Chapter 10 {MoSCoW} prioritisation},
+  year   = {2014},
+  url    = {https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html},
+}
+
+% Interaktionsprinzipien für Dialoge (Norm, Zitat mit Abschnittsangabe)
+@report{iso9241,
+  author = {{Deutsches Institut für Normung}},
+  title  = {Ergonomie der Mensch-System-Interaktion -- Teil 110: Interaktionsprinzipien},
+  number = {DIN EN ISO 9241-110:2020},
+  type   = {Norm},
+  year   = {2020},
+  publisher = {Beuth},
 }
 
 % --- Vorlage für eigene Einträge (auskommentiert) -----------------------------

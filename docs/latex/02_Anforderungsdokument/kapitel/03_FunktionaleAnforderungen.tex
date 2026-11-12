@@ -3,18 +3,39 @@
 %  Auflistung der gewünschten Funktionen und Features. Die Anforderungen
 %  sollten textuell durch User Stories beschrieben und durch ein
 %  UML-Use-Case-Diagramm visualisiert werden.“)
-%  Format: „Als <Rolle> möchte ich <Ziel>, damit <Nutzen>.“ (Cohn, 2004)
-%  IDs (US01 …) werden in Spezifikation, Architektur und Testdokument
-%  wiederverwendet (Nachverfolgbarkeit!).
+%  IDs (US01 …, UC01 …) werden in Spezifikation, Architektur und
+%  Testdokument wiederverwendet (Nachverfolgbarkeit).
 % =====================================================================
-\section{Funktionale Anforderungen}
-\TODO{Kurze Hinführung}
+\section{Funktionale Anforderungen}\label{sec:fa}
+Funktionale Anforderungen beschreiben, welche Funktionen BalanceOS den Nutzer:innen bereitstellt. Sie werden in diesem Kapitel als User Stories mit Akzeptanzkriterien formuliert, gegen nicht umgesetzte Funktionen abgegrenzt und abschließend in einem \ac{UML}-Use-Case-Diagramm zusammengefasst.
 
-\subsection{User Stories}
-\TODO{User Stories nach Bereichen der App gruppieren; Priorität nach MoSCoW; je Story Akzeptanzkriterien}
+\subsection{User Stories}\label{sec:userstories}
+Eine User Story beschreibt eine Anforderung aus Sicht einer Rolle in der Form \anf{Als \textless Rolle\textgreater{} möchte ich \textless Fähigkeit\textgreater, damit \textless Nutzen\textgreater} \parencite[S.~1-12]{swebok2026}. Das Format verbindet die gewünschte Funktion mit ihrem Nutzen und macht so sichtbar, warum eine Anforderung besteht. Rolle ist in allen User Stories die Nutzer:in; die Tutor:innen nehmen beim Test der Anwendung ebenfalls diese Rolle ein. Damit jede User Story eindeutig überprüft werden kann, ist sie mit zwei bis vier Akzeptanzkriterien versehen. Diese bilden die Grundlage der späteren Systemtests.
 
-\begin{longtable}{@{}L{1.1cm}L{8.2cm}L{1.3cm}L{4.6cm}@{}}
-  \caption{User Stories}\label{tab:userstories}\\
+Ausgangspunkt der Erfassung sind die zehn Standard-Lebensbereiche aus der Ideenskizze (Tabelle~\ref{tab:lebensbereiche}). Jeder Bereich hat einen Bereichstyp: Bei einem \emph{Mindestziel} ist mehr Zeit bis zum Soll besser, bei einer \emph{Obergrenze} ist eine Überschreitung des Solls ungünstig. Die Standard-Soll-Werte in Stunden pro Woche sind Vorschläge und werden im Wunschprofil persönlich angepasst.
+
+\begin{table}[!htb]
+  \caption{Standard-Lebensbereiche mit Bereichstyp und Standard-Soll}\label{tab:lebensbereiche}
+  \tabsatz
+  \begin{tabular}{@{}L{0.5cm}L{3.0cm}L{1.95cm}L{0.8cm}@{\hspace{0.6cm}}L{0.5cm}L{3.0cm}L{1.95cm}L{0.8cm}@{}}
+    \toprule
+    \textbf{Nr.} & \textbf{Lebensbereich} & \textbf{Typ} & \textbf{Soll} & \textbf{Nr.} & \textbf{Lebensbereich} & \textbf{Typ} & \textbf{Soll} \\
+    \midrule
+    1 & Arbeit   & Obergrenze  & 40~h & 6  & Soziale Kontakte            & Mindestziel & 4~h \\
+    2 & Schlaf   & Mindestziel & 56~h & 7  & Freizeit                    & Mindestziel & 6~h \\
+    3 & Bewegung & Mindestziel & 3~h  & 8  & Erholung                    & Mindestziel & 5~h \\
+    4 & Familie  & Mindestziel & 10~h & 9  & Persönliche Entwicklung     & Mindestziel & 3~h \\
+    5 & Hobbys   & Mindestziel & 4~h  & 10 & Alltägliche Verpflichtungen & Obergrenze  & 12~h \\
+    \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
+
+Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktionsbereichen. US01--US18 haben die Priorität Must und bilden den Kern der Anwendung; US19--US22 haben die Priorität Should und werden nach den Must-Anforderungen umgesetzt.
+
+\begingroup\tabsatz
+\begin{longtable}{@{}L{1.0cm}L{4.9cm}L{1.1cm}L{8.2cm}@{}}
+  \caption{User Stories mit Priorität und Akzeptanzkriterien}\label{tab:userstories}\\
   \toprule
   \textbf{ID} & \textbf{User Story} & \textbf{Prio.} & \textbf{Akzeptanzkriterien} \\
   \midrule
@@ -23,18 +44,227 @@
   \textbf{ID} & \textbf{User Story} & \textbf{Prio.} & \textbf{Akzeptanzkriterien} \\
   \midrule
   \endhead
-  \bottomrule
   \endfoot
-  US01 & Als \TODO{Rolle} möchte ich \TODO{Ziel}, damit \TODO{Nutzen}. & Must & \TODO{} \\
-  US02 & Als \TODO{Rolle} möchte ich \TODO{Ziel}, damit \TODO{Nutzen}. & Should & \TODO{} \\
+  \bottomrule
+  \endlastfoot
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Lebensbereiche und Wunschprofil}} \\*
+  US01 & Als Nutzer:in möchte ich beim ersten Start zehn vorbereitete Lebensbereiche vorfinden, damit ich ohne Einrichtungsaufwand mit der Erfassung beginnen kann. & Must &
+  \begin{akz}
+    \item Beim ersten Start sind die zehn Bereiche aus Tabelle~\ref{tab:lebensbereiche} mit Bereichstyp, Farbe und Standard-Soll angelegt.
+    \item Alle Standardbereiche sind aktiv und als Standardbereich gekennzeichnet.
+    \item Ohne erfasste Aktivitäten bietet das Dashboard \anf{Demodaten laden} an.
+  \end{akz} \\
+  \midrule
+  US02 & Als Nutzer:in möchte ich Lebensbereiche anlegen, umbenennen, farblich kennzeichnen und deaktivieren, damit die Bereiche zu meinem Alltag passen. & Must &
+  \begin{akz}
+    \item Der Name umfasst 1--40 Zeichen und ist eindeutig; ein doppelter Name wird mit einer Meldung am Feld abgelehnt.
+    \item Die gewählte Farbe erscheint in Wochenansicht und Dashboard.
+    \item Deaktivierte Bereiche stehen für neue Aktivitäten nicht zur Auswahl und gehen nicht in die Wochenbewertung ein; vorhandene Aktivitäten bleiben erhalten.
+  \end{akz} \\
+  \midrule
+  US03 & Als Nutzer:in möchte ich je Lebensbereich festlegen, ob er ein Mindestziel oder eine Obergrenze darstellt, damit zum Beispiel Überstunden nicht positiv gewertet werden. & Must &
+  \begin{akz}
+    \item Jeder Bereich hat genau einen Bereichstyp: Mindestziel oder Obergrenze.
+    \item Mindestziel: Zielerfüllung z = min(Ist / Soll; 1).
+    \item Obergrenze: z = 1 bei Ist ≤ Soll, darüber sinkend; Beispiel Arbeit mit Soll 40~h und Ist 46~h ergibt z = 0,85.
+  \end{akz} \\
+  \midrule
+  US04 & Als Nutzer:in möchte ich je Lebensbereich die gewünschten Stunden pro Woche festlegen, damit meine Woche an meinen eigenen Zielen gemessen wird. & Must &
+  \begin{akz}
+    \item Soll-Stunden je Bereich sind von 0 bis 168~h einstellbar, Dezimalwerte sind erlaubt (z.\,B. 2,5~h).
+    \item Das Wunschprofil ist mit den Standard-Soll-Werten vorbelegt.
+    \item Bei Soll = 0 wird der Bereich nicht bewertet und als \anf{kein Soll festgelegt} angezeigt.
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Aktivitäten}} \\*
+  US05 & Als Nutzer:in möchte ich eine Aktivität mit Lebensbereich, Datum, Zeitangabe, Status, Bewertungen und Notiz erfassen, damit meine Woche vollständig abgebildet wird. & Must &
+  \begin{akz}
+    \item Pflichtangaben: Titel (1--80 Zeichen), genau ein Lebensbereich, Datum sowie Beginn und Ende oder Dauer (1--1.440~min); das Ende liegt nach dem Beginn.
+    \item Status: geplant, durchgeführt oder ausgefallen.
+    \item Optional: Zufriedenheit, Belastung und Erholung (je 1--5), Bewegungsart, Notiz (höchstens 500 Zeichen).
+    \item Ungültige Eingaben werden vor dem Speichern mit einer Meldung am Feld abgelehnt.
+  \end{akz} \\
+  \midrule
+  US06 & Als Nutzer:in möchte ich Aktivitäten bearbeiten, löschen und ihren Status ändern, damit ich Fehler korrigieren und geplante Aktivitäten als durchgeführt oder ausgefallen markieren kann. & Must &
+  \begin{akz}
+    \item Alle Angaben aus US05 sind mit denselben Prüfungen änderbar.
+    \item Das Löschen erfordert eine Bestätigung.
+    \item Nur Aktivitäten mit Status \anf{durchgeführt} zählen für die Wochenbewertung; ein Statuswechsel löst eine Neuberechnung aus.
+  \end{akz} \\
+  \midrule
+  US07 & Als Nutzer:in möchte ich eine wiederkehrende Aktivität für gewählte Wochentage anlegen, damit ich feste Termine wie Arbeit oder Sport nicht jede Woche neu eintragen muss. & Must &
+  \begin{akz}
+    \item Eine Wiederholungsserie umfasst Titel, Lebensbereich, mindestens einen Wochentag (Mo--So), Startdatum, optionales Enddatum sowie optional Beginn und Dauer.
+    \item Das Enddatum liegt nicht vor dem Startdatum.
+    \item An jedem gewählten Wochentag im Zeitraum erscheint ein Termin in der Wochenansicht.
+  \end{akz} \\
+  \midrule
+  US08 & Als Nutzer:in möchte ich einen einzelnen Termin einer Wiederholung überspringen, damit zum Beispiel ein ausfallender Kurs die übrige Serie nicht verändert. & Must &
+  \begin{akz}
+    \item Das Überspringen speichert eine Ausnahme mit dem Datum des Termins.
+    \item Der übersprungene Termin erscheint weder in der Wochenansicht noch in der Wochenbewertung.
+    \item Alle übrigen Termine der Serie bleiben unverändert.
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Ansichten}} \\*
+  US09 & Als Nutzer:in möchte ich meine Aktivitäten in einer Wochenansicht von Montag bis Sonntag sehen, damit ich die Verteilung meiner Zeit erkenne. & Must &
+  \begin{akz}
+    \item Angezeigt wird eine Kalenderwoche nach ISO~8601 (Mo--So); die Kopfzeile nennt die Kalenderwoche.
+    \item Jede Aktivität erscheint in der Farbe ihres Lebensbereichs.
+    \item Über die Pfeilschaltflächen der Kopfzeile wird eine Woche vor- oder zurückgeblättert.
+  \end{akz} \\
+  \midrule
+  US10 & Als Nutzer:in möchte ich ein Dashboard mit Scores, Soll-Ist-Balken, Hinweisen und Datenvollständigkeit der Woche sehen, damit ich meine Balance auf einen Blick erfasse. & Must &
+  \begin{akz}
+    \item Je aktivem Lebensbereich erscheinen der Score (0--100) oder \anf{zu wenig Daten} sowie ein Soll-Ist-Balken mit der Abweichung Ist − Soll in Stunden.
+    \item Die Datenvollständigkeit wird als \anf{v von 7 Tagen} angezeigt.
+    \item Höchstens fünf Hinweise erscheinen direkt, alle weiteren unter \anf{Alle Hinweise}.
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Auswertung und Hinweise}} \\*
+  US11 & Als Nutzer:in möchte ich je Lebensbereich eine Wochenbewertung als Score von 0 bis 100 mit Angabe der Datenvollständigkeit erhalten, damit ich meine Woche einschätzen kann, ohne für fehlende Einträge abgewertet zu werden. & Must &
+  \begin{akz}
+    \item Es zählen nur durchgeführte Aktivitäten in aktiven Bereichen der Kalenderwoche.
+    \item Bei Einträgen an weniger als 4 von 7 Tagen erscheint \anf{zu wenig Daten} statt eines Scores.
+    \item Score = round(100 · (α · z + (1 − α) · s)) mit α = 0,6; ohne Zufriedenheitswerte gilt Score = round(100 · z).
+    \item Beispiel: Bewegung, Soll 3~h, Ist 1,5~h, Zufriedenheit 4 und 5 ergibt Score~65.
+  \end{akz} \\
+  \midrule
+  US12 & Als Nutzer:in möchte ich regelbasierte Hinweise zu meiner Woche erhalten, damit ich auf ungünstige Muster und auf Erfolge aufmerksam werde. & Must &
+  \begin{akz}
+    \item Nach jeder Neuberechnung werden die aktiven Regeln R01--R10 geprüft.
+    \item Hinweise sind nach Hinweisart (Warnung vor positiv vor System) und Regelkennung sortiert.
+    \item Beispiel R01: Weniger als 150~min moderate Ausdaueraktivität pro Woche (intensive Minuten zählen doppelt) ergibt eine Warnung.
+    \item Hinweise beschreiben Zusammenhänge, stellen keine Diagnose und lassen sich ausblenden.
+  \end{akz} \\
+  \midrule
+  US13 & Als Nutzer:in möchte ich zu jedem Hinweis über \anf{Warum sehe ich das?} eine Begründung abrufen, damit ich nachvollziehen kann, worauf der Hinweis beruht. & Must &
+  \begin{akz}
+    \item Jeder Hinweis bietet die Schaltfläche \anf{Warum sehe ich das?}.
+    \item Die Begründung nennt Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart.
+    \item Hinweise auf Basis der eigenen Skalen sind als \anf{programmeigen, theoriegeleitet} gekennzeichnet.
+  \end{akz} \\
+  \midrule
+  US14 & Als Nutzer:in möchte ich einzelne Regeln ein- und ausschalten, damit ich nur Hinweise erhalte, die für mich relevant sind. & Must &
+  \begin{akz}
+    \item In den Einstellungen (Reiter \anf{Regeln}) ist jede Regel R01--R10 mit Kennung und Bezeichnung einzeln schaltbar.
+    \item Eine ausgeschaltete Regel erzeugt ab der nächsten Berechnung keine Hinweise.
+    \item Die Einstellung bleibt nach einem Neustart erhalten.
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Balance-Kompass}} \\*
+  US15 & Als Nutzer:in möchte ich im Balance-Kompass Infoseiten zu den zugrunde liegenden Modellen lesen, damit ich Herkunft, Aussagekraft und Grenzen der Hinweise einschätzen kann. & Must &
+  \begin{akz}
+    \item Jede Modellseite zeigt Erklärung, Quelle, Evidenzart und Grenzen sowie die zugehörigen Regeln.
+    \item Vorhanden sind mindestens Lifestyle Balance Model, Effort-Recovery-Modell, Job-Demands-Resources-Theorie, WHO-Bewegungsleitlinie, Schlafempfehlung und BalanceOS-Systemregeln.
+    \item Jedes Modell ist genau einer Evidenzart zugeordnet (Theorie, Empfehlung, validiertes Instrument, persönliche Regel, programmeigen).
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Datenverwaltung}} \\*
+  US16 & Als Nutzer:in möchte ich meine Daten in den Formaten \ac{CSV} und \ac{JSON} exportieren, damit ich sie sichern oder in anderen Programmen auswerten kann. & Must &
+  \begin{akz}
+    \item Der Export erfolgt als CSV (\acs{UTF-8}, Semikolon als Trennzeichen) und als JSON an einen wählbaren Speicherort.
+    \item Die CSV-Datei lässt sich in Excel ohne Zeichenfehler öffnen.
+    \item Der Export enthält mindestens Lebensbereiche, Wunschprofil und Aktivitäten; es findet keine Netzwerkübertragung statt.
+  \end{akz} \\
+  \midrule
+  US17 & Als Nutzer:in möchte ich alle meine Daten vollständig löschen, damit keine persönlichen Daten auf dem Rechner zurückbleiben. & Must &
+  \begin{akz}
+    \item Die Löschung erfolgt erst nach Eingabe des Wortes LÖSCHEN im Bestätigungsdialog.
+    \item Abbruch oder abweichende Eingabe löscht nichts.
+    \item Danach sind keine Nutzdaten (Aktivitäten, Wiederholungsserien, Hinweise, Bewertungen, Reflexionen) mehr gespeichert.
+  \end{akz} \\
+  \midrule
+  US18 & Als Nutzer:in möchte ich Demodaten laden und wieder entfernen, damit ich den Nutzen der Anwendung ohne eigene Eingaben sofort erkennen kann. & Must &
+  \begin{akz}
+    \item Die Demodaten umfassen acht Wochen aus dem Alltag der Persona Sarah Keller.
+    \item Das Laden ist über das Dashboard (leerer Zustand) und über die Einstellungen (Reiter \anf{Daten}) möglich.
+    \item Demodatensätze sind gekennzeichnet; \anf{Demodaten entfernen} löscht nur diese, eigene Einträge bleiben erhalten.
+  \end{akz} \\
+  \midrule
+  % ------------------------------------------------------------------
+  \multicolumn{4}{@{}l}{\textbf{Should-Funktionen}} \\*
+  US19 & Als Nutzer:in möchte ich optional einen Gesamt-Score mit eigener Gewichtung der Lebensbereiche sehen, damit ich meine Woche in einer Zahl zusammenfassen kann. & Should &
+  \begin{akz}
+    \item Die Anzeige ist standardmäßig ausgeschaltet und in den Einstellungen aktivierbar.
+    \item Gewicht je Bereich 0--10 (Standard~1); der Gesamt-Score ist der gewichtete Mittelwert der Bereichs-Scores mit Gewicht größer 0.
+    \item Der Wert ist als \anf{programmeigener Score, nicht validiert} gekennzeichnet.
+  \end{akz} \\
+  \midrule
+  US20 & Als Nutzer:in möchte ich den WHO-5-Fragebogen ausfüllen und mein Ergebnis sehen, damit ich mein Wohlbefinden mit einem validierten Instrument einschätzen kann. & Should &
+  \begin{akz}
+    \item Fünf Fragen mit Antworten von 0 bis 5; Rohwert = Summe (0--25), Prozentwert = Rohwert × 4 (0--100).
+    \item Bei einem Prozentwert ≤ 50 erscheint ein Hinweistext mit der Empfehlung, bei anhaltender Niedergeschlagenheit ärztliche oder psychotherapeutische Hilfe zu suchen.
+    \item Das Ergebnis wird mit Datum gespeichert, getrennt von den Scores angezeigt und nicht als Diagnose bezeichnet.
+  \end{akz} \\
+  \midrule
+  US21 & Als Nutzer:in möchte ich den Verlauf meiner Scores über mehrere Wochen sehen, damit ich Entwicklungen erkenne. & Should &
+  \begin{akz}
+    \item Ein Diagramm zeigt die Scores je Lebensbereich über mehrere Kalenderwochen (Standard: die letzten acht Wochen).
+    \item Wochen mit \anf{zu wenig Daten} erscheinen als Lücke und nicht als Score~0.
+    \item Die Werte stimmen mit der Wochenbewertung der jeweiligen Woche überein.
+  \end{akz} \\
+  \midrule
+  US22 & Als Nutzer:in möchte ich am Ende einer Woche eine Reflexion zu Leitfragen festhalten, damit ich bewusst aus der Woche lerne. & Should &
+  \begin{akz}
+    \item Je Kalenderwoche lässt sich eine Wochenreflexion mit Antworten zu Leitfragen und optionaler Stimmung (1--5) speichern.
+    \item Alle Felder sind freiwillig; eine fehlende Reflexion führt zu keiner Abwertung.
+    \item Gespeicherte Reflexionen lassen sich später ansehen und bearbeiten.
+  \end{akz} \\
 \end{longtable}
+\endgroup
 \quelle{Eigene Darstellung.}
 
-\subsection{Use-Case-Diagramm}
-\TODO{UML-Use-Case-Diagramm (Akteure, Systemgrenze, Use Cases, include/extend) in draw.io erstellen: docs/diagramme/01\_UseCase/ – Export als docs/diagramme/export/usecase.pdf; kurz erläutern}
-\begin{figure}[H]
-  \caption{Use-Case-Diagramm}\label{abb:usecase}
+\subsection{Abgrenzung des Funktionsumfangs}\label{sec:abgrenzung}
+Die MoSCoW-Priorisierung grenzt den Funktionsumfang bewusst ein, damit alle Must- und Should-Anforderungen im Bearbeitungszeitraum vollständig umgesetzt werden können. Could-Funktionen werden nur umgesetzt, wenn nach Abschluss der Must- und Should-Anforderungen Zeit verbleibt, und sind deshalb nicht als User Stories formuliert. Dazu zählen persönliche Ziele je Lebensbereich, eine Ersteinrichtung mit Lebensprofil-Vorlagen, eine Tages- und Monatsansicht, Windows-Benachrichtigungen, ein Hell- und Dunkelmodus, ein Passwortschutz, ein Wochenbericht als \ac{PDF} sowie eine Datensicherung mit Wiederherstellung.
+
+Als Won't-Funktionen sind in dieser Version ausdrücklich ausgeschlossen: jede Form von \ac{KI}, Cloud-Synchronisation, Benutzerkonten und Mehrbenutzerbetrieb, der Fragebogen COPSOQ (die deutsche Fassung ist lizenzpflichtig), eine Datenbankverschlüsselung, ein frei per Drag-and-Drop anordenbares Dashboard, eine Jahresansicht, komplexe Wiederholungsmuster (z.\,B. monatliche Wiederholungen oder Urlaubsausnahmen), die Zuordnung einer Aktivität zu mehreren Lebensbereichen sowie eine mobile App. Diese Punkte dienen als Ausblick für mögliche Weiterentwicklungen. Der Verzicht auf \ac{KI}, Cloud und Benutzerkonten ist dabei keine Einschränkung aus Zeitgründen, sondern Teil des Produktversprechens: Alle Auswertungen sind deterministisch nachvollziehbar, und die Daten verlassen den Rechner nicht.
+
+\subsection{Use-Case-Diagramm}\label{sec:usecase}
+Ein Use Case beschreibt eine Funktion, die ein beobachtbares Ergebnis mit Wert für einen oder mehrere Akteure liefert \parencite[S.~639]{omg2017uml}. Abbildung~\ref{abb:usecase} fasst die funktionalen Anforderungen als \ac{UML}-Use-Case-Diagramm zusammen. Use Cases werden als Ellipsen innerhalb eines Rechtecks dargestellt, das die Systemgrenze bildet und oben den Namen des Systems trägt; Akteure stehen außerhalb der Systemgrenze und sind über Assoziationen mit den Use Cases verbunden \parencite[S.~641]{omg2017uml}.
+
+Tabelle~\ref{tab:ucus} ordnet jedem Use Case die zugehörigen User Stories zu und stellt so die Nachverfolgbarkeit zwischen Diagramm und User Stories her. Jede User Story ist genau einem Use Case zugeordnet; UC01 bündelt die drei User Stories zu den Lebensbereichen, UC09 umfasst sowohl die Wochenbewertung (US11) als auch den optionalen Gesamt-Score (US19).
+
+\begin{table}[!htb]
+  \caption{Zuordnung der Use Cases zu den User Stories}\label{tab:ucus}
+  \tabsatz
+  \begin{tabular}{@{}L{0.95cm}L{4.2cm}L{1.95cm}@{\hspace{0.4cm}}L{0.95cm}L{4.0cm}L{1.15cm}@{}}
+  \toprule
+  \textbf{UC} & \textbf{Bezeichnung} & \textbf{US} & \textbf{UC} & \textbf{Bezeichnung} & \textbf{US} \\
+  \midrule
+  UC01 & Lebensbereiche verwalten  & US01--US03 & UC11 & Begründung anzeigen              & US13 \\
+  UC02 & Wunschprofil festlegen    & US04       & UC12 & Regeln konfigurieren             & US14 \\
+  UC03 & Aktivität erfassen        & US05       & UC13 & Balance-Kompass ansehen          & US15 \\
+  UC04 & Aktivität bearbeiten      & US06       & UC14 & Daten exportieren                & US16 \\
+  UC05 & Wiederholung festlegen    & US07       & UC15 & Alle Daten löschen               & US17 \\
+  UC06 & Termin überspringen       & US08       & UC16 & Demodaten verwalten              & US18 \\
+  UC07 & Wochenansicht anzeigen    & US09       & UC17 & WHO-5 ausfüllen (Should)         & US20 \\
+  UC08 & Dashboard anzeigen        & US10       & UC18 & Statistik ansehen (Should)       & US21 \\
+  UC09 & Wochenbewertung berechnen & US11, US19 & UC19 & Wochenreflexion erfassen (Should) & US22 \\
+  UC10 & Hinweise anzeigen         & US12       &      &                                  & \\
+  \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
+
+\begin{figure}[!p]
+  \caption{Use-Case-Diagramm von BalanceOS}\label{abb:usecase}
   \centering
-  \grafik{usecase}
+  \includegraphics[width=\linewidth,height=21.5cm,keepaspectratio]{usecase}
   \quelle{Eigene Darstellung.}
 \end{figure}
+
+Einziger Akteur ist die Nutzer:in, die links außerhalb der Systemgrenze \anf{BalanceOS} steht. Weitere Akteure, etwa externe Systeme, gibt es nicht, da die Anwendung ohne Netzwerkverbindung arbeitet. Die Use Cases sind von oben nach unten nach Funktionsbereichen angeordnet: Stammdaten (UC01, UC02), Erfassung (UC03--UC07), Auswertung (UC08--UC11), Kompass (UC12, UC13), Datenverwaltung (UC14--UC16) und Should-Funktionen (UC17--UC19). Die Should-Use-Cases sind hell dargestellt und mit \anf{(Should)} beschriftet; eine Notiz an UC09 weist auf den optionalen Gesamt-Score (US19, Should) hin.
+
+Die Nutzer:in ist nur mit den Basis-Use-Cases direkt verbunden. Die übrigen Use Cases werden über zwei Beziehungsarten erreicht:
+\begin{itemize}
+  \item \textbf{«include»:} Der Basis-Use-Case enthält das Verhalten des inkludierten Use Case stets. Der Pfeil zeigt vom Basis-Use-Case zum inkludierten Use Case. Das Dashboard (UC08) berechnet immer die Wochenbewertung (UC09) und zeigt immer die Hinweise an (UC10). Auch die Statistik (UC18) greift stets auf die Wochenbewertung (UC09) zurück.
+  \item \textbf{«extend»:} Der erweiternde Use Case ergänzt den Basis-Use-Case optional. Der Pfeil zeigt vom erweiternden zum Basis-Use-Case. Beim Erfassen einer Aktivität (UC03) kann eine Wiederholung festgelegt werden (UC05), beim Bearbeiten (UC04) kann ein einzelner Termin übersprungen werden (UC06), und zu einem angezeigten Hinweis (UC10) kann die Begründung abgerufen werden (UC11).
+\end{itemize}
+

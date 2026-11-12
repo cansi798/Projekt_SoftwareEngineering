@@ -1,0 +1,107 @@
+% =====================================================================
+%  Zeitplan als Gantt-Diagramm (Projektdokumentation, Kap. 3.4)
+%  Zeitraum 09.11.2026 (Mo, KW 46) bis 12.12.2026 (Sa, KW 50), 34 Tage.
+%  Arbeitspakete AP1-AP10, Meilensteine M1-M4, Gruppen je IU-Phase.
+%  Export: docs/diagramme/export/zeitplan.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+\usepackage{pgfgantt}
+\usetikzlibrary{patterns}
+
+% Deutsche Monatsnamen für die Kalenderzeile
+\renewcommand{\pgfcalendarmonthname}[1]{%
+  \ifcase#1\or Januar\or Februar\or März\or April\or Mai\or Juni\or Juli\or
+  August\or September\or Oktober\or November 2026\or Dezember 2026\fi}
+
+\newcommand{\xu}{0.35}   % Breite eines Tages in cm
+
+\begin{document}
+\begin{ganttchart}[
+    time slot format=isodate,
+    x unit=\xu cm,
+    y unit title=0.45cm,
+    y unit chart=0.5cm,
+    canvas/.style={draw=iuGrau, fill=none},
+    hgrid={draw=iuGrau!35},
+    vgrid={*{6}{draw=iuGrau!25}, {draw=iuGrau, line width=0.6pt}},
+    title/.style={draw=iuGrau, fill=iuFlaeche},
+    title label font=\fontsize{7pt}{8pt}\selectfont,
+    title height=1,
+    calendar week text={KW~\currentweek},
+    bar/.style={draw=iuLinie, fill=iuAkzent},
+    bar height=0.55,
+    bar top shift=0.225,
+    bar label font=\fontsize{8pt}{9.5pt}\selectfont,
+    group/.append style={draw=iuLinie, fill=iuLinie},
+    group height=0.25,
+    group top shift=0.375,
+    group left shift=0,
+    group right shift=0,
+    group peaks height=0.15,
+    group peaks width=0.25,
+    group label font=\bfseries\fontsize{8pt}{9.5pt}\selectfont,
+    milestone/.append style={draw=iuLinie, fill=iuRot},
+    milestone height=0.6,
+    milestone top shift=0.2,
+    milestone label font=\itshape\fontsize{8pt}{9.5pt}\selectfont,
+    link/.style={-{Straight Barb[length=1.6mm]}, draw=iuLinie, line width=0.5pt},
+  ]{2026-11-09}{2026-12-12}
+
+  % --- Wochenenden hinterlegen (hinter dem Diagramm) --------------------
+  \begin{scope}[on background layer]
+    \foreach \s in {6,13,20,27,34}{
+      \pgfmathsetmacro{\links}{(\s-1)*\xu}
+      \pgfmathsetmacro{\breite}{(\s==34 ? 1 : 2)*\xu}
+      \fill[iuFlaeche] (\links cm,-1.35cm) rectangle ++(\breite cm,-8.5cm);
+    }
+  \end{scope}
+
+  \gantttitlecalendar{month=name, week=46, day} \\
+
+  % --- Phase 1 ---------------------------------------------------------
+  \ganttgroup{Phase 1: Konzeption}{2026-11-09}{2026-11-12} \\
+  \ganttbar[name=ap1]{AP1 Projektplanung}{2026-11-09}{2026-11-10} \\
+  \ganttbar[name=ap2]{AP2 Anforderungsermittlung}{2026-11-10}{2026-11-11} \\
+  \ganttbar[name=ap3]{AP3 Spezifikation}{2026-11-11}{2026-11-12} \\
+  \ganttmilestone[name=m1]{M1 Abgabe Portfolioteil 1}{2026-11-12} \\
+
+  % --- Phase 2 ---------------------------------------------------------
+  \ganttgroup{Phase 2: Erarbeitung/Reflexion}{2026-11-13}{2026-11-30} \\
+  \ganttbar[name=ap4]{AP4 Architektur und Design}{2026-11-13}{2026-11-17} \\
+  \ganttbar[bar/.append style={draw=iuGrau, pattern=north east lines, pattern color=iuGrau},
+            bar label font=\itshape\fontsize{8pt}{9.5pt}\selectfont\color{iuGrau}]
+           {Wartezeit Feedback Phase 1}{2026-11-13}{2026-11-19} \\
+  \ganttbar[name=ap5, bar/.append style={fill=iuAkzent!35}]
+           {AP5 Feedback Phase 1 einarbeiten}{2026-11-19}{2026-11-21} \\
+  \ganttbar[name=ap6]{AP6 Implementierung (I1--I5)}{2026-11-16}{2026-11-29} \\
+  \ganttmilestone[name=m2]{M2 Abgabe Portfolioteil 2}{2026-11-30} \\
+
+  % --- Phase 3 ---------------------------------------------------------
+  \ganttgroup{Phase 3: Finalisierung}{2026-11-30}{2026-12-12} \\
+  \ganttbar[name=ap7]{AP7 Testen und Qualitätssicherung}{2026-11-30}{2026-12-06} \\
+  \ganttmilestone[name=m3]{M3 Anwendung und Tests fertig}{2026-12-06} \\
+  \ganttbar[bar/.append style={draw=iuGrau, pattern=north east lines, pattern color=iuGrau},
+            bar label font=\itshape\fontsize{8pt}{9.5pt}\selectfont\color{iuGrau}]
+           {Wartezeit Feedback Phase 2}{2026-12-01}{2026-12-07} \\
+  \ganttbar[name=ap8]{AP8 Feedback Phase 2 einarbeiten}{2026-12-07}{2026-12-08} \\
+  \ganttbar[name=ap9]{AP9 Benutzeranleitung, .exe}{2026-12-08}{2026-12-09} \\
+  \ganttbar[name=ap10]{AP10 Abschluss und Reflexion}{2026-12-09}{2026-12-11} \\
+  \ganttmilestone[name=m4]{M4 Abgabe Portfolioteil 3}{2026-12-11} \\
+  \ganttbar[bar/.append style={draw=iuGrau, fill=white, dashed},
+            bar label font=\itshape\fontsize{8pt}{9.5pt}\selectfont\color{iuGrau}]
+           {Puffer}{2026-12-12}{2026-12-12}
+
+  % Abhängigkeiten: kritischer Pfad farblich (dunkel) statt mit Pfeilen,
+  % da direkt aufeinanderfolgende Pakete sonst unübersichtliche Pfeile ergeben.
+
+  % --- Legende -------------------------------------------------------------
+  \node[anchor=north, font=\fontsize{7.5pt}{9pt}\selectfont, inner sep=0pt]
+    at ([yshift=-6pt]current bounding box.south) {%
+    \tikz[baseline=-0.6ex]\draw[iuLinie, fill=iuAkzent] (0,0) rectangle (0.4,0.2);~Arbeitspaket (kritischer Pfad)\quad
+    \tikz[baseline=-0.6ex]\draw[iuLinie, fill=iuAkzent!35] (0,0) rectangle (0.4,0.2);~Arbeitspaket mit Puffer\quad
+    \tikz[baseline=-0.6ex]\draw[iuGrau, pattern=north east lines, pattern color=iuGrau] (0,0) rectangle (0.4,0.2);~Wartezeit Feedback (bis 7~Tage)\quad
+    \tikz[baseline=-0.6ex]\draw[iuLinie, fill=iuRot] (0,-0.12) -- (0.12,0) -- (0,0.12) -- (-0.12,0) -- cycle;~Meilenstein\quad
+    \tikz[baseline=-0.6ex]\draw[iuGrau!50, fill=iuFlaeche] (0,0) rectangle (0.4,0.2);~Wochenende};
+\end{ganttchart}
+\end{document}

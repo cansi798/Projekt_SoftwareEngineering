@@ -1,14 +1,33 @@
 % =====================================================================
 %  1 Einleitung – Zweck des Dokuments, Produktvision, Vorgehen bei der
-%  Anforderungserhebung (Methode benennen und mit Quelle begründen,
-%  z. B. Interviews, Fragebogen, Persona, Brainstorming).
-%  Bewertung „Methodik“ (20 %): angemessener Transfer von Theorien/Modellen.
+%  Anforderungserhebung und Priorisierung, Aufbau des Dokuments.
 % =====================================================================
 \section{Einleitung}
-\TODO{Kurze Hinführung}
+Das vorliegende Anforderungsdokument beschreibt, welche Leistungen die Windows-Desktopanwendung BalanceOS aus Sicht ihrer Stakeholder erbringen soll. Die folgenden Abschnitte erläutern Zweck und Produktvision, das gewählte Vorgehen bei der Anforderungserhebung und den Aufbau des Dokuments.
 
 \subsection{Zweck des Dokuments}
-\TODO{Wozu dient das Dokument, für wen, Bezug zu Projekt- und Spezifikationsdokument}
+Das Dokument hält die Anforderungen an BalanceOS verbindlich und nachprüfbar fest. Es richtet sich an die Tutor:innen der IU Internationale Hochschule, die das Portfolio bewerten und im Kurs zugleich als Zielgruppe gelten, sowie an die Entwickler:in, die die Anwendung in der Erarbeitungsphase umsetzt. Gemeinsam mit der Projektdokumentation (Planung, Risiken, Zeitplan) und dem Spezifikationsdokument (Datenmodell, Geschäftsprozesse, Geschäftsregeln, Schnittstellen) bildet es die Grundlage der Konzeptionsphase.
+
+Das Anforderungsdokument beantwortet die Frage, \emph{was} die Anwendung leisten soll. Wie sich die Anwendung nach außen im Detail verhält, legt das Spezifikationsdokument fest; die interne Architektur folgt erst im Architekturdokument. Alle Anforderungen tragen eindeutige Kennungen: Das Kürzel \acs{US} steht für User Stories (US01--US22), \acs{UC} für Use Cases (UC01--UC19) und \acs{NFA} für nichtfunktionale Anforderungen (NFA01--NFA11). Diese Kennungen werden in Spezifikation, Architektur und Testdokument wiederverwendet, sodass jede Anforderung bis zum zugehörigen Testfall nachverfolgt werden kann. Anforderungen, die bis zur finalen Abgabe nicht vollständig umgesetzt werden, werden laut Aufgabenstellung als technische Schuld dokumentiert.
+
+\subsection{Produktvision}
+BalanceOS ist eine lokal laufende Windows-Desktopanwendung in Python mit grafischer Benutzeroberfläche (geplante Bibliothek PySide6). Berufstätige Erwachsene erfassen damit ihre Woche über zehn Lebensbereiche, etwa Arbeit, Schlaf, Bewegung, Familie und Erholung. Die erfasste Zeit (Ist) wird mit dem eigenen Wunschprofil (Soll-Stunden je Bereich) und mit wissenschaftlich begründeten Richtwerten abgeglichen. Aus diesem Abgleich entstehen eine Wochenbewertung mit einem Score von 0 bis 100 je Lebensbereich sowie regelbasierte Hinweise.
+
+Den Kern der Anwendung bildet der Balance-Kompass. Jeder Hinweis lässt sich über die Schaltfläche \anf{Warum sehe ich das?} begründen: Angezeigt werden Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart. Das Grundverständnis von Balance folgt dem Lifestyle Balance Model, nach dem Balance ein befriedigendes Muster täglicher Betätigungen ist, das gesund, bedeutsam und nachhaltig ist und zu den aktuellen Lebensumständen passt \parencite[S.~11]{matuska2008}. Balance bedeutet damit nicht für alle Menschen denselben Zeitplan, sondern ein persönlich stimmiges Verhältnis von Verpflichtungen, Gesundheit und Erholung.
+
+BalanceOS arbeitet ohne \ac{KI}, ohne Cloud und ohne Benutzerkonto; alle Daten bleiben auf dem Rechner der Nutzer:innen. Die Anwendung stellt keine Diagnosen und ersetzt keine ärztliche oder psychotherapeutische Beratung. Ihr Kundennutzen liegt darin, auf einen Blick sichtbar zu machen, wo Wunsch und Wirklichkeit auseinanderliegen, und dies nachvollziehbar zu begründen.
 
 \subsection{Vorgehen bei der Anforderungserhebung}
-\TODO{Erhebungsmethoden und Priorisierung (z. B. MoSCoW) mit Quelle; Tutor:innen gelten laut Aufgabenstellung als Zielgruppe bzw. Benutzer:innen}
+Der \ac{SWEBOK} beschreibt eine Reihe von Techniken zur Anforderungserhebung, darunter Fragebögen, das Prototyping von Benutzeroberflächen und User Story Mapping \parencite[S.~1-7]{swebok2026}. Da im Portfolio keine realen Auftraggeber:innen zur Verfügung stehen, kombiniert das Projekt Techniken, die ohne externe Befragung belastbare Ergebnisse liefern:
+\begin{itemize}
+  \item \textbf{Auswertung der eigenen Ideenskizze:} Lebensbereiche, Bewertungsideen und Anforderungen an den Umgang mit fehlenden Daten aus der Ideenskizze werden in einzelne Anforderungen zerlegt, auf Widersprüche geprüft und nach Umsetzbarkeit im Projektzeitraum gefiltert.
+  \item \textbf{Persona-basierte Analyse:} Die Zielgruppe wird zur Persona Sarah Keller verdichtet (Abschnitt~\ref{sec:persona}). Jede Funktion muss ein Problem der Persona lösen; Funktionen ohne erkennbaren Nutzen werden zurückgestellt.
+  \item \textbf{Szenarien:} Typische Abläufe einer Woche (Aktivitäten erfassen, Wochenrückblick am Sonntag, Reaktion auf einen Hinweis) werden als Szenarien durchgespielt. Daraus ergeben sich etwa die Anforderungen an wiederkehrende Aktivitäten und an die Begründung von Hinweisen.
+  \item \textbf{Mock-up-Prototyping:} Skizzen des Hauptfensters und der Dialoge dienen dazu, Funktionsumfang und Navigation zu überprüfen, wie es die Aufgabenstellung für die Konzeptionsphase empfiehlt. Die ausgearbeiteten Mock-ups sind Teil des Spezifikationsdokuments.
+\end{itemize}
+Laut Aufgabenstellung gelten die Tutor:innen im Kurs als Zielgruppe bzw. Benutzer:innen der Anwendung. Ihre Rückmeldungen aus den Online-Tutorien und dem Feedback zu Phase~1 fließen daher als weitere Erhebungsquelle in die Überarbeitung der Anforderungen ein.
+
+Für die Priorisierung wird die \acs{MoSCoW}-Methode verwendet. Sie ordnet jede Anforderung einer von vier Stufen zu: \emph{Must} (zwingend erforderlich), \emph{Should} (wichtig, aber nicht kritisch), \emph{Could} (wünschenswert, falls Zeit bleibt) und \emph{Won't} (in diesem Zeitraum bewusst nicht umgesetzt) \parencite[Kap.~10]{dsdm2014}. Auch der \ac{SWEBOK} behandelt die Priorisierung von Anforderungen und verweist dabei auf verschiedene Priorisierungsschemata \parencite[S.~1-18]{swebok2026}. MoSCoW eignet sich für das Projekt, weil der Bearbeitungszeitraum fest vorgegeben ist und der Umfang an diesen Zeitrahmen angepasst werden muss. Als User Stories formuliert werden nur Must- und Should-Anforderungen; Could- und Won't-Anforderungen werden in Abschnitt~\ref{sec:abgrenzung} zur Abgrenzung genannt.
+
+\subsection{Aufbau des Dokuments}
+Kapitel~\ref{sec:stakeholder} beschreibt die Stakeholder, die Zielgruppe und die Persona. Kapitel~\ref{sec:fa} enthält die funktionalen Anforderungen als User Stories mit Akzeptanzkriterien, die Abgrenzung des Funktionsumfangs und das Use-Case-Diagramm in der Notation der \ac{UML}. Kapitel~\ref{sec:nfa} legt die nichtfunktionalen Anforderungen nach dem Qualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 sowie die Rahmenbedingungen fest. Kapitel~\ref{sec:glossar} erläutert die projektspezifischen Begriffe in einem Glossar.

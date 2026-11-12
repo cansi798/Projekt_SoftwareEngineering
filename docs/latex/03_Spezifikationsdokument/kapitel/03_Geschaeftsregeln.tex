@@ -5,22 +5,59 @@
 %  immer vor dessen Enddatum liegen muss)“)
 %  Jede Regel später im Testdokument prüfen (GR-ID im Testfall nennen).
 % =====================================================================
-\section{Geschäftsregeln}
-\TODO{Kurze Hinführung}
+\section{Geschäftsregeln}\label{sec:geschaeftsregeln}
+Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg der Eingabe stets einhält. Tabelle~\ref{tab:geschaeftsregeln} fasst sie nach Geschäftsobjekten gruppiert zusammen und ordnet jede Regel den betroffenen Objekten bzw. Prozessen aus den Kapiteln~\ref{sec:geschaeftsobjekte} und~\ref{sec:prozessuebersicht} sowie den User Stories zu. Verstößt eine Eingabe gegen eine Regel, wird sie vor dem Speichern abgewiesen und am betroffenen Feld erläutert (NFA02); die zugehörigen Gültigkeitsregeln der Eingabefelder und Fehlermeldungen enthält Tabelle~\ref{tab:validierung} in Kapitel~5. Jede Geschäftsregel wird im Testdokument durch mindestens einen Testfall mit Verweis auf ihre Kennung geprüft.
 
-\begin{longtable}{@{}L{1.3cm}L{9.6cm}L{4.3cm}@{}}
+\begin{longtable}{@{}L{1.2cm}L{9.0cm}L{3.5cm}L{1.5cm}@{}}
   \caption{Geschäftsregeln}\label{tab:geschaeftsregeln}\\
   \toprule
-  \textbf{ID} & \textbf{Regel} & \textbf{Betroffene Objekte/Prozesse} \\
+  \textbf{ID} & \textbf{Regel} & \textbf{Objekte und Prozesse} & \textbf{US} \\
   \midrule
   \endfirsthead
   \toprule
-  \textbf{ID} & \textbf{Regel} & \textbf{Betroffene Objekte/Prozesse} \\
+  \textbf{ID} & \textbf{Regel} & \textbf{Objekte und Prozesse} & \textbf{US} \\
   \midrule
   \endhead
   \bottomrule
   \endfoot
-  GR01 & \TODO{} & \TODO{} \\
-  GR02 & \TODO{} & \TODO{} \\
+  \multicolumn{4}{@{}l}{\textbf{Lebensbereiche und Wunschprofil}} \\*
+  GR01 & Der Name eines Lebensbereichs ist 1--40 Zeichen lang (ohne führende und abschließende Leerzeichen) und eindeutig; Groß- und Kleinschreibung werden beim Vergleich nicht unterschieden. & Lebensbereich & US02 \\
+  GR02 & Es gibt stets mindestens einen aktiven Lebensbereich mit einem Soll größer als 0~h. Eine Änderung, die diese Bedingung verletzt, wird abgewiesen. & Lebensbereich, GP03 & US02, US04 \\
+  GR03 & Die zehn Standardbereiche (istStandard) können umbenannt, umgefärbt, im Typ geändert und deaktiviert, aber nicht gelöscht werden. & Lebensbereich & US01, US02, US03 \\
+  GR04 & Ein eigener Lebensbereich, dem Aktivitäten oder Wiederholungsserien zugeordnet sind, wird nicht gelöscht, sondern nur deaktiviert. Löschen ist nur ohne Zuordnungen möglich. & Lebensbereich, Aktivitaet & US02 \\
+  GR05 & Aktivitäten deaktivierter Lebensbereiche bleiben erhalten, werden aber nicht bewertet. Neue Aktivitäten können nur aktiven Bereichen zugeordnet werden. & Lebensbereich, GP01, GP03 & US02, US05 \\
+  GR06 & Das Soll je Lebensbereich liegt zwischen 0 und 168~h pro Woche; die Summe der Soll-Werte aller aktiven Bereiche überschreitet 168~h nicht. & Lebensbereich & US04 \\
+  GR07 & Das Gewicht eines Lebensbereichs ist eine ganze Zahl von 0 bis 10 (Standard~1). & Lebensbereich, GP05 & US19 \\
+  GR08 & Der Parameter $\alpha$ liegt zwischen 0 und 1 (Standard 0,6). & Einstellungen, GP03 & US11 \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Aktivitäten}} \\*
+  GR09 & Jede Aktivität gehört zu genau einem Lebensbereich; eine Mehrfachzuordnung ist nicht möglich. Der Titel umfasst 1--80 Zeichen, die Notiz höchstens 500 Zeichen. & Aktivitaet, GP01 & US05 \\
+  GR10 & Die Dauer beträgt 1--1440~min. Sind Beginn und Ende angegeben, wird die Dauer daraus berechnet; ein Ende ohne Beginn ist unzulässig, Beginn und Ende dürfen nicht gleich sein. & Aktivitaet, GP01 & US05 \\
+  GR11 & Liegt das Ende vor dem Beginn, verläuft die Aktivität über Mitternacht: Die Dauer ist Ende $-$ Beginn $+$ 24~h, die Aktivität zählt vollständig zum Datum des Beginns (z.\,B. Schlaf 23:00--06:30). & Aktivitaet, GP01, GP03 & US05 \\
+  GR12 & Der Status DURCHGEFUEHRT ist für Daten in der Zukunft nicht zulässig. & Aktivitaet, GP01 & US05, US06 \\
+  GR13 & Zufriedenheit, Belastung und Erholung sind ganze Zahlen von 1 bis 5 und nur bei Status DURCHGEFUEHRT erfassbar. Wechselt der Status, werden vorhandene Bewertungen entfernt. & Aktivitaet & US05, US06 \\
+  GR14 & In Wochenbewertung, Vollständigkeit und Regelprüfung zählen ausschließlich Aktivitäten mit Status DURCHGEFUEHRT in aktiven Lebensbereichen. GEPLANT und AUSGEFALLEN erscheinen nur in der Wochen- und Aktivitätenansicht. & Aktivitaet, GP03, GP04 & US09, US11, US12 \\
+  GR15 & Eine Bewegungsart kann nur bei Aktivitäten im Standardbereich Bewegung angegeben werden. R01 und R02 berücksichtigen nur Aktivitäten mit Bewegungsart. & Aktivitaet, GP04 & US05, US12 \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Wiederholungsserien}} \\*
+  GR16 & Eine Serie hat mindestens einen Wochentag, eine Dauer von 1--1440~min und ein Enddatum, das nicht vor dem Startdatum liegt. & Wiederholungs\-serie & US07 \\
+  GR17 & Termine entstehen nur an den gewählten Wochentagen zwischen Start- und Enddatum und höchstens 52~Wochen im Voraus. & Wiederholungs\-serie, GP02 & US07 \\
+  GR18 & Eine Ausnahme ist nur für ein Termindatum der Serie zulässig (Datum im Gültigkeitszeitraum und an einem gewählten Wochentag), je Datum höchstens einmal. Für ein Datum mit Ausnahme entsteht kein Termin. & Ausnahme, GP02 & US08 \\
+  GR19 & Das Bearbeiten eines einzelnen Termins ändert nur diesen Termin. Änderungen an der Serie wirken nur auf zukünftige, nicht einzeln bearbeitete Termine im Status GEPLANT. & Wiederholungs\-serie, Aktivitaet & US06, US07 \\
+  GR20 & Beim Löschen einer Serie werden ihre zukünftigen Termine im Status GEPLANT und alle Ausnahmen entfernt; übrige Termine bleiben als einzelne Aktivitäten erhalten. & Wiederholungs\-serie, Ausnahme & US06, US07 \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Bewertung und Hinweise}} \\*
+  GR21 & Bei einer Vollständigkeit unter 4 von 7 Tagen werden weder Bereichs- noch Gesamt-Scores angezeigt; es erscheint nur der Systemhinweis R10. & Wochen\-bewertung, GP03 & US10, US11 \\
+  GR22 & Lebensbereiche mit einem Soll von 0~h werden nicht bewertet und gehen nicht in den Gesamt-Score ein. & Bereichs\-bewertung, GP03 & US11 \\
+  GR23 & Der Gesamt-Score wird nur bei aktivierter Einstellung gesamtScoreAnzeigen und nur über bewertete Bereiche mit Gewicht größer 0 berechnet. Er ist stets als \enquote{programmeigener Score, nicht validiert} gekennzeichnet. & Wochen\-bewertung, GP05 & US19 \\
+  GR24 & Je Regel und Kalenderwoche entsteht höchstens ein Hinweis, bei bereichsbezogenen Regeln höchstens einer je Lebensbereich. Ein ausgeblendeter Hinweis erscheint für dieselbe Woche nicht erneut. & Hinweis, GP04 & US12 \\
+  GR25 & Deaktivierte Regeln erzeugen keine Hinweise. Jeder Hinweis enthält eine Begründung mit Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart und stellt keine Diagnose dar. & Regel, Hinweis, GP04 & US13, US14 \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Fragebogen, Reflexion und Datenverwaltung}} \\*
+  GR26 & Eine WHO-5-Erhebung wird nur mit allen fünf Antworten (je 0--5) gespeichert; ihr Datum liegt nicht in der Zukunft. & Who5Erhebung, GP06 & US20 \\
+  GR27 & Je Kalenderwoche gibt es höchstens eine Wochenreflexion. & Wochen\-reflexion & US22 \\
+  GR28 & Demodaten werden nur zusätzlich zu vorhandenen Daten geladen und verändern weder eigene Aktivitäten noch Wunschprofil oder Einstellungen. \enquote{Demodaten entfernen} löscht ausschließlich Aktivitäten mit istDemo = wahr. Es ist höchstens ein Demodatensatz gleichzeitig geladen. & Aktivitaet, GP09 & US18 \\
+  GR29 & \enquote{Alle Daten löschen} wird erst nach Bestätigung durch Eingabe des Wortes LÖSCHEN ausgeführt. Danach sind keine Nutzdaten mehr vorhanden; Standardbereiche, Regeln und Einstellungen entsprechen dem ersten Start. & alle Objekte, GP08 & US17 \\
+  GR30 & Daten verlassen den Rechner nur durch einen ausdrücklich ausgelösten Export in eine von Nutzer:innen gewählte Datei; es findet kein Netzwerkzugriff statt. & GP07 & US16 \\
 \end{longtable}
 \quelle{Eigene Darstellung.}

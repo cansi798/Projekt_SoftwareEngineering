@@ -1,0 +1,117 @@
+% =====================================================================
+%  Dialogfluss als UML-Zustandsdiagramm (UML 2.5.1, Kap. 14 State Machines)
+%  Oberzustand „Hauptfenster“ mit den Seiten als Unterzuständen;
+%  modale Dialoge als eigene Zustände; H = flache Historie (shallow history).
+%  Spezifikationsdokument, Kapitel 5 (Abbildung abb:dialogfluss)
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\newcommand{\sz}[1]{\fontsize{#1pt}{\fpeval{#1*1.2}pt}\selectfont}
+\tikzset{
+  seite/.style={rectangle, rounded corners=6pt, draw, fill=iuFlaeche, align=center,
+                minimum width=2.9cm, text width=2.7cm, minimum height=0.7cm, inner sep=2pt, font=\sz{8.5}},
+  dialog/.style={rectangle, rounded corners=6pt, draw, fill=white, align=center,
+                 minimum width=4.0cm, text width=3.8cm, minimum height=0.7cm, inner sep=2pt, font=\sz{8.5}},
+  lbl/.style={font=\sz{7.5}, inner sep=1.2pt, fill=white, align=center},
+  pf/.style={uebergang},
+}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+% =================== Oberzustand Hauptfenster ===========================
+\draw[rounded corners=10pt, fill=white] (0,0.6) rectangle (8.6,12.7);
+% Namensreiter (name tab) des zusammengesetzten Zustands
+\draw[fill=white] (0.4,12.7) rectangle (3.3,13.25);
+\node[font=\sz{9}\bfseries] at (1.85,12.975) {Hauptfenster};
+
+% ---------- Seiten (Unterzustände) --------------------------------------
+\node[seite] (woche)  at (5.4,11.3)  {Woche};
+\node[seite] (akt)    at (5.4,10.2)  {Aktivitäten};
+% Dashboard mit Abteil für eine interne Transition
+\draw[rounded corners=6pt, fill=iuFlaeche] (3.95,7.95) rectangle (6.85,9.45);
+\draw (3.95,8.97) -- (6.85,8.97);
+\node[font=\sz{8.5}] at (5.4,9.21) {Dashboard};
+\node[font=\sz{7.5}, align=center] at (5.4,8.46) {Demodaten laden [leer]\\/ Demodaten einfügen};
+\coordinate (dashW) at (3.95,8.75);
+\node[seite] (stat)   at (5.4,7.45)  {Statistik};
+\node[seite] (komp)   at (5.4,6.55)  {Kompass};
+\node[seite] (refl)   at (5.4,5.6)   {Reflexion};
+% Einstellungen (hoch, damit die vier Dialoge waagerecht anschließen)
+\draw[rounded corners=6pt, fill=iuFlaeche] (3.95,0.85) rectangle (6.85,4.85);
+\node[font=\sz{8.5}, align=center] at (5.4,2.85) {Einstellungen\\[2pt]{\sz{7.5}(Reiter Lebens-}\\{\sz{7.5}bereiche, Wunsch-}\\{\sz{7.5}profil, Regeln, Daten)}};
+\coordinate (einW) at (3.95,2.85);
+
+% ---------- Navigation über die Seitenleiste (Auswahlpseudozustand) -----
+\node[entscheidung, minimum size=6mm] (wahl) at (2.0,7.0) {};
+\draw[pf] (0,7.0) -- (wahl.west);
+\node[lbl, fill=none] at (0.92,6.45) {Eintrag in der\\Seitenleiste\\gewählt};
+\draw[pf] (wahl) -- node[lbl, pos=0.56] {[Woche]} (woche.west);
+\draw[pf] (wahl) -- node[lbl, pos=0.56] {[Aktivitäten]} (akt.west);
+\draw[pf] (wahl) -- node[lbl, pos=0.5] {[Dashboard]} (dashW);
+\draw[pf] (wahl) -- node[lbl, pos=0.55] {[Statistik]} (stat.west);
+\draw[pf] (wahl) -- node[lbl, pos=0.55] {[Kompass]} (komp.west);
+\draw[pf] (wahl) -- node[lbl, pos=0.55] {[Reflexion]} (refl.west);
+\draw[pf] (wahl) -- node[lbl, pos=0.5] {[Einstellungen]} (einW);
+
+% ---------- Anfangszustand und flache Historie im Oberzustand ----------
+\node[startknoten] (init) at (7.8,9.75) {};
+\draw[pf] (init) -- (6.7,9.45);
+\node[circle, draw, fill=white, minimum size=5.2mm, inner sep=0pt, font=\sz{8.5}\bfseries] (hist) at (7.75,12.25) {H};
+
+% =================== Start- und Endzustand =============================
+\node[startknoten] (start) at (6.0,13.75) {};
+\draw[pf] (start) -- (6.0,12.7);
+\node[endknoten] (ende) at (1.3,-0.55) {};
+\draw[pf] (1.3,0.6) -- node[lbl, right=2pt, fill=none] {Fenster schließen} (ende);
+
+% =================== Modale Dialoge ====================================
+\node[dialog, minimum height=2.55cm] (dAkt) at (14.4,11.15) {Aktivität\\erfassen/bearbeiten};
+\node[dialog] (dBeg)  at (14.4,8.75) {Begründung\\(„Warum sehe ich das?“)};
+\node[dialog] (dWho)  at (14.4,5.6)  {WHO-5-Fragebogen};
+\node[dialog] (dDemo) at (14.4,4.4)  {Demodaten laden/entfernen};
+\node[dialog] (dBer)  at (14.4,3.3)  {Lebensbereich bearbeiten};
+\node[dialog] (dExp)  at (14.4,2.2)  {Export};
+\node[dialog] (dLoe)  at (14.4,1.1)  {Löschbestätigung};
+
+% ---------- Aktivität erfassen/bearbeiten -------------------------------
+\draw[pf] (dAkt.west |- 0,12.25) -- node[lbl, above=1pt, pos=0.45] {Speichern [Eingaben gültig]} (hist);
+\draw[pf] (8.6,11.75) -- node[lbl, above=1pt] {+ Aktivität} (dAkt.west |- 0,11.75);
+\draw[pf] (woche.east) -- node[lbl, above=1pt, pos=0.62] {Doppelklick im Kalender} (dAkt.west |- woche.east);
+\draw[pf] (akt.east) -- node[lbl, above=1pt, pos=0.62] {Bearbeiten} (dAkt.west |- akt.east);
+
+% ---------- Begründung --------------------------------------------------
+\draw[pf] (6.85,8.87) -- node[lbl, above=1pt, pos=0.62] {Warum? gewählt} (dBeg.west |- 0,8.87);
+\draw[pf] (dBeg.west |- 0,8.63) -- node[lbl, below=1pt, pos=0.38] {Schließen, Regel deaktivieren} (6.85,8.63);
+
+% ---------- WHO-5 -------------------------------------------------------
+\draw[pf] (6.85,5.72) -- node[lbl, above=1pt, pos=0.62] {WHO-5 ausfüllen} (dWho.west |- 0,5.72);
+\draw[pf] (dWho.west |- 0,5.48) -- node[lbl, below=1pt, pos=0.4] {Auswerten [alle 5 beantwortet]} (6.85,5.48);
+
+% ---------- Dialoge der Einstellungen -----------------------------------
+\foreach \ziel/\y/\hin/\rueck in {
+    dDemo/4.4/{Demodaten verwalten}/{Bestätigen, Abbrechen},
+    dBer/3.3/{Neu, Bearbeiten}/{Speichern [Eingaben gültig]},
+    dExp/2.2/{Exportieren}/{Exportieren [Ordner beschreibbar]}}{
+  \draw[pf] (6.85,\y+0.12) -- node[lbl, above=1pt, pos=0.62] {\hin} (\ziel.west |- 0,\y+0.12);
+  \draw[pf] (\ziel.west |- 0,\y-0.12) -- node[lbl, below=1pt, pos=0.4] {\rueck} (6.85,\y-0.12);
+}
+\draw[pf] (6.85,1.22) -- node[lbl, above=1pt, pos=0.62] {Alle Daten löschen} (dLoe.west |- 0,1.22);
+\draw[pf] (dLoe.west |- 0,0.98) -- node[lbl, below=1pt, pos=0.4] {Abbrechen} (6.85,0.98);
+\draw[pf] (dLoe.south) |- (7.6,0.1) -- (7.6,0.6);
+\node[lbl, anchor=north, fill=none] at (11.2,0.05) {Löschen [Eingabe = „LÖSCHEN“] / alle Daten löschen};
+
+% =================== Kommentar ===========================================
+\begin{scope}
+  \draw[fill=white] (8.5,12.95) -- (16.4,12.95) -- (16.4,14.2) -- (16.1,14.5) -- (8.5,14.5) -- cycle;
+  \draw (16.1,14.5) -- (16.1,14.2) -- (16.4,14.2);
+  \node[anchor=north west, font=\sz{7.5}, align=left, inner sep=0pt] at (8.64,14.38)
+    {Abbrechen, Esc und × schließen jeden Dialog ohne Änderung\\
+     und führen zur aufrufenden Seite zurück; eingezeichnet sind\\
+     diese Übergänge nur bei Demodaten und Löschbestätigung.\\
+     H: flache Historie (Rückkehr zur zuletzt aktiven Seite).};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

@@ -2,10 +2,13 @@
 %  5 Glossar  (Aufgabenstellung: „Erläuterung der wichtigsten
 %  projektspezifischen Begriffe und Abkürzungen, um ein einheitliches
 %  Verständnis aller Stakeholder sicherzustellen“)
-%  Alphabetisch sortieren. Abkürzungen zusätzlich ins Abkürzungsverzeichnis.
+%  Alphabetisch sortiert. Abkürzungen stehen im Abkürzungsverzeichnis.
 % =====================================================================
-\section{Glossar}
-\begin{longtable}{@{}L{4.0cm}L{11.2cm}@{}}
+\section{Glossar}\label{sec:glossar}
+Das Glossar erläutert die projektspezifischen Begriffe, die in allen Dokumenten des Portfolios einheitlich verwendet werden, und stellt so ein gemeinsames Verständnis aller Stakeholder sicher. Tabelle~\ref{tab:glossar} führt die Begriffe in alphabetischer Reihenfolge auf; Abkürzungen sind im Abkürzungsverzeichnis erläutert.
+
+\begingroup\tabsatz
+\begin{longtable}{@{}L{3.4cm}L{11.8cm}@{}}
   \caption{Glossar}\label{tab:glossar}\\
   \toprule
   \textbf{Begriff} & \textbf{Erläuterung} \\
@@ -15,10 +18,67 @@
   \textbf{Begriff} & \textbf{Erläuterung} \\
   \midrule
   \endhead
-  \bottomrule
   \endfoot
-  \TODO{Bereich} & \TODO{Bedeutung des Begriffs „Bereich“ in der App} \\
-  User Story & Kurze Beschreibung einer Anforderung aus Sicht einer Benutzerrolle \\
-  Work-Life-Balance & \TODO{Definition mit Quelle} \\
+  \bottomrule
+  % Quelle als Tabellenabschluss, damit sie nie allein auf eine neue Seite rutscht
+  \multicolumn{2}{@{}l@{}}{\rule{0pt}{14pt}\fontsize{10pt}{12pt}\selectfont Quelle: Eigene Darstellung.} \\
+  \endlastfoot
+  Aktivität & Erfasster Zeitabschnitt mit Titel, Datum, Beginn und Ende oder Dauer (1--1.440~min), Status (geplant, durchgeführt, ausgefallen) und optionalen Bewertungen zu Zufriedenheit, Belastung und Erholung (je 1--5). Jede Aktivität gehört zu genau einem Lebensbereich; nur durchgeführte Aktivitäten fließen in die Wochenbewertung ein. \\
+  \midrule
+  Akzeptanzkriterium & Prüfbare Bedingung, die erfüllt sein muss, damit eine User Story als umgesetzt gilt; Grundlage der Systemtests. \\
+  \midrule
+  Ausnahme & Datum, an dem ein einzelner Termin einer Wiederholungsserie übersprungen wird; die übrigen Termine bleiben unverändert. \\
+  \midrule
+  Balance-Kompass & Bereich der Anwendung, der die zugrunde liegenden Modelle mit Erklärung, Quelle, Evidenzart und Grenzen darstellt und ihnen die Regeln R01--R10 zuordnet. \\
+  \midrule
+  Bereichstyp & Eigenschaft eines Lebensbereichs mit den Ausprägungen Mindestziel und Obergrenze; bestimmt die Berechnung der Zielerfüllung. \\
+  \midrule
+  Datenvollständigkeit & Anzahl der Tage einer Kalenderwoche mit mindestens einer durchgeführten Aktivität (0--7). Unter 4 von 7 Tagen erscheint \anf{zu wenig Daten} statt eines Scores. \\
+  \midrule
+  Demodaten & Mitgelieferte, gekennzeichnete Beispieldaten über acht Wochen aus dem Alltag der Persona Sarah Keller; lassen sich laden und wieder entfernen, ohne eigene Einträge zu verändern. \\
+  \midrule
+  Evidenzart & Kennzeichnung der Grundlage eines Modells oder einer Regel: Theorie, Empfehlung, validiertes Instrument, persönliche Regel oder programmeigen. \\
+  \midrule
+  Hinweis & Von einer Regel erzeugte Mitteilung zu einer Kalenderwoche (Warnung, positiver Hinweis oder Systemhinweis) mit Begründung (\anf{Warum sehe ich das?}). Hinweise beschreiben Zusammenhänge, keine Ursachen oder Diagnosen. \\
+  \midrule
+  Ist & Tatsächlich erfasste Zeit eines Lebensbereichs in einer Kalenderwoche: Summe der Dauer aller durchgeführten Aktivitäten in Stunden. \\
+  \midrule
+  Kalenderwoche & Zeitraum von Montag bis Sonntag nach ISO~8601; Bezugszeitraum für Wochenbewertung, Hinweise und Wochenreflexion. \\
+  \midrule
+  Lebensbereich & Inhaltlicher Bereich des Alltags, dem Aktivitäten zugeordnet werden, etwa Arbeit, Schlaf oder Bewegung; mit Name, Farbe, Bereichstyp, Soll und Gewicht. Zehn Standardbereiche sind vorgegeben (Tabelle~\ref{tab:lebensbereiche}). \\
+  \midrule
+  Lifestyle Balance & Befriedigendes Muster täglicher Betätigungen, das gesund, bedeutsam und nachhaltig ist und zu den aktuellen Lebensumständen passt \parencite[S.~11]{matuska2008}; Grundlage des Soll-Ist-Abgleichs. \\
+  \midrule
+  Mindestziel & Bereichstyp, bei dem mehr Zeit bis zum Erreichen des Solls besser ist, zum Beispiel bei Schlaf oder Bewegung. \\
+  \midrule
+  MoSCoW & Priorisierungsmethode mit den Stufen Must, Should, Could und Won't \parencite[Kap.~10]{dsdm2014}. \\
+  \midrule
+  Obergrenze & Bereichstyp, bei dem eine Überschreitung des Solls ungünstig ist, zum Beispiel bei Arbeit oder alltäglichen Verpflichtungen. \\
+  \midrule
+  Persona & Fiktive, aber realistische Person, die typische Merkmale der Zielgruppe bündelt; hier Sarah Keller. \\
+  \midrule
+  Regel & Deterministische Prüfvorschrift (R01--R10) mit Bedingung, Schwelle und Zeitraum, die genau einem Modell des Balance-Kompasses zugeordnet ist, Hinweise erzeugt und sich einzeln ein- und ausschalten lässt. \\
+  \midrule
+  Score & Ganzzahliger Wert von 0 bis 100 je Lebensbereich und Kalenderwoche aus Zielerfüllung und Zufriedenheitsanteil; programmeigene Kennzahl, kein validiertes Messinstrument. \\
+  \midrule
+  Soll & Gewünschte Stunden pro Woche für einen Lebensbereich (0--168~h); bei einem Soll von 0 wird der Bereich nicht bewertet. \\
+  \midrule
+  Use Case & Funktion eines Systems, die ein beobachtbares Ergebnis mit Wert für einen oder mehrere Akteure liefert \parencite[S.~639]{omg2017uml}. \\
+  \midrule
+  User Story & Anforderung aus Sicht einer Rolle im Format \anf{Als \textless Rolle\textgreater{} möchte ich \textless Fähigkeit\textgreater, damit \textless Nutzen\textgreater} \parencite[S.~1-12]{swebok2026}. \\
+  \midrule
+  WHO-5 & Kurzer Fragebogen der \acs{WHO} mit fünf Aussagen, der als valides Instrument zur Erfassung des Wohlbefindens gilt \parencite[S.~167]{topp2015}; Rohwert 0--25, Prozentwert = Rohwert × 4. Das Ergebnis ist keine Diagnose. \\
+  \midrule
+  Wiederholungsserie & Vorlage für eine wöchentlich wiederkehrende Aktivität an gewählten Wochentagen mit Startdatum und optionalem Enddatum; erzeugt Termine und kann Ausnahmen enthalten. \\
+  \midrule
+  Wochenbewertung & Auswertung einer Kalenderwoche aus der Datenvollständigkeit und je einer Bereichsbewertung (Ist, Soll, Zielerfüllung, Score) für jeden aktiven Lebensbereich. \\
+  \midrule
+  Wochenreflexion & Freiwillige Antworten auf Leitfragen zu einer Kalenderwoche mit optionaler Stimmung (1--5). \\
+  \midrule
+  Wunschprofil & Gesamtheit der Soll-Werte aller Lebensbereiche; persönlicher Maßstab, an dem die erfasste Woche gemessen wird. \\
+  \midrule
+  Zielerfüllung & Wert von 0 bis 1, der angibt, wie gut das Ist eines Lebensbereichs dem Soll entspricht; die Berechnung hängt vom Bereichstyp ab. \\
+  \midrule
+  Zufriedenheitsanteil & Auf 0 bis 1 umgerechneter Mittelwert der Zufriedenheitswerte eines Lebensbereichs: (Mittelwert − 1) / 4; ohne Zufriedenheitswerte nicht definiert. \\
 \end{longtable}
-\quelle{Eigene Darstellung.}
+\endgroup

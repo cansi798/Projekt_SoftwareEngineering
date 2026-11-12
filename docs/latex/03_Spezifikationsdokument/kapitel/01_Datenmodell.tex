@@ -3,16 +3,191 @@
 %  Geschäftsobjekte der Anwendung und deren Beziehungen zueinander.
 %  Textuell beschreiben und durch ein UML-Klassendiagramm visualisieren.“)
 %  Fachliches Modell (Geschäftsobjekte), KEINE technischen Klassen.
-%  Bewertung: „Sind die UML-Diagramme korrekt und fehlerfrei?“
 % =====================================================================
 \section{Datenmodell}
-\TODO{Kurze Hinführung}
+Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Es handelt sich um ein fachliches Modell aus Sicht der Anwendung: Es legt fest, welche Informationen erfasst, angezeigt, ausgewertet und exportiert werden, nicht aber, wie sie technisch gespeichert oder in Klassen umgesetzt werden. Diese Entscheidungen trifft das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
 
-\subsection{Geschäftsobjekte}
-\TODO{Je Geschäftsobjekt (z. B. Bereich, Eintrag, Ziel …): Zweck, wichtigste Attribute mit Datentyp und Pflicht/optional}
+\subsection{Geschäftsobjekte}\label{sec:geschaeftsobjekte}
+Die Geschäftsobjekte lassen sich vier fachlichen Gruppen zuordnen:
+\begin{itemize}
+  \item \textbf{Erfassung:} Ein \emph{Lebensbereich} ist eine Kategorie des Alltags (z.\,B. Schlaf oder Arbeit), der Aktivitäten zugeordnet werden. Er trägt den Bereichstyp und das Wunschprofil, also die gewünschten Stunden pro Woche. Eine \emph{Aktivitaet} ist ein einzelner Eintrag mit Datum, Dauer, Status und optionalen Selbsteinschätzungen. Eine \emph{Wiederholungsserie} beschreibt eine wöchentlich wiederkehrende Aktivität und erzeugt daraus einzelne Termine; eine \emph{Ausnahme} hält fest, an welchem Datum ein Termin der Serie übersprungen wird.
+  \item \textbf{Auswertung:} Eine \emph{Wochenbewertung} fasst das Ergebnis einer \ac{KW} nach \ac{ISO}~8601 zusammen und besteht aus je einer \emph{Bereichsbewertung} pro bewertetem Lebensbereich. Ein \emph{Hinweis} ist eine regelbasierte Rückmeldung mit Begründung.
+  \item \textbf{Wissensbasis:} Ein \emph{KompassModell} beschreibt ein wissenschaftliches Modell, eine Empfehlung oder die programmeigenen Systemregeln für die Infoseiten des Balance-Kompasses (US15). Eine \emph{Regel} ist eine prüfbare Bedingung (R01--R10), die genau einem Kompass-Modell zugeordnet ist.
+  \item \textbf{Konfiguration und Reflexion:} Die \emph{Einstellungen} existieren genau einmal und enthalten die Parameter der Bewertung. Die Objekte \emph{Who5Erhebung} und \emph{Wochenreflexion} gehören zum Should-Umfang (US20, US22).
+\end{itemize}
 
-\subsection{Beziehungen und Klassendiagramm}
-\TODO{Beziehungen und Multiplizitäten erläutern; UML-Klassendiagramm in docs/diagramme/02\_Klassendiagramm\_Datenmodell/ – Export als docs/diagramme/export/datenmodell.pdf}
+Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{Ganzzahl}, \emph{Dezimal} (Dezimalzahl), \emph{Boolean} (wahr/falsch), \emph{Datum} (Kalendertag), \emph{Uhrzeit} (Stunde und Minute) und \emph{Farbe} (Farbwert im Format \texttt{\#RRGGBB}) verwendet. Die Angabe [0..1] kennzeichnet optionale Attribute, [1..7] bzw. [5] die zulässige Anzahl von Werten. Tabelle~\ref{tab:attribute} beschreibt alle Attribute mit Typ, Verbindlichkeit und Wertebereich; Zeitangaben werden fachlich in Minuten erfasst und für Auswertungen in Stunden umgerechnet.
+
+\begin{longtable}{@{}L{3.4cm}L{2.8cm}L{1.5cm}L{7.5cm}@{}}
+  \caption{Attribute der Geschäftsobjekte}\label{tab:attribute}\\
+  \toprule
+  \textbf{Attribut} & \textbf{Typ} & \textbf{Pflicht} & \textbf{Wertebereich und Bedeutung} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Attribut} & \textbf{Typ} & \textbf{Pflicht} & \textbf{Wertebereich und Bedeutung} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  \multicolumn{4}{@{}l}{\textbf{Lebensbereich}} \\*
+  name & String & ja & 1--40 Zeichen, eindeutig (ohne Beachtung der Groß-/Kleinschreibung) \\
+  typ & Bereichstyp & ja & MINDESTZIEL oder OBERGRENZE \\
+  farbe & Farbe & ja & Farbe in Wochenansicht und Diagrammen \\
+  aktiv & Boolean & ja & Standard \enquote{wahr}; inaktive Bereiche werden nicht bewertet \\
+  istStandard & Boolean & ja & \enquote{wahr} für die zehn Standardbereiche \\
+  sollStundenProWoche & Dezimal & ja & 0--168~h pro Woche (Wunschprofil) \\
+  gewicht & Ganzzahl & ja & 0--10, Standard~1; für den Gesamt-Score \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Aktivitaet}} \\*
+  titel & String & ja & 1--80 Zeichen \\
+  datum & Datum & ja & Kalendertag; über Mitternacht: Tag des Beginns \\
+  beginn & Uhrzeit & optional & Format HH:MM \\
+  ende & Uhrzeit & optional & HH:MM; nur mit beginn; vor beginn: über Mitternacht \\
+  dauerMinuten & Ganzzahl & ja & 1--1440~min; aus beginn und ende berechnet oder eingegeben \\
+  status & Aktivitaets\-status & ja & GEPLANT, DURCHGEFUEHRT oder AUSGEFALLEN \\
+  zufriedenheit & Ganzzahl & optional & 1 (sehr unzufrieden) bis 5 (sehr zufrieden) \\
+  belastung & Ganzzahl & optional & 1 (sehr gering) bis 5 (sehr hoch) \\
+  erholung & Ganzzahl & optional & 1 (keine) bis 5 (sehr hohe Erholungswirkung) \\
+  bewegungsart & Bewegungsart & optional & nur im Bereich Bewegung; Grundlage von R01 und R02 \\
+  notiz & String & optional & höchstens 500 Zeichen \\
+  istDemo & Boolean & ja & \enquote{wahr} für Demodaten (US18), sonst \enquote{falsch} \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Wiederholungsserie}} \\*
+  titel & String & ja & 1--80 Zeichen; wird in die Termine übernommen \\
+  wochentage & Wochentag [1..7] & ja & mindestens einer, jeder höchstens einmal \\
+  startdatum & Datum & ja & erster möglicher Termin \\
+  enddatum & Datum & optional & nicht vor startdatum; fehlt es: unbefristet \\
+  beginn & Uhrzeit & optional & Uhrzeit der Termine \\
+  dauerMinuten & Ganzzahl & ja & 1--1440~min \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Ausnahme}} \\*
+  datum & Datum & ja & übersprungenes Termindatum der Serie \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{KompassModell}} \\*
+  name & String & ja & z.\,B. \enquote{Lifestyle Balance Model} \\
+  kurzbeschreibung & String & ja & allgemein verständliche Erklärung des Modells \\
+  evidenzart & Evidenzart & ja & Art der wissenschaftlichen Grundlage \\
+  quelle & String & ja & Literaturangabe nach \ac{APA}~7 \\
+  grenzen & String & ja & Einschränkungen der Aussagekraft \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Regel}} \\*
+  kennung & String & ja & R01--R10, eindeutig \\
+  bezeichnung & String & ja & Kurzbezeichnung der Regel \\
+  aktiv & Boolean & ja & Standard \enquote{wahr}; schaltbar (US14) \\
+  schwelle & Dezimal & ja & Schwellenwert, z.\,B. 150 (min) bei R01 \\
+  zeitraum & Ganzzahl & ja & Anzahl betrachteter Kalenderwochen (1--3) \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Hinweis}} \\*
+  art & Hinweisart & ja & WARNUNG, POSITIV oder SYSTEM \\
+  text & String & ja & Hinweistext mit den ermittelten Werten \\
+  begruendung & String & ja & Angaben für \enquote{Warum sehe ich das?} (US13) \\
+  kalenderwoche & Ganzzahl & ja & 1--53 nach ISO~8601 \\
+  jahr & Ganzzahl & ja & Jahr der Kalenderwoche nach ISO~8601 \\
+  ausgeblendet & Boolean & ja & Standard \enquote{falsch}; \enquote{wahr} nach dem Wegklicken \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Wochenbewertung}} \\*
+  jahr & Ganzzahl & ja & Jahr der Kalenderwoche nach ISO~8601 \\
+  kalenderwoche & Ganzzahl & ja & 1--53 \\
+  vollstaendigkeitTage & Ganzzahl & ja & 0--7; Tage mit durchgeführter Aktivität \\
+  ausreichendeDaten & Boolean & ja & \enquote{wahr} bei mindestens 4 von 7 Tagen \\
+  gesamtScore & Ganzzahl & optional & 0--100; nur bei aktivierter Anzeige (US19) \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Bereichsbewertung}} \\*
+  istStunden & Dezimal & ja & $\geq 0$; Summe der Dauern in~h \\
+  sollStunden & Dezimal & ja & $> 0$; Soll zum Zeitpunkt der Bewertung \\
+  zielerfuellung & Dezimal & ja & 0--1 (Abschnitt~\ref{sec:kernprozess}) \\
+  zufriedenheitsanteil & Dezimal & optional & 0--1; nur mit Zufriedenheitswerten \\
+  score & Ganzzahl & optional & 0--100; nur bei ausreichenden Daten \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Einstellungen}} \\*
+  alpha & Dezimal & ja & 0--1, Standard 0,6; Anteil der Zielerfüllung \\
+  gesamtScore\-Anzeigen & Boolean & ja & Standard \enquote{falsch} \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Who5Erhebung} (Should)} \\*
+  datum & Datum & ja & Tag der Erhebung, nicht in der Zukunft \\
+  antworten & Ganzzahl [5] & ja & je 0 (zu keinem Zeitpunkt) bis 5 (die ganze Zeit) \\
+  rohwert & Ganzzahl & ja & 0--25; Summe der fünf Antworten \\
+  prozentwert & Ganzzahl & ja & 0--100; rohwert $\cdot$ 4 \\
+  \midrule
+  \multicolumn{4}{@{}l}{\textbf{Wochenreflexion} (Should)} \\*
+  jahr & Ganzzahl & ja & Jahr der Kalenderwoche nach ISO~8601 \\
+  kalenderwoche & Ganzzahl & ja & 1--53; höchstens eine je Woche \\
+  antworten & String [1..*] & ja & je Leitfrage ein Text, höchstens 500 Zeichen \\
+  stimmung & Ganzzahl & optional & 1 (sehr schlecht) bis 5 (sehr gut) \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+Beim ersten Start legt BalanceOS die zehn Standard-Lebensbereiche aus Tabelle~\ref{tab:standardbereiche} an (US01). Die Standard-Soll-Werte ergeben zusammen 143~h und lassen damit Raum für nicht erfasste Zeit. Arbeit und alltägliche Verpflichtungen sind als Obergrenze angelegt, weil dort eine Überschreitung ungünstig ist; alle übrigen Bereiche sind Mindestziele.
+
+\begin{table}[H]
+  \caption{Standard-Lebensbereiche beim ersten Start}\label{tab:standardbereiche}
+  \centering
+  \begin{tabular}{@{}L{3.0cm}L{2.3cm}L{1.0cm}L{4.4cm}L{2.3cm}L{1.0cm}@{}}
+    \toprule
+    \textbf{Name} & \textbf{Typ} & \textbf{Soll} & \textbf{Name} & \textbf{Typ} & \textbf{Soll} \\
+    \midrule
+    Arbeit & Obergrenze & 40~h & Soziale Kontakte & Mindestziel & 4~h \\
+    Schlaf & Mindestziel & 56~h & Freizeit & Mindestziel & 6~h \\
+    Bewegung & Mindestziel & 3~h & Erholung & Mindestziel & 5~h \\
+    Familie & Mindestziel & 10~h & Persönliche Entwicklung & Mindestziel & 3~h \\
+    Hobbys & Mindestziel & 4~h & Alltägliche Verpflichtungen & Obergrenze & 12~h \\
+    \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
+
+Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen Werte einzelner Attribute abschließend fest. Besondere Bedeutung hat die Evidenzart: Sie wird an jedem Kompass-Modell, jedem Hinweis und jedem Score angezeigt und macht sichtbar, ob ein Wert auf einer Theorie, einer Empfehlung, einem validierten Instrument, einem persönlichen Maßstab oder einer programmeigenen Festlegung beruht.
+
+\begin{longtable}{@{}L{3.1cm}L{4.4cm}L{7.7cm}@{}}
+  \caption{Aufzählungstypen}\label{tab:aufzaehlungen}\\
+  \toprule
+  \textbf{Aufzählung} & \textbf{Literale} & \textbf{Bedeutung} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Aufzählung} & \textbf{Literale} & \textbf{Bedeutung} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  Bereichstyp & MINDESTZIEL & mehr Zeit ist bis zum Soll besser (z.\,B. Schlaf) \\
+   & OBERGRENZE & Überschreitung des Solls ist ungünstig (z.\,B. Arbeit) \\
+  \midrule
+  Aktivitaetsstatus & GEPLANT & vorgesehen, noch nicht durchgeführt \\
+   & DURCHGEFUEHRT & tatsächlich durchgeführt; nur dieser Status zählt in Auswertungen \\
+   & AUSGEFALLEN & geplant, aber nicht durchgeführt \\
+  \midrule
+  Bewegungsart & AUSDAUER\_MODERAT & moderate Ausdaueraktivität (z.\,B. zügiges Gehen) \\
+   & AUSDAUER\_INTENSIV & intensive Ausdaueraktivität (z.\,B. Laufen) \\
+   & KRAFT & muskelkräftigende Aktivität \\
+  \midrule
+  Evidenzart & THEORIE & wissenschaftliche Theorie oder wissenschaftliches Modell \\
+   & EMPFEHLUNG & evidenzbasierte Empfehlung einer Fachgesellschaft oder der \ac{WHO} \\
+   & VALIDIERTES\_\-INSTRUMENT & validierter Fragebogen (WHO-5) \\
+   & PERSOENLICHE\_\-REGEL & von Nutzer:innen selbst gesetzter Maßstab (Wunschprofil) \\
+   & PROGRAMMEIGEN & von BalanceOS festgelegte, nicht validierte Berechnung oder Regel \\
+  \midrule
+  Hinweisart & WARNUNG & Hinweis auf eine ungünstige Abweichung \\
+   & POSITIV & Rückmeldung zu einem erreichten Wunsch oder einer Verbesserung \\
+   & SYSTEM & Hinweis zur Datenlage (Regel R10) \\
+  \midrule
+  Wochentag & MO, DI, MI, DO, FR, SA, SO & Wochentage von Montag bis Sonntag \\
+\end{longtable}
+\quelle{Eigene Darstellung.}
+
+\subsection{Beziehungen und Klassendiagramm}\label{sec:klassendiagramm}
+Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als \ac{UML}-Klassendiagramm. Assoziationen werden als durchgezogene Linien mit Multiplizitäten an beiden Enden dargestellt; ein gefülltes Dreieck neben dem Assoziationsnamen gibt die Leserichtung an \parencite[S.~201]{omg2017uml}. Da es sich um ein fachliches Modell handelt, enthält das Diagramm keine Operationen und keine Navigationsrichtungen. Die Beziehungen haben folgende Bedeutung:
+\begin{itemize}
+  \item Ein Lebensbereich umfasst beliebig viele Aktivitäten (0..*); jede Aktivität gehört zu genau einem Lebensbereich. Eine Mehrfachzuordnung ist ausgeschlossen.
+  \item Jede Wiederholungsserie gehört zu genau einem Lebensbereich. Sie erzeugt beliebig viele Termine, also Aktivitäten mit der Rolle \enquote{termine}. Eine Aktivität stammt aus höchstens einer Serie (0..1); einzeln erfasste Aktivitäten haben keine Serie.
+  \item Eine Wiederholungsserie besitzt beliebig viele Ausnahmen (Komposition): Eine Ausnahme existiert nur zusammen mit ihrer Serie und wird mit ihr gelöscht.
+  \item Ein Kompass-Modell enthält mindestens eine Regel (1..*), jede Regel gehört zu genau einem Kompass-Modell. Die Systemregel R10 gehört zum Modell \enquote{BalanceOS-Systemregeln} mit der Evidenzart PROGRAMMEIGEN. Insgesamt stellt BalanceOS sechs Kompass-Modelle bereit: Lifestyle Balance Model (R04, R08, R09), Effort-Recovery-Modell (R05, R06), Job-Demands-Resources-Theorie (R07), WHO-Bewegungsleitlinie (R01, R02), Schlafempfehlung (R03) und BalanceOS-Systemregeln (R10).
+  \item Eine Regel erzeugt beliebig viele Hinweise; jeder Hinweis stammt von genau einer Regel und bezieht sich auf höchstens einen Lebensbereich. Bereichsunabhängige Hinweise, etwa zu R05 oder R10, haben keinen Lebensbereich.
+  \item Eine Wochenbewertung besteht aus mindestens einer Bereichsbewertung (Komposition); jede Bereichsbewertung bewertet genau einen Lebensbereich. Die Wochenbewertung ist ein abgeleitetes Objekt: Sie wird bei jeder Anzeige aus den aktuellen Aktivitäten und Einstellungen neu berechnet und ist daher stets aktuell.
+  \item Einstellungen, Who5Erhebung und Wochenreflexion haben keine Assoziationen. Die Einstellungen existieren genau einmal; Erhebungen und Reflexionen sind über Datum bzw. Kalenderwoche zeitlich zugeordnet.
+\end{itemize}
+
 \begin{figure}[H]
   \caption{Datenmodell als UML-Klassendiagramm}\label{abb:datenmodell}
   \centering

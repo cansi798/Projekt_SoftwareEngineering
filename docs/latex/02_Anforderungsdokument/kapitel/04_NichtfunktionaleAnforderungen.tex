@@ -3,15 +3,17 @@
 %  relevanten Qualitätsanforderungen wie Performance, Sicherheit,
 %  Benutzerfreundlichkeit usw.“)
 %  Orientierung: Qualitätsmerkmale nach ISO/IEC 25010.
-%  Jede NFA messbar/prüfbar formulieren -> später im Testdokument prüfen.
-%  Pflicht aus der Aufgabenstellung: selbsterklärende, intuitive GUI;
-%  lauffähig unter Windows 10/11; Testdaten vorhanden.
 % =====================================================================
-\section{Nichtfunktionale Anforderungen}
-\TODO{Kurze Hinführung; Qualitätsmodell (ISO/IEC 25010) mit Quelle}
+\section{Nichtfunktionale Anforderungen}\label{sec:nfa}
+Nichtfunktionale Anforderungen legen fest, \emph{wie gut} BalanceOS seine Funktionen erbringen muss. Sie schränken die Lösung ein, indem sie etwa Antwortzeiten, Zuverlässigkeit oder einzusetzende Technologien vorgeben \parencite[S.~1-4]{swebok2026}. Dieses Kapitel beschreibt das zugrunde gelegte Qualitätsmodell, die daraus abgeleiteten Qualitätsanforderungen und die Rahmenbedingungen des Projekts.
 
 \subsection{Qualitätsanforderungen}
-\begin{longtable}{@{}L{1.2cm}L{3.0cm}L{6.8cm}L{4.2cm}@{}}
+Als Ordnungsrahmen dient das Produktqualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 \parencite[Abschn.~4.2]{iso25010}. Es beschreibt Qualitätsmerkmale von Softwareprodukten, die sich messen und bewerten lassen \parencite[S.~12-11]{swebok2026}, darunter funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit (in der Fassung von 2023 als Interaktionsfähigkeit bezeichnet), Zuverlässigkeit, Sicherheit, Wartbarkeit und Flexibilität (früher Portabilität). Für BalanceOS sind diejenigen Merkmale ausgewählt, die für die Zielgruppe und die Aufgabenstellung besonders relevant sind. Zusätzlich wird Transparenz als Teil der funktionalen Angemessenheit aufgenommen, weil die Nachvollziehbarkeit der Hinweise das zentrale Alleinstellungsmerkmal der Anwendung ist.
+
+Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforderung besitzt ein messbares Prüfkriterium, das im Testdokument der Finalisierungsphase überprüft wird.
+
+\begingroup\tabsatz
+\begin{longtable}{@{}L{1.2cm}L{3.0cm}L{5.9cm}L{5.1cm}@{}}
   \caption{Nichtfunktionale Anforderungen}\label{tab:nfa}\\
   \toprule
   \textbf{ID} & \textbf{Merkmal} & \textbf{Anforderung} & \textbf{Prüfkriterium} \\
@@ -21,16 +23,61 @@
   \textbf{ID} & \textbf{Merkmal} & \textbf{Anforderung} & \textbf{Prüfkriterium} \\
   \midrule
   \endhead
-  \bottomrule
   \endfoot
-  NFA01 & Benutzerfreundlichkeit & \TODO{z. B. selbsterklärende GUI} & \TODO{messbar} \\
-  NFA02 & Performance & \TODO{} & \TODO{} \\
-  NFA03 & Sicherheit und Datenschutz & \TODO{} & \TODO{} \\
-  NFA04 & Zuverlässigkeit & \TODO{} & \TODO{} \\
-  NFA05 & Wartbarkeit & \TODO{} & \TODO{} \\
-  NFA06 & Portabilität & Lauffähig unter Windows 10 und 11 & \TODO{} \\
+  \bottomrule
+  \endlastfoot
+  NFA01 & Benutzbarkeit (Erlernbarkeit)
+    & Die grafische Oberfläche ist selbsterklärend und vollständig deutschsprachig; die Navigation erfolgt einheitlich über eine Seitenleiste.
+    & Eine Testperson ohne Anleitung erfasst ihre erste Aktivität in höchstens 2~Minuten. \\
+  \midrule
+  NFA02 & Benutzbarkeit (Fehlertoleranz)
+    & Ungültige Eingaben werden vor dem Speichern abgefangen und mit einer verständlichen Meldung direkt am betroffenen Feld erklärt.
+    & Alle Regeln der Validierungstabelle des Spezifikationsdokuments sind getestet. \\
+  \midrule
+  NFA03 & Leistungs\-effizienz
+    & Die Anwendung startet in höchstens 5~s; die Neuberechnung des Dashboards dauert bei 3.000 Aktivitäten (etwa ein Jahr) höchstens 1~s.
+    & Zeitmessung auf dem Referenzrechner. \\
+  \midrule
+  NFA04 & Zuverlässigkeit
+    & Es entstehen keine Datenverluste: Jede bestätigte Änderung wird sofort transaktional gespeichert.
+    & Nach einem erzwungenen Beenden der Anwendung sind alle bestätigten Änderungen vorhanden. \\
+  \midrule
+  NFA05 & Sicherheit und Datenschutz
+    & Die Anwendung baut keine Netzwerkverbindung auf, speichert Daten nur lokal im Benutzerprofil und ermöglicht deren vollständige Löschung.
+    & Es finden keine Netzwerkzugriffe statt; nach \anf{Alle Daten löschen} sind keine Nutzdaten mehr vorhanden. \\
+  \midrule
+  NFA06 & Funktionale Korrektheit
+    & Score, Datenvollständigkeit und Regeln werden exakt nach der Spezifikation berechnet.
+    & Unit-Tests mit den Rechenbeispielen der Spezifikation sind erfolgreich. \\
+  \midrule
+  NFA07 & Wartbarkeit (Modularität, Testbarkeit)
+    & Oberfläche, Fachlogik und Datenhaltung sind getrennt; die Fachlogik ist ohne grafische Oberfläche testbar.
+    & Die Zeilenabdeckung der Bewertungs- und Regellogik beträgt mindestens 80~\%. \\
+  \midrule
+  NFA08 & Wartbarkeit (Analysier\-barkeit)
+    & Der Quellcode ist mit Docstrings kommentiert und folgt dem Stilleitfaden \ac{PEP}~8.
+    & Eine statische Prüfung des Quellcodes meldet keine Fehler. \\
+  \midrule
+  NFA09 & Portabilität/ Flexibilität (Installierbarkeit)
+    & Die Anwendung läuft unter Windows~10 und 11 (64~Bit), ohne dass Python installiert sein muss.
+    & Die ausgelieferte \texttt{.exe}-Datei startet auf einem frischen Windows-Profil. \\
+  \midrule
+  NFA10 & Kompatibilität
+    & Der Export erfolgt als CSV (UTF-8, Semikolon, in Excel lesbar) und als JSON.
+    & Die exportierten Dateien lassen sich in Excel bzw. in einem JSON-Validator fehlerfrei öffnen. \\
+  \midrule
+  NFA11 & Transparenz (funktionale Angemessenheit)
+    & Jeder Hinweis nennt Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart.
+    & Eine Stichprobe über alle Regeln R01--R10 zeigt vollständige Angaben. \\
 \end{longtable}
+\endgroup
 \quelle{Eigene Darstellung.}
 
+Die Anforderungen an die Benutzbarkeit (NFA01, NFA02) setzen die Vorgabe der Aufgabenstellung um, dass die grafische Oberfläche selbsterklärend und intuitiv bedienbar sein muss. Sie orientieren sich an den Interaktionsprinzipien der DIN~EN~ISO~9241-110, insbesondere an Selbstbeschreibungsfähigkeit, Erwartungskonformität, Erlernbarkeit und Robustheit gegen Benutzungsfehler \parencite[Abschn.~5]{iso9241}. NFA04 und NFA05 tragen dem Nutzungskontext der Zielgruppe Rechnung: Die Erfassung wird häufig unterbrochen, und die erfassten Daten sind persönlich. NFA06 und NFA07 sichern die Korrektheit der Bewertungs- und Regellogik ab, deren Fehler unmittelbar zu falschen Hinweisen führen würden. NFA09 ergibt sich aus der Vorgabe, dass die Anwendung unter Windows~10/11 lauffähig sein muss und alle nicht standardmäßig vorhandenen Komponenten mitzuliefern sind.
+
 \subsection{Rahmenbedingungen}
-\TODO{Technische und organisatorische Randbedingungen: Python, Windows-Desktopanwendung, GitHub, Bearbeitungszeitraum}
+Neben den Qualitätsanforderungen gelten technische und organisatorische Rahmenbedingungen, die nicht verhandelbar sind und den Lösungsraum zusätzlich einschränken.
+
+\textbf{Technische Rahmenbedingungen:} Die Anwendung wird objektorientiert in Python ab Version~3.12 entwickelt und als native Windows-Desktopanwendung ausgeliefert. Als Plattform zur Versionsverwaltung dient GitHub; das Repository ist unter \url{https://github.com/cansi798/Projekt_SoftwareEngineering} erreichbar. Bibliotheken von Drittanbietern werden nur verwendet, wenn ihr Einsatz begründet ist. Die Begründung erfolgt im Architekturdokument der Phase~2; die Bibliotheken werden mit der Anwendung ausgeliefert. Quellcode aus fremden Anwendungen wird nicht übernommen.
+
+\textbf{Organisatorische Rahmenbedingungen:} Das Projekt wird von einer Person bearbeitet, die alle Rollen von der Anforderungsermittlung bis zum Test übernimmt. Der Bearbeitungszeitraum umfasst den 09.11.2026 bis 12.12.2026 und gliedert sich in die drei Portfolio-Phasen der IU mit festen Abgabeterminen. Das Feedback der Tutor:innen kann bis zu sieben Tage dauern und muss in der Planung berücksichtigt werden. Inhaltlich gilt zudem, dass BalanceOS kein Medizinprodukt ist: Hinweise zeigen Zusammenhänge und keine Ursachen, und die Anwendung stellt keine Diagnosen.

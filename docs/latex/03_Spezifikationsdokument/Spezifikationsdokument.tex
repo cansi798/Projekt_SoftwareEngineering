@@ -9,6 +9,8 @@
 \documentclass{iu-pse}
 \input{meta}
 \addbibresource{literatur.bib}
+\usepackage{amsmath}   % Formeln im Kernprozess (cases, \dfrac, \text)
+% Tabellensatz (10 pt, einzeilig) regelt die Klasse iu-pse.cls einheitlich.
 
 \dokumenttitel{Spezifikationsdokument}
 \dokumentuntertitel{\Projektname}
@@ -19,14 +21,24 @@
 \abbildungsverzeichnis   % entfernen, falls weniger als drei Abbildungen
 \tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
 
-\begin{abkuerzungen}[JSON]
-  \acro{GUI}{Graphical User Interface}
-  \acro{UML}{Unified Modeling Language}
+\begin{abkuerzungen}[UTF-8]
+  \acro{APA}{American Psychological Association}
+  \acro{BOM}{Byte Order Mark}
   \acro{CSV}{Comma-Separated Values}
+  \acro{GUI}{Graphical User Interface}
+  \acro{HTTP}{Hypertext Transfer Protocol}
+  \acro{ISO}{International Organization for Standardization}
   \acro{JSON}{JavaScript Object Notation}
+  \acro{KW}{Kalenderwoche}
+  \acro{NFA}{Nichtfunktionale Anforderung}
+  \acro{UML}{Unified Modeling Language}
+  \acro{US}{User Story}
+  \acro{UTF-8}{8-Bit Unicode Transformation Format}
+  \acro{WHO}{World Health Organization}
 \end{abkuerzungen}
 
 \hauptteil
+\acresetall   % Erstverwendung im Fließtext ausschreiben (auch wenn Verzeichnisse \ac enthalten)
 \input{kapitel/01_Datenmodell}
 \input{kapitel/02_Geschaeftsprozesse}
 \input{kapitel/03_Geschaeftsregeln}

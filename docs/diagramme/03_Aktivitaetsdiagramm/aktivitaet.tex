@@ -1,0 +1,139 @@
+% =====================================================================
+%  Kernprozess „Wochenbewertung erstellen“ als UML-Aktivitätsdiagramm
+%  (UML 2.5.1): Start-/Endknoten, Aktionen, Entscheidungs- und
+%  Zusammenführungsknoten mit Wächterbedingungen, iterativer
+%  Expansionsbereich „für jeden aktiven Lebensbereich“.
+%  Export: docs/diagramme/export/aktivitaet.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+\usepackage{amsmath}
+
+\tikzset{
+  nohyph/.style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
+  ak/.style={aktion, text width=6.2cm, nohyph},
+  aks/.style={aktion, text width=3.0cm, nohyph},
+  akr/.style={aktion, text width=4.2cm, nohyph},
+  w/.style={waechter, font=\fontsize{8.5pt}{10pt}\selectfont},
+  klein/.style={font=\fontsize{8.5pt}{10pt}\selectfont},
+  ex/.style={draw, fill=white, minimum width=1.3cm, minimum height=0.32cm, inner sep=0pt},
+}
+% Expansionsknoten (Ein-/Ausgabe eines Expansionsbereichs): Kästchen mit vier Fächern
+\newcommand{\expknoten}[2]{%
+  \node[ex] (#1) at (#2) {};
+  \foreach \i in {1,2,3} {\draw ($(#1.north west)!\i/4!(#1.north east)$) -- ($(#1.south west)!\i/4!(#1.south east)$);}}
+\newcommand{\Ist}{\mathit{Ist}}
+\newcommand{\Soll}{\mathit{Soll}}
+\newcommand{\Score}{\mathit{Score}}
+\newcommand{\m}[1]{\mbox{$#1$}}
+
+\begin{document}
+\begin{tikzpicture}
+
+\def\xc{10.4}  % Hauptpfad
+\def\xs{5.15}  % Seitenpfad links (im Expansionsbereich)
+\def\xr{16.0}  % Seitenpfad rechts
+\def\xf{1.6}   % Pfad „zu wenig Daten“
+
+% ---------------------------------------------------------------------
+%  Vorbereitung und Vollständigkeit
+% ---------------------------------------------------------------------
+\node[startknoten] (start) at (\xc,0) {};
+\node[ak, below=0.35cm of start] (a1) {Durchgeführte Aktivitäten der Kalenderwoche ermitteln, Vollständigkeit \m{v} bestimmen};
+\node[entscheidung, below=0.35cm of a1] (d1) {};
+\draw[fluss] (start) -- (a1);
+\draw[fluss] (a1) -- (d1);
+
+% ---------------------------------------------------------------------
+%  Expansionsbereich: für jeden aktiven Lebensbereich b
+% ---------------------------------------------------------------------
+\coordinate (ytop) at ([yshift=-0.75cm]d1.south);
+\expknoten{ein}{ytop}
+\node[anchor=west, klein, fill=white, inner sep=1pt] at ([xshift=2pt]ein.east) {aktive Lebensbereiche};
+\draw[fluss] (d1) -- (ein);
+\node[w, right] at ($(d1.south)!0.5!(ein.north)$) {[\m{v \geq 4}]};
+
+\node[ak, below=0.35cm of ein] (l1) {\m{\Ist_b} (Stunden), \m{\Soll_b} und Abweichung \m{\Ist_b - \Soll_b} ermitteln};
+\draw[fluss] (ein) -- (l1);
+
+\node[entscheidung, below=0.35cm of l1] (d3) {};
+\draw[fluss] (l1) -- (d3);
+\node[aks] (s1) at (\xs,0 |- d3) {Bereich als „kein Soll festgelegt“ kennzeichnen};
+\draw[fluss] (d3.west) -- (s1.east);
+\node[w, above] at ([xshift=-0.15cm]$(d3.west)!0.5!(s1.east)$) {[\m{\Soll_b = 0}]};
+
+\node[ak, below=0.5cm of d3] (z1) {\m{z_b = \min(\Ist_b / \Soll_b,\ 1)}};
+\node[akr] (z2) at (\xr,0 |- z1) {\m{z_b = 1}, falls \m{\Ist_b \leq \Soll_b}, sonst\\ \m{z_b = \max\bigl(0,\ 1 - \tfrac{\Ist_b - \Soll_b}{\Soll_b}\bigr)}};
+\draw[fluss] (d3) -- (z1);
+\draw[fluss] (d3.east) -| (z2.north);
+\node[w, above right] at ([xshift=0.1cm]d3.east) {[\m{\Soll_b > 0}, typ = OBERGRENZE]};
+\node[w, right] at ([xshift=0.05cm]$(d3.south)!0.5!(z1.north)$) {[\m{\Soll_b > 0}, typ = MINDESTZIEL]};
+
+\node[entscheidung, below=0.3cm of z1] (m2) {};
+\draw[fluss] (z1) -- (m2);
+\draw[fluss] (z2.south) |- (m2.east);
+
+\node[entscheidung, below=0.3cm of m2] (d5) {};
+\draw[fluss] (m2) -- (d5);
+\node[ak, below=0.5cm of d5] (c1) {\m{s_b = (\bar{x}_{\mathrm{Zufriedenheit}} - 1) / 4},\\ \m{\Score_b = \mathrm{round}\bigl(100 \cdot (\alpha \cdot z_b + (1-\alpha) \cdot s_b)\bigr)}};
+\node[akr] (c2) at (\xr,0 |- c1) {\m{\Score_b = \mathrm{round}(100 \cdot z_b)}};
+\draw[fluss] (d5) -- (c1);
+\draw[fluss] (d5.east) -| (c2.north);
+\node[w, above right] at ([xshift=0.1cm]d5.east) {[keine Zufriedenheitswerte]};
+\node[w, right] at ([xshift=0.05cm]$(d5.south)!0.5!(c1.north)$) {[Zufriedenheitswerte vorhanden]};
+
+\node[entscheidung, below=0.3cm of c1] (m3) {};
+\draw[fluss] (c1) -- (m3);
+\draw[fluss] (c2.south) |- (m3.east);
+\draw[fluss] (s1.south) |- (m3.west);
+
+\coordinate (ybot) at ([yshift=-0.45cm]m3.south);
+\expknoten{aus}{ybot}
+\node[anchor=west, klein, fill=white, inner sep=1pt] at ([xshift=2pt]aus.east) {Bereichsbewertungen};
+\draw[fluss] (m3) -- (aus);
+
+% Rahmen des Expansionsbereichs
+\draw[dashed, rounded corners=8pt] (3.4,0 |- ein) rectangle (18.4,0 |- aus);
+\node[anchor=north west, align=left, klein] at ([yshift=-0.08cm]3.5,0 |- ein)
+  {«iterative»\\für jeden aktiven\\Lebensbereich \m{b}};
+
+% ---------------------------------------------------------------------
+%  Pfad „zu wenig Daten“ (v < 4)
+% ---------------------------------------------------------------------
+\node[aks, anchor=north] (f1) at (\xf,0 |- l1.north) {Wochenbewertung ohne Scores anlegen (ausreichendeDaten = false; je Bereich nur \m{\Ist_b}, \m{\Soll_b}, \m{z_b})};
+\node[aks, below=0.45cm of f1] (f2) {Regel R10 prüfen und Systemhinweis „zu wenig Daten“ erzeugen};
+\draw[fluss] (d1.west) -| (f1.north);
+\node[w, above] at ([xshift=-2.4cm]d1.west) {[\m{v < 4}]};
+\draw[fluss] (f1) -- (f2);
+
+% ---------------------------------------------------------------------
+%  Gesamt-Score, Regelprüfung, Anzeige
+% ---------------------------------------------------------------------
+\node[entscheidung, below=0.35cm of aus] (d6) {};
+\draw[fluss] (aus) -- (d6);
+\node[akr, anchor=north] (g1) at ([yshift=-0.25cm]\xr,0 |- d6.south) {Gesamt-Score berechnen (programmeigen):\\ \m{\mathrm{round}\bigl(\tfrac{\sum g_b \cdot \Score_b}{\sum g_b}\bigr)}};
+\draw[fluss] (d6.east) -| (g1.north);
+\node[w, above right] at ([xshift=0.1cm]d6.east) {[gesamtScoreAnzeigen]};
+
+\coordinate (g1s) at ([yshift=-0.3cm]g1.south);
+\node[entscheidung] (m5) at (\xc,0 |- g1s) {};
+\draw[fluss] (d6) -- (m5);
+\node[w, right] at ([xshift=0.05cm]$(d6.south)!0.5!(m5.north)$) {[sonst]};
+\draw[fluss] (g1.south) |- (m5.east);
+
+\node[ak, below=0.35cm of m5] (r1) {Aktive Regeln R01--R10 prüfen und Hinweise mit Begründung erzeugen};
+\node[ak, below=0.35cm of r1] (r2) {Hinweise nach Hinweisart (WARNUNG, POSITIV, SYSTEM) und Regelkennung sortieren};
+\draw[fluss] (m5) -- (r1);
+\draw[fluss] (r1) -- (r2);
+
+\node[entscheidung, below=0.3cm of r2] (m6) {};
+\draw[fluss] (r2) -- (m6);
+\draw[fluss] (f2.south) |- (m6.west);
+
+\node[ak, below=0.3cm of m6] (an) {Ergebnis im Dashboard anzeigen (höchstens 5~Hinweise)};
+\draw[fluss] (m6) -- (an);
+\node[endknoten, below=0.35cm of an] (ende) {};
+\draw[fluss] (an) -- (ende);
+
+\end{tikzpicture}
+\end{document}

@@ -220,6 +220,17 @@
   \par\vspace{2pt}{\raggedright\fontsize{10pt}{12pt}\selectfont Quelle: #1\par}}
 
 % Tabellen: Standardabstände und Spaltentypen
+% Richtlinien Kap. 2: „Tabellen und Abbildungen: bei Bedarf kleinere Schrift
+% als 11 Pt.“ -> einheitlich 10 pt, einzeilig; Beschriftung bleibt 11 pt
+% (caption: font=normalsize), Quellenangabe 10 pt (\quelle).
+\RequirePackage{etoolbox}
+\newcommand{\iu@tabellensatz}{%
+  \singlespacing\fontsize{10pt}{12pt}\selectfont\renewcommand{\arraystretch}{1.15}}
+% Mindestens ca. 6 Textzeilen Platz vor einer longtable, damit nie nur
+% Beschriftung und Tabellenkopf am Seitenende stehen
+\RequirePackage{needspace}
+\AtBeginEnvironment{longtable}{\needspace{6\baselineskip}\iu@tabellensatz}
+\AtBeginEnvironment{table}{\iu@tabellensatz}
 \renewcommand{\arraystretch}{1.25}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -389,7 +400,7 @@
 %  \TODO{…} markiert offene Stellen (fett in eckigen Klammern).
 %  tools/build_docs.py warnt, solange noch \TODO im Text steht.
 % ---------------------------------------------------------------------
-\newcommand{\TODO}[1]{\textbf{[TODO: #1]}}
+\newcommand{\TODO}[1]{\typeout{IU-PSE-TODO}\textbf{[TODO: #1]}}
 \newcommand{\anf}[1]{\enquote{#1}}
 
 \pagestyle{plain}  % Seitenzahl zentriert am Seitenende

@@ -3,37 +3,107 @@
 %  Projektrisiken und Gegenmaßnahmen inkl. Bewertung der Risiken nach
 %  Eintrittswahrscheinlichkeit und Schwere der potenziellen Auswirkungen“)
 % =====================================================================
-\section{Risikomanagement}
-\TODO{Kurze Hinführung}
+\section{Risikomanagement}\label{sec:risikomanagement}
+Ein Einzelprojekt mit festen Abgabeterminen und begrenzter Wochenarbeitszeit ist anfällig für Verzögerungen und Qualitätsmängel. Dieses Kapitel beschreibt daher zunächst die Methodik der Risikobewertung, stellt anschließend alle identifizierten Risiken mit ihren Gegenmaßnahmen dar und ordnet sie abschließend in einer Risikomatrix ein.
 
 \subsection{Methodik der Risikobewertung}
-\TODO{Skalen erläutern (z. B. Eintrittswahrscheinlichkeit W und Schwere S jeweils 1--5; Risikowert R = W $\times$ S); Schwellenwerte für Handlungsbedarf; Quelle}
+Das Risikomanagement folgt dem Vorgehen, das \textcite[S.~9-9]{swebok2026} beschreibt: Risikofaktoren werden identifiziert, nach Eintrittswahrscheinlichkeit und möglicher Auswirkung analysiert und priorisiert; für die bedeutsamen Risiken werden Gegenmaßnahmen entwickelt und in einem Risikoregister festgehalten. Da sich Risiken im Projektverlauf verändern, wird diese Analyse regelmäßig wiederholt \parencite[S.~9-9]{swebok2026}.
+
+Die Identifikation erfolgte anhand der Aufgabenstellung, des Konzepts und des Zeitplans entlang von vier Kategorien: zeitlich-organisatorische Risiken (RI01, RI02, RI03, RI10), technische Risiken (RI04, RI05, RI06, RI08), fachliche Risiken (RI07) sowie formale und rechtliche Risiken (RI09, RI11, RI12). Die Risiko-IDs beginnen mit \enquote{RI}, damit sie nicht mit den Regelkennungen R01--R10 der Anwendung verwechselt werden.
+
+Jedes Risiko wird auf zwei Skalen von 1 bis 5 bewertet: nach der Eintrittswahrscheinlichkeit W und nach der Schwere der Auswirkung S. Damit die Einstufung nachvollziehbar bleibt, ist jede Stufe verbal definiert (Tabelle~\ref{tab:skalen}). Der Risikowert ergibt sich als Produkt R\,=\,W\,×\,S und liegt zwischen 1 und 25.
+
+\begin{table}[H]
+  \caption{Bewertungsskalen für Eintrittswahrscheinlichkeit und Schwere}\label{tab:skalen}
+  \begin{tabular}{@{}L{1.1cm}L{5.6cm}L{8.9cm}@{}}
+    \toprule
+    \textbf{Stufe} & \textbf{Eintrittswahrscheinlichkeit W} & \textbf{Schwere der Auswirkung S} \\
+    \midrule
+    1 & sehr gering: Eintritt kaum zu erwarten (unter 10~\%) & unbedeutend: kein spürbarer Einfluss auf Termine, Umfang oder Bewertung \\
+    2 & gering: Eintritt möglich, aber unwahrscheinlich (10--30~\%) & gering: Mehraufwand von wenigen Stunden, aus dem Puffer ausgleichbar \\
+    3 & mittel: Eintritt realistisch (30--50~\%) & spürbar: Mehraufwand von etwa einem Arbeitstag oder Verschiebung einzelner Should-Funktionen \\
+    4 & hoch: Eintritt eher wahrscheinlich (50--70~\%) & schwer: Meilenstein oder Must-Anforderungen gefährdet, deutliche Minderung der Bewertung \\
+    5 & sehr hoch: Eintritt nahezu sicher (über 70~\%) & kritisch: fristgerechte Abgabe oder Bestehen der Prüfungsleistung gefährdet \\
+    \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
+
+Aus dem Risikowert leitet sich der Handlungsbedarf ab:
+\begin{itemize}
+  \item \textbf{hoch} (R\,≥\,15): Die Gegenmaßnahme wird sofort umgesetzt und laufend überwacht.
+  \item \textbf{mittel} (8\,≤\,R\,≤\,14): Eine Gegenmaßnahme ist geplant und wird im Projektverlauf umgesetzt; das Risiko wird wöchentlich geprüft.
+  \item \textbf{niedrig} (R\,≤\,7): Das Risiko wird beobachtet; kostengünstige Vorsorge wird dennoch getroffen.
+\end{itemize}
+Die Risikoliste in Tabelle~\ref{tab:risiken} dient als Risikoregister. Sie wird jeden Montag sowie an jedem Meilenstein überprüft: Bewertungen werden angepasst, neue Risiken aufgenommen und eingetretene Risiken mit ihren Folgen vermerkt. Da das Projekt von einer Person bearbeitet wird, liegt die Verantwortung für alle Risiken bei der Entwickler:in. Die Erfahrungen fließen in die Reflexion im Abstract (Phase~3) ein.
 
 \subsection{Risikoliste und Gegenmaßnahmen}
-\TODO{Risiken ergänzen (technisch, organisatorisch, zeitlich, fachlich); Beispielzeile ersetzen}
+Tabelle~\ref{tab:risiken} enthält alle zwölf identifizierten Risiken mit Bewertung. Für jedes Risiko ist eine vorbeugende Gegenmaßnahme festgelegt, die Eintrittswahrscheinlichkeit oder Auswirkung senkt, sowie eine Notfallmaßnahme für den Fall, dass das Risiko dennoch eintritt.
 
-\begin{longtable}{@{}L{1.0cm}L{4.4cm}>{\centering\arraybackslash}p{0.6cm}>{\centering\arraybackslash}p{0.6cm}>{\centering\arraybackslash}p{0.7cm}L{6.4cm}@{}}
+\begingroup
+\setstretch{1.0}
+\fontsize{10pt}{12pt}\selectfont
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}L{1.0cm}L{4.0cm}>{\centering\arraybackslash}p{0.45cm}>{\centering\arraybackslash}p{0.45cm}>{\centering\arraybackslash}p{0.55cm}L{8.7cm}@{}}
   \caption{Risikoliste mit Bewertung und Gegenmaßnahmen}\label{tab:risiken}\\
   \toprule
-  \textbf{ID} & \textbf{Risiko} & \textbf{W} & \textbf{S} & \textbf{R} & \textbf{Gegenmaßnahme} \\
+  \textbf{ID} & \textbf{Risiko} & \textbf{W} & \textbf{S} & \textbf{R} & \textbf{Gegenmaßnahmen} \\
   \midrule
   \endfirsthead
   \toprule
-  \textbf{ID} & \textbf{Risiko} & \textbf{W} & \textbf{S} & \textbf{R} & \textbf{Gegenmaßnahme} \\
+  \textbf{ID} & \textbf{Risiko} & \textbf{W} & \textbf{S} & \textbf{R} & \textbf{Gegenmaßnahmen} \\
   \midrule
   \endhead
   \bottomrule
   \endfoot
-  R01 & \TODO{Beispiel: Zeitplan wird durch berufliche Belastung überschritten} & 3 & 4 & 12 & \TODO{Puffer je Meilenstein, Priorisierung nach MoSCoW} \\
-  R02 & \TODO{} & & & & \TODO{} \\
+  RI01 & Umfang wächst während der Umsetzung (Scope Creep) & 4 & 4 & \textbf{16} &
+    \textit{Vorbeugend:} Umfang nach \ac{MoSCoW} im Anforderungsdokument festschreiben; neue Ideen nur in die Could- bzw. Won't-Liste aufnehmen; Should-Funktionen erst in I5 nach Abschluss aller Must-Funktionen beginnen.\newline
+    \textit{Notfall:} Should-Funktionen (US19--US22) ganz oder teilweise streichen und als technische Schuld dokumentieren. \\
+  RI02 & Zeitplan wird durch berufliche oder private Belastung überschritten & 3 & 4 & 12 &
+    \textit{Vorbeugend:} feste Arbeitsblöcke einplanen; wöchentlicher Soll-Ist-Vergleich der Stunden je Arbeitspaket; Reserve von rund 16~h und Puffertag 12.12.2026 vorhalten.\newline
+    \textit{Notfall:} Umfang von I5 reduzieren, Reserve und Wochenenden nutzen, Arbeitspakete umplanen. \\
+  RI03 & Feedback der Tutor:in dauert bis zu 7~Tage und verzögert Phase~2 bzw.~3 & 3 & 3 & 9 &
+    \textit{Vorbeugend:} AP4 und Inkrement I1 starten direkt nach M1 mit feedbackunabhängigen Teilen; offene Fragen vorab in den Online-Tutorien klären.\newline
+    \textit{Notfall:} Feedback nach Eingang gebündelt in AP5 bzw. AP8 einarbeiten und bereits umgesetzte Teile gezielt anpassen. \\
+  RI04 & Geringe Erfahrung mit PySide6/Qt verlangsamt die \ac{GUI}-Entwicklung & 3 & 3 & 9 &
+    \textit{Vorbeugend:} Einarbeitung über einen kleinen Prototyp (Hauptfenster, Navigation) in I1; Standard-Widgets statt eigener Komponenten; offizielle Dokumentation nutzen.\newline
+    \textit{Notfall:} Darstellung vereinfachen, ohne den Funktionsumfang der Must-Anforderungen zu verringern. \\
+  RI05 & Ausgelieferte .exe startet auf dem Zielrechner nicht (fehlende Komponenten, Virenscanner) & 3 & 4 & 12 &
+    \textit{Vorbeugend:} ausführbare Datei schon ab I1 regelmäßig erzeugen und auf einem frischen Windows-Profil testen; Abhängigkeiten auf das Notwendige begrenzen.\newline
+    \textit{Notfall:} Start über den Python-Interpreter mit dokumentierter Liste der Abhängigkeiten in der Benutzeranleitung beschreiben. \\
+  RI06 & Fehler in Bewertungs- oder Regellogik führen zu falschen Hinweisen & 3 & 4 & 12 &
+    \textit{Vorbeugend:} Fachlogik getrennt von der Oberfläche entwickeln; automatisierte Unit-Tests mit den Rechenbeispielen der Spezifikation; Zeilenabdeckung der Bewertungs- und Regellogik von mindestens 80~\%.\newline
+    \textit{Notfall:} fehlerhafte Regel über den Regelschalter (US14) deaktivieren und den Fehler als technische Schuld dokumentieren. \\
+  RI07 & Hinweise werden als medizinischer Rat missverstanden & 2 & 4 & 8 &
+    \textit{Vorbeugend:} sachliche Formulierungen; Quelle, Evidenzart und Grenzen zu jedem Modell anzeigen; ausdrücklicher Hinweis \enquote{keine Diagnose}; beim WHO-5-Ergebnis Verweis auf ärztliche oder psychotherapeutische Hilfe.\newline
+    \textit{Notfall:} missverständliche Texte umformulieren, betroffene Regel bis dahin deaktivieren. \\
+  RI08 & Datenverlust des Projekts (Hardwaredefekt, Fehlbedienung) & 2 & 5 & 10 &
+    \textit{Vorbeugend:} tägliche Commits mit Push auf GitHub; Dokumentquellen ebenfalls versioniert; zusätzliche Sicherung des Projektordners in einem Cloud-Speicher.\newline
+    \textit{Notfall:} Arbeitsstand aus dem GitHub-Repository auf einem Ersatzrechner wiederherstellen. \\
+  RI09 & Formale Mängel (Zitierweise, Formatierung, Dateinamen) mindern die Note & 2 & 4 & 8 &
+    \textit{Vorbeugend:} gemeinsame Dokumentklasse nach den IU-Richtlinien; Checkliste vor jeder Abgabe (Seitenangaben, Abbildungsquellen, Dateinamen nach Muster, Rechtschreibprüfung).\newline
+    \textit{Notfall:} Hinweise aus dem Feedback in AP5 bzw. AP8 vollständig korrigieren. \\
+  RI10 & Ausfall durch Krankheit & 2 & 4 & 8 &
+    \textit{Vorbeugend:} Must-Funktionen früh abschließen; Arbeitsstand jederzeit abgabefähig halten; Reserve und Puffertag einplanen.\newline
+    \textit{Notfall:} Should-Umfang streichen; bei längerem Ausfall frühzeitig das Prüfungsamt kontaktieren. \\
+  RI11 & Lizenzprobleme bei Bibliotheken oder Instrumenten (\ac{LGPL}, WHO-5-Nutzungsbedingungen) & 2 & 3 & 6 &
+    \textit{Vorbeugend:} Lizenz jeder Bibliothek vor dem Einsatz prüfen und im Architekturdokument nennen; Lizenztexte mit ausliefern; WHO-5 nur gemäß Nutzungsbedingungen mit Quellenangabe verwenden; lizenzpflichtiges COPSOQ ausschließen.\newline
+    \textit{Notfall:} betroffene Komponente ersetzen oder Funktion entfernen. \\
+  RI12 & ZIP-Datei weicht vom GitHub-Stand ab oder Repository wird nach Abgabe geändert & 1 & 5 & 5 &
+    \textit{Vorbeugend:} finalen Stand mit einem Git-Tag markieren; ZIP-Datei direkt aus diesem Stand erzeugen; nach der Abgabe keine Änderungen am Repository vornehmen.\newline
+    \textit{Notfall:} Abweichung vor dem Hochladen durch Vergleich erkennen und ZIP-Datei neu erzeugen. \\
 \end{longtable}
+\endgroup
 \quelle{Eigene Darstellung.}
 
 \subsection{Risikomatrix}
-\TODO{Risiken in einer Matrix (W über S) einordnen; Grafik als docs/diagramme/export/risikomatrix.pdf}
+Abbildung~\ref{abb:risikomatrix} ordnet die Risiken in einer 5\,×\,5-Matrix nach Eintrittswahrscheinlichkeit und Schwere ein. Die Farben entsprechen den drei Handlungsstufen.
+
 \begin{figure}[H]
-  \caption{Risikomatrix}\label{abb:risikomatrix}
+  \caption{Risikomatrix der Projektrisiken}\label{abb:risikomatrix}
   \centering
-  \grafik[0.7\linewidth]{risikomatrix}
+  \grafik[0.8\linewidth]{risikomatrix}
   \quelle{Eigene Darstellung.}
 \end{figure}
+
+Die Auswertung zeigt ein hohes Risiko (RI01), neun mittlere und zwei niedrige Risiken (RI11, RI12). Auffällig ist die Häufung in der Spalte S\,=\,4: Sieben der zwölf Risiken würden einen Meilenstein oder Must-Anforderungen gefährden. Die Gegenmaßnahmen setzen deshalb nicht nur bei der Eintrittswahrscheinlichkeit an, sondern begrenzen vor allem die Auswirkung, insbesondere durch die \ac{MoSCoW}-Priorisierung mit I5 als Puffer, die Zeitreserve und die frühzeitige Prüfung der ausführbaren Datei. Das einzige hohe Risiko, der wachsende Umfang (RI01), wird von Projektbeginn an aktiv begrenzt, indem der Umfang im Anforderungsdokument verbindlich festgelegt ist. Als Frühwarnindikatoren dienen eine Stundenabweichung von mehr als 10~\% gegenüber dem Plan eines Arbeitspakets (RI01, RI02) sowie fehlschlagende automatisierte Tests der Bewertungslogik (RI06). Durch die geplanten Maßnahmen sollen die mittleren Risiken im Projektverlauf in den niedrigen Bereich sinken; die wöchentliche Überprüfung macht diese Entwicklung sichtbar.
