@@ -1,0 +1,33 @@
+% =====================================================================
+%  Architekturdokument (Phase 2)
+%  Aufgabenstellung 1.2: Technologieübersicht, Architekturübersicht,
+%  Struktur (UML-Klassendiagramm), Verhalten (UML-Sequenzdiagramm).
+%  Third-Party-Libraries/Frameworks: Verwendung explizit dokumentieren
+%  und nachvollziehbar begründen (Aufgabenstellung 1).
+% =====================================================================
+\documentclass{iu-pse}
+\input{meta}
+\addbibresource{literatur.bib}
+
+\dokumenttitel{Architekturdokument}
+\dokumentuntertitel{\Projektname}
+
+\begin{document}
+\titelblatt
+\verzeichnisse
+\abbildungsverzeichnis   % entfernen, falls weniger als drei Abbildungen
+\tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
+
+\begin{abkuerzungen}[SQLite]
+  \acro{GUI}{Graphical User Interface}
+  \acro{UML}{Unified Modeling Language}
+\end{abkuerzungen}
+
+\hauptteil
+\input{kapitel/01_Technologieuebersicht}
+\input{kapitel/02_Architekturuebersicht}
+\input{kapitel/03_Struktur}
+\input{kapitel/04_Verhalten}
+
+\literaturverzeichnis
+\end{document}

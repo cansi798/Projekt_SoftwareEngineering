@@ -1,0 +1,37 @@
+% =====================================================================
+%  Spezifikationsdokument (Phase 1, in Phase 2/3 ggf. aktualisiert)
+%  Beschreibt die NACH AUSSEN sichtbaren Eigenschaften und das Verhalten.
+%  Internes Design/Architektur gehört NICHT hierher (-> Architekturdokument).
+%  Aufgabenstellung 1.1: Datenmodell (+ UML-Klassendiagramm),
+%  Geschäftsprozesse (+ UML-Aktivitätsdiagramm eines Kernprozesses),
+%  Geschäftsregeln, Systemschnittstellen, Benutzerschnittstellen.
+% =====================================================================
+\documentclass{iu-pse}
+\input{meta}
+\addbibresource{literatur.bib}
+
+\dokumenttitel{Spezifikationsdokument}
+\dokumentuntertitel{\Projektname}
+
+\begin{document}
+\titelblatt
+\verzeichnisse
+\abbildungsverzeichnis   % entfernen, falls weniger als drei Abbildungen
+\tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
+
+\begin{abkuerzungen}[JSON]
+  \acro{GUI}{Graphical User Interface}
+  \acro{UML}{Unified Modeling Language}
+  \acro{CSV}{Comma-Separated Values}
+  \acro{JSON}{JavaScript Object Notation}
+\end{abkuerzungen}
+
+\hauptteil
+\input{kapitel/01_Datenmodell}
+\input{kapitel/02_Geschaeftsprozesse}
+\input{kapitel/03_Geschaeftsregeln}
+\input{kapitel/04_Systemschnittstellen}
+\input{kapitel/05_Benutzerschnittstellen}
+
+\literaturverzeichnis
+\end{document}

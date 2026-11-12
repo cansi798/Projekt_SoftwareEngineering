@@ -1,0 +1,25 @@
+{
+  // LaTeX Workshop: alle Dokumente mit derselben latexmk-Konfiguration bauen
+  // (LuaLaTeX + Biber, Ausgabe in build/, gemeinsame Dateien aus _gemeinsam/)
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (IU-Portfolio)",
+      "tools": ["latexmk-iu"]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-iu",
+      "command": "latexmk",
+      "args": ["-r", "../.latexmkrc", "%DOCFILE%"],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "[latex]": { "editor.wordWrap": "on" },
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["app/tests"]
+}

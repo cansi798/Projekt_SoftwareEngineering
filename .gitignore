@@ -1,0 +1,69 @@
+# ---------------------------------------------------------------
+# IU-Vorgaben (Urheberrecht der IU: Aufgabenstellung darf NICHT auf
+# Drittplattformen wie GitHub veröffentlicht werden)
+# ---------------------------------------------------------------
+/Vorgaben/
+
+# ---------------------------------------------------------------
+# LaTeX-Zwischendateien (die fertigen PDFs liegen in docs/pdf/ und abgabe/)
+# ---------------------------------------------------------------
+docs/latex/**/build/
+abgabe/.build/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.lof
+*.lot
+*.anh
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+texput.log
+
+# ---------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# PyInstaller-Zwischenstände (die auszuliefernde .exe kommt nach app/release/)
+app/build/
+app/dist/
+*.spec.bak
+
+# ---------------------------------------------------------------
+# Abgabe-Artefakte, die NICHT ins Repository gehören
+# (ZIP des Repositorys wird aus dem Repository erzeugt)
+# ---------------------------------------------------------------
+/dist/
+
+# ---------------------------------------------------------------
+# Editor/Betriebssystem
+# ---------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.drawio.bkp
+*.drawio.dtmp
+~$*
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Lokale Werkzeug-Konfiguration (nicht Teil der Abgabe)
+.claude/
+.remember/

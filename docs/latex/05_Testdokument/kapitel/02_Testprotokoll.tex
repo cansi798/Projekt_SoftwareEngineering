@@ -1,0 +1,35 @@
+% =====================================================================
+%  2 Testprotokoll  (Aufgabenstellung: „Für jeden Testfall ist Folgendes
+%  zu protokollieren: eindeutige Testfall-ID, Kurzbeschreibung,
+%  Vorbedingungen, Eingabedaten und/oder auszuführende Aktionen,
+%  erwartetes Ergebnis, tatsächliches Ergebnis.“)
+%  Je Testfall ein Block mit dem Makro \testfall (alle Pflichtfelder).
+% =====================================================================
+\newcommand{\testfall}[8]{%
+  % #1 ID  #2 Kurzbeschreibung  #3 Bezug (US/NFA/GR)  #4 Teststufe
+  % #5 Vorbedingungen  #6 Eingabedaten/Aktionen  #7 erwartet  #8 tatsächlich
+  \begin{longtable}{@{}L{4.0cm}L{11.2cm}@{}}
+    \toprule
+    \textbf{Testfall-ID} & \textbf{#1} \\
+    \midrule
+    Kurzbeschreibung & #2 \\
+    Bezug & #3 \\
+    Teststufe & #4 \\
+    Vorbedingungen & #5 \\
+    Eingabedaten/Aktionen & #6 \\
+    Erwartetes Ergebnis & #7 \\
+    Tatsächliches Ergebnis & #8 \\
+    \bottomrule
+  \end{longtable}}
+
+\section{Testprotokoll}
+\TODO{Kurze Hinführung; Konventionen der IDs (z. B. TC-U-01 Unit, TC-I-01 Integration, TC-S-01 System)}
+
+\subsection{Unit-Tests}
+\testfall{TC-U-01}{\TODO{}}{\TODO{US01}}{Unit-Test}{\TODO{}}{\TODO{}}{\TODO{}}{\TODO{bestanden/nicht bestanden + Beobachtung}}
+
+\subsection{Integrationstests}
+\testfall{TC-I-01}{\TODO{}}{\TODO{}}{Integrationstest}{\TODO{}}{\TODO{}}{\TODO{}}{\TODO{}}
+
+\subsection{Systemtests}
+\testfall{TC-S-01}{\TODO{}}{\TODO{}}{Systemtest}{\TODO{}}{\TODO{}}{\TODO{}}{\TODO{}}

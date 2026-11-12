@@ -1,0 +1,47 @@
+% =====================================================================
+%  Projektdokumentation
+%  Phase 1: Projektübersicht, Risikomanagement, Zeitplanung
+%  Phase 2: + Link zum GitHub-Repository (Versionsverwaltung)
+%  Phase 3: + Benutzeranleitung (Installation, Ausführung),
+%           + Anforderungserfüllung / technische Schulden
+%  Quellcode-Anhang (maschinenlesbar) ab Phase 2 automatisch.
+% =====================================================================
+\documentclass{iu-pse}
+\input{meta}
+\addbibresource{literatur.bib}
+
+\dokumenttitel{Projektdokumentation}
+\dokumentuntertitel{\Projektname}
+
+\begin{document}
+\titelblatt
+\verzeichnisse
+% Pflicht ab drei Abbildungen bzw. drei Tabellen (Richtlinien Kap. 3.1):
+\abbildungsverzeichnis
+\tabellenverzeichnis
+
+\begin{abkuerzungen}[MoSCoW]
+  \acro{GUI}{Graphical User Interface}
+  \acro{MVP}{Minimum Viable Product}
+  \acro{MoSCoW}{Must, Should, Could, Won't}
+\end{abkuerzungen}
+
+% \genderhinweis   % optional
+
+\hauptteil
+\input{kapitel/01_Projektuebersicht}
+\input{kapitel/02_Risikomanagement}
+\input{kapitel/03_Zeitplanung}
+\abPhase{2}{\input{kapitel/04_Versionsverwaltung}}
+\abPhase{3}{\input{kapitel/05_Benutzeranleitung}}
+\abPhase{3}{\input{kapitel/06_Anforderungserfuellung}}
+
+\literaturverzeichnis
+
+\abPhase{2}{%
+  \anhang
+  \anhangsteil{Quellcode der Anwendung}
+  \IfFileExists{build/quellcode.tex}{\input{build/quellcode.tex}}{%
+    \TODO{Quellcode-Anhang wird von \texttt{tools/build\_docs.py} erzeugt}}%
+}
+\end{document}

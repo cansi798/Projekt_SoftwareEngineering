@@ -1,0 +1,36 @@
+% =====================================================================
+%  Anforderungsdokument (Phase 1, in Phase 2/3 ggf. aktualisiert)
+%  Aufgabenstellung 1.1: Stakeholder, funktionale Anforderungen
+%  (User Stories + UML-Use-Case-Diagramm), nichtfunktionale Anforderungen,
+%  Glossar.
+% =====================================================================
+\documentclass{iu-pse}
+\input{meta}
+\addbibresource{literatur.bib}
+
+\dokumenttitel{Anforderungsdokument}
+\dokumentuntertitel{\Projektname}
+
+\begin{document}
+\titelblatt
+\verzeichnisse
+\abbildungsverzeichnis   % entfernen, falls weniger als drei Abbildungen
+\tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
+
+\begin{abkuerzungen}[MoSCoW]
+  \acro{FA}{Funktionale Anforderung}
+  \acro{NFA}{Nichtfunktionale Anforderung}
+  \acro{US}{User Story}
+  \acro{UML}{Unified Modeling Language}
+  \acro{MoSCoW}{Must, Should, Could, Won't}
+\end{abkuerzungen}
+
+\hauptteil
+\input{kapitel/01_Einleitung}
+\input{kapitel/02_Stakeholder}
+\input{kapitel/03_FunktionaleAnforderungen}
+\input{kapitel/04_NichtfunktionaleAnforderungen}
+\input{kapitel/05_Glossar}
+
+\literaturverzeichnis
+\end{document}

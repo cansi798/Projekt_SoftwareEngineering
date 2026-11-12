@@ -1,0 +1,36 @@
+% =====================================================================
+%  meta.tex – zentrale Angaben für ALLE Dokumente (Titelblatt, Dateinamen)
+%  Nur hier pflegen! tools/build_docs.py liest Nachname, Vorname und
+%  Matrikelnummer aus dieser Datei, um die Abgabedateien korrekt zu benennen:
+%     Nachname-Vorname_Matrikelnummer_PSE_P1_Abgabe.pdf  usw.
+% =====================================================================
+
+% --- Person -----------------------------------------------------------
+\newcommand{\Vorname}{VORNAME}            % TODO: eintragen
+\newcommand{\Nachname}{NACHNAME}          % TODO: eintragen
+\newcommand{\Matrikelnummer}{00000000}    % TODO: eintragen
+
+% --- Studium / Kurs (keine Abkürzungen beim Studiengang!) -------------
+\newcommand{\Hochschule}{IU Internationale Hochschule}
+\newcommand{\Pruefungsform}{Portfolio}
+\newcommand{\Kursname}{Projekt: Software Engineering (DLMCSPSE01\_D)}
+\newcommand{\Studiengang}{STUDIENGANG AUSGESCHRIEBEN}   % TODO: z. B. „Master of Science Informatik“
+\newcommand{\Tutor}{TITEL VORNAME NACHNAME}              % TODO: inkl. akad. Titel, wenn bekannt
+
+% --- Projekt ------------------------------------------------------------
+\newcommand{\Projektname}{BalanceOS}
+\newcommand{\GitHubURL}{https://github.com/cansi798/Projekt_SoftwareEngineering}
+
+% --- Abgabedaten je Phase (TT.MM.JJJJ) -----------------------------------
+\newcommand{\AbgabePhaseEins}{TT.MM.JJJJ}
+\newcommand{\AbgabePhaseZwei}{TT.MM.JJJJ}
+\newcommand{\AbgabePhaseDrei}{TT.MM.JJJJ}
+% --- Phase -----------------------------------------------------------------
+% tools/build_docs.py setzt die Umgebungsvariable IU_PHASE (1, 2 oder 3).
+% Ohne Build-Skript gilt Phase 1. Damit werden phasenabhängige Kapitel
+% (z. B. GitHub-Link ab Phase 2, Benutzeranleitung in Phase 3) und das
+% Abgabedatum auf dem Titelblatt automatisch gesteuert.
+\edef\Phase{\directlua{tex.sprint(os.getenv("IU_PHASE") or "1")}}
+\newcommand{\AbgabedatumStandard}{%
+  \ifcase\Phase\or\AbgabePhaseEins\or\AbgabePhaseZwei\or\AbgabePhaseDrei\fi}
+\newcommand{\abPhase}[2]{\ifnum\Phase<#1\relax\else#2\fi}  % \abPhase{2}{\input{…}}

@@ -1,0 +1,33 @@
+% =====================================================================
+%  Testdokument (Phase 3)
+%  Aufgabenstellung 1.3: Teststrategie (Vorgehen, Teststufen Unit-,
+%  Integrations-, Systemtests) und Testprotokoll mit je Testfall:
+%  ID, Kurzbeschreibung, Vorbedingungen, Eingabedaten/Aktionen,
+%  erwartetes Ergebnis, tatsächliches Ergebnis.
+%  Optional: automatisierte Tests (z. B. pytest).
+% =====================================================================
+\documentclass{iu-pse}
+\input{meta}
+\addbibresource{literatur.bib}
+
+\dokumenttitel{Testdokument}
+\dokumentuntertitel{\Projektname}
+
+\begin{document}
+\titelblatt
+\verzeichnisse
+\tabellenverzeichnis     % entfernen, falls weniger als drei Tabellen
+
+\begin{abkuerzungen}[NFA]
+  \acro{FA}{Funktionale Anforderung}
+  \acro{NFA}{Nichtfunktionale Anforderung}
+  \acro{US}{User Story}
+\end{abkuerzungen}
+
+\hauptteil
+\input{kapitel/01_Teststrategie}
+\input{kapitel/02_Testprotokoll}
+\input{kapitel/03_Testergebnisse}
+
+\literaturverzeichnis
+\end{document}
