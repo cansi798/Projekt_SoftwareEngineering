@@ -5,18 +5,18 @@
 %  Fachliches Modell (Geschäftsobjekte), KEINE technischen Klassen.
 % =====================================================================
 \section{Datenmodell}
-Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Es handelt sich um ein fachliches Modell aus Sicht der Anwendung: Es legt fest, welche Informationen erfasst, angezeigt, ausgewertet und exportiert werden, nicht aber, wie sie technisch gespeichert oder in Klassen umgesetzt werden. Diese Entscheidungen trifft das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
+Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Es ist ein fachliches Modell aus Sicht der Anwendung. Es legt fest, welche Informationen BalanceOS erfasst, anzeigt, auswertet und exportiert. Wie diese Informationen technisch gespeichert oder in Klassen umgesetzt werden, entscheidet das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
 
 \subsection{Geschäftsobjekte}\label{sec:geschaeftsobjekte}
 Die Geschäftsobjekte lassen sich vier fachlichen Gruppen zuordnen:
 \begin{itemize}
-  \item \textbf{Erfassung:} Ein \emph{Lebensbereich} ist eine Kategorie des Alltags (z.\,B. Schlaf oder Arbeit), der Aktivitäten zugeordnet werden. Er trägt den Bereichstyp und das Wunschprofil, also die gewünschten Stunden pro Woche. Eine \emph{Aktivitaet} ist ein einzelner Eintrag mit Datum, Dauer, Status und optionalen Selbsteinschätzungen. Eine \emph{Wiederholungsserie} beschreibt eine wöchentlich wiederkehrende Aktivität und erzeugt daraus einzelne Termine; eine \emph{Ausnahme} hält fest, an welchem Datum ein Termin der Serie übersprungen wird.
+  \item \textbf{Erfassung:} Ein \emph{Lebensbereich} ist eine Kategorie des Alltags (z.\,B. Schlaf oder Arbeit), der Aktivitäten zugeordnet werden. Er trägt den Bereichstyp und das Wunschprofil, also die gewünschten Stunden pro Woche. Eine \emph{Aktivitaet} ist ein einzelner Eintrag mit Datum, Dauer, Status und optionalen Selbsteinschätzungen. Eine \emph{Wiederholungsserie} beschreibt eine wöchentlich wiederkehrende Aktivität und erzeugt daraus einzelne Termine. Eine \emph{Ausnahme} hält fest, an welchem Datum ein Termin der Serie übersprungen wird.
   \item \textbf{Auswertung:} Eine \emph{Wochenbewertung} fasst das Ergebnis einer \ac{KW} nach \ac{ISO}~8601 zusammen und besteht aus je einer \emph{Bereichsbewertung} pro bewertetem Lebensbereich. Ein \emph{Hinweis} ist eine regelbasierte Rückmeldung mit Begründung.
   \item \textbf{Wissensbasis:} Ein \emph{KompassModell} beschreibt ein wissenschaftliches Modell, eine Empfehlung oder die programmeigenen Systemregeln für die Infoseiten des Balance-Kompasses (US15). Eine \emph{Regel} ist eine prüfbare Bedingung (R01--R10), die genau einem Kompass-Modell zugeordnet ist.
   \item \textbf{Konfiguration und Reflexion:} Die \emph{Einstellungen} existieren genau einmal und enthalten die Parameter der Bewertung. Die Objekte \emph{Who5Erhebung} und \emph{Wochenreflexion} gehören zum Should-Umfang (US20, US22).
 \end{itemize}
 
-Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{Ganzzahl}, \emph{Dezimal} (Dezimalzahl), \emph{Boolean} (wahr/falsch), \emph{Datum} (Kalendertag), \emph{Uhrzeit} (Stunde und Minute) und \emph{Farbe} (Farbwert im Format \texttt{\#RRGGBB}) verwendet. Die Angabe [0..1] kennzeichnet optionale Attribute, [1..7] bzw. [5] die zulässige Anzahl von Werten. Tabelle~\ref{tab:attribute} beschreibt alle Attribute mit Typ, Verbindlichkeit und Wertebereich; Zeitangaben werden fachlich in Minuten erfasst und für Auswertungen in Stunden umgerechnet.
+Die Attribute verwenden die fachlichen Datentypen \emph{String} (Text), \emph{Ganzzahl}, \emph{Dezimal} (Dezimalzahl), \emph{Boolean} (wahr/falsch), \emph{Datum} (Kalendertag), \emph{Uhrzeit} (Stunde und Minute) und \emph{Farbe} (Farbwert im Format \texttt{\#RRGGBB}). Die Angabe [0..1] kennzeichnet optionale Attribute, [1..7] bzw. [5] die zulässige Anzahl von Werten. Tabelle~\ref{tab:attribute} beschreibt alle Attribute mit Typ, Verbindlichkeit und Wertebereich. Zeitangaben werden fachlich in Minuten erfasst und für Auswertungen in Stunden umgerechnet.
 
 \begin{longtable}{@{}L{3.4cm}L{2.8cm}L{1.5cm}L{7.5cm}@{}}
   \caption{Attribute der Geschäftsobjekte}\label{tab:attribute}\\
@@ -44,7 +44,7 @@ Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{
   datum & Datum & ja & Kalendertag; über Mitternacht: Tag des Beginns \\
   beginn & Uhrzeit & optional & Format HH:MM \\
   ende & Uhrzeit & optional & HH:MM; nur mit beginn; vor beginn: über Mitternacht \\
-  dauerMinuten & Ganzzahl & ja & 1--1440~min; aus beginn und ende berechnet oder eingegeben \\
+  dauerMinuten & Ganzzahl & ja & 1--1.440~min; aus beginn und ende berechnet oder eingegeben \\
   status & Aktivitaets\-status & ja & GEPLANT, DURCHGEFUEHRT oder AUSGEFALLEN \\
   zufriedenheit & Ganzzahl & optional & 1 (sehr unzufrieden) bis 5 (sehr zufrieden) \\
   belastung & Ganzzahl & optional & 1 (sehr gering) bis 5 (sehr hoch) \\
@@ -59,7 +59,7 @@ Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{
   startdatum & Datum & ja & erster möglicher Termin \\
   enddatum & Datum & optional & nicht vor startdatum; fehlt es: unbefristet \\
   beginn & Uhrzeit & optional & Uhrzeit der Termine \\
-  dauerMinuten & Ganzzahl & ja & 1--1440~min \\
+  dauerMinuten & Ganzzahl & ja & 1--1.440~min \\
   bewegungsart & Bewegungsart & optional & nur im Bereich Bewegung; wird in die Termine übernommen (ergänzt in Phase~2) \\
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Ausnahme}} \\*
@@ -119,7 +119,7 @@ Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{
 \end{longtable}
 \quelle{Eigene Darstellung.}
 
-Beim ersten Start legt BalanceOS die zehn Standard-Lebensbereiche aus Tabelle~\ref{tab:standardbereiche} an (US01). Die Standard-Soll-Werte ergeben zusammen 143~h und lassen damit Raum für nicht erfasste Zeit. Arbeit und alltägliche Verpflichtungen sind als Obergrenze angelegt, weil dort eine Überschreitung ungünstig ist; alle übrigen Bereiche sind Mindestziele.
+Beim ersten Start legt BalanceOS die zehn Standard-Lebensbereiche aus Tabelle~\ref{tab:standardbereiche} an (US01). Die Standard-Soll-Werte ergeben zusammen 143~h und lassen damit Raum für nicht erfasste Zeit. Arbeit und alltägliche Verpflichtungen sind als Obergrenze angelegt, weil dort eine Überschreitung ungünstig ist. Alle übrigen Bereiche sind Mindestziele.
 
 \begin{table}[H]
   \caption{Standard-Lebensbereiche beim ersten Start}\label{tab:standardbereiche}
@@ -138,7 +138,7 @@ Beim ersten Start legt BalanceOS die zehn Standard-Lebensbereiche aus Tabelle~\r
   \quelle{Eigene Darstellung.}
 \end{table}
 
-Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen Werte einzelner Attribute abschließend fest. Besondere Bedeutung hat die Evidenzart: Sie wird an jedem Kompass-Modell, jedem Hinweis und jedem Score angezeigt und macht sichtbar, ob ein Wert auf einer Theorie, einer Empfehlung, einem validierten Instrument, einem persönlichen Maßstab oder einer programmeigenen Festlegung beruht.
+Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen Werte einzelner Attribute abschließend fest. Besonders wichtig ist die Evidenzart. BalanceOS zeigt sie an jedem Kompass-Modell, jedem Hinweis und jedem Score an. So ist sichtbar, ob ein Wert auf einer Theorie, einer Empfehlung, einem validierten Instrument, einem persönlichen Maßstab oder einer programmeigenen Festlegung beruht.
 
 \begin{longtable}{@{}L{3.1cm}L{4.4cm}L{7.7cm}@{}}
   \caption{Aufzählungstypen}\label{tab:aufzaehlungen}\\
@@ -178,14 +178,14 @@ Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen W
 \quelle{Eigene Darstellung.}
 
 \subsection{Beziehungen und Klassendiagramm}\label{sec:klassendiagramm}
-Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als \ac{UML}-Klassendiagramm. Assoziationen werden als durchgezogene Linien mit Multiplizitäten an beiden Enden dargestellt; ein gefülltes Dreieck neben dem Assoziationsnamen gibt die Leserichtung an \parencite[S.~201]{omg2017uml}. Da es sich um ein fachliches Modell handelt, enthält das Diagramm keine Operationen und keine Navigationsrichtungen. Die Beziehungen haben folgende Bedeutung:
+Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als \ac{UML}-Klassendiagramm. Assoziationen erscheinen als durchgezogene Linien mit Multiplizitäten an beiden Enden; ein gefülltes Dreieck neben dem Assoziationsnamen gibt die Leserichtung an \parencite[S.~201]{omg2017uml}. Weil das Modell fachlich ist, enthält das Diagramm keine Operationen und keine Navigationsrichtungen. Die Beziehungen haben folgende Bedeutung:
 \begin{itemize}
   \item Ein Lebensbereich umfasst beliebig viele Aktivitäten (0..*); jede Aktivität gehört zu genau einem Lebensbereich. Eine Mehrfachzuordnung ist ausgeschlossen.
   \item Jede Wiederholungsserie gehört zu genau einem Lebensbereich. Sie erzeugt beliebig viele Termine, also Aktivitäten mit der Rolle \enquote{termine}. Eine Aktivität stammt aus höchstens einer Serie (0..1); einzeln erfasste Aktivitäten haben keine Serie.
-  \item Eine Wiederholungsserie besitzt beliebig viele Ausnahmen (Komposition): Eine Ausnahme existiert nur zusammen mit ihrer Serie und wird mit ihr gelöscht.
+  \item Eine Wiederholungsserie hat beliebig viele Ausnahmen (Komposition): Eine Ausnahme existiert nur zusammen mit ihrer Serie und wird mit ihr gelöscht.
   \item Ein Kompass-Modell enthält mindestens eine Regel (1..*), jede Regel gehört zu genau einem Kompass-Modell. Die Systemregel R10 gehört zum Modell \enquote{BalanceOS-Systemregeln} mit der Evidenzart PROGRAMMEIGEN. Insgesamt stellt BalanceOS sechs Kompass-Modelle bereit: Lifestyle Balance Model (R04, R08, R09), Effort-Recovery-Modell (R05, R06), Job-Demands-Resources-Theorie (R07), WHO-Bewegungsleitlinie (R01, R02), Schlafempfehlung (R03) und BalanceOS-Systemregeln (R10).
   \item Eine Regel erzeugt beliebig viele Hinweise; jeder Hinweis stammt von genau einer Regel und bezieht sich auf höchstens einen Lebensbereich. Bereichsunabhängige Hinweise, etwa zu R05 oder R10, haben keinen Lebensbereich.
-  \item Eine Wochenbewertung besteht aus mindestens einer Bereichsbewertung (Komposition); jede Bereichsbewertung bewertet genau einen Lebensbereich. Die Wochenbewertung ist ein abgeleitetes Objekt: Sie wird bei jeder Anzeige aus den aktuellen Aktivitäten und Einstellungen neu berechnet und ist daher stets aktuell.
+  \item Eine Wochenbewertung besteht aus mindestens einer Bereichsbewertung (Komposition); jede Bereichsbewertung bewertet genau einen Lebensbereich. Die Wochenbewertung ist ein abgeleitetes Objekt. Sie wird bei jeder Anzeige aus den aktuellen Aktivitäten und Einstellungen neu berechnet und ist deshalb stets aktuell.
   \item Einstellungen, Who5Erhebung und Wochenreflexion haben keine Assoziationen. Die Einstellungen existieren genau einmal; Erhebungen und Reflexionen sind über Datum bzw. Kalenderwoche zeitlich zugeordnet.
 \end{itemize}
 

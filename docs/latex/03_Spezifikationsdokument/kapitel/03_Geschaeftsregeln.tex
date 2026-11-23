@@ -6,7 +6,7 @@
 %  Jede Regel später im Testdokument prüfen (GR-ID im Testfall nennen).
 % =====================================================================
 \section{Geschäftsregeln}\label{sec:geschaeftsregeln}
-Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg der Eingabe stets einhält. Tabelle~\ref{tab:geschaeftsregeln} fasst sie nach Geschäftsobjekten gruppiert zusammen und ordnet jede Regel den betroffenen Objekten bzw. Prozessen aus den Kapiteln~\ref{sec:geschaeftsobjekte} und~\ref{sec:prozessuebersicht} sowie den User Stories zu. Verstößt eine Eingabe gegen eine Regel, wird sie vor dem Speichern abgewiesen und am betroffenen Feld erläutert (NFA02); die zugehörigen Gültigkeitsregeln der Eingabefelder und Fehlermeldungen enthält Tabelle~\ref{tab:validierung} in Kapitel~5. Jede Geschäftsregel wird im Testdokument durch mindestens einen Testfall mit Verweis auf ihre Kennung geprüft.
+Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg der Eingabe stets einhält. Tabelle~\ref{tab:geschaeftsregeln} fasst sie nach Geschäftsobjekten gruppiert zusammen. Jede Regel ist dort den betroffenen Objekten bzw. Prozessen aus den Kapiteln~\ref{sec:geschaeftsobjekte} und~\ref{sec:prozessuebersicht} sowie den User Stories zugeordnet. Verstößt eine Eingabe gegen eine Regel, wird sie vor dem Speichern abgewiesen und am betroffenen Feld erläutert (NFA02). Die zugehörigen Gültigkeitsregeln der Eingabefelder und die Fehlermeldungen enthält Tabelle~\ref{tab:validierung} in Kapitel~5. Im Testdokument prüft mindestens ein Testfall jede Geschäftsregel und verweist dabei auf ihre Kennung.
 
 \begin{longtable}{@{}L{1.2cm}L{9.0cm}L{3.5cm}L{1.5cm}@{}}
   \caption{Geschäftsregeln}\label{tab:geschaeftsregeln}\\
@@ -32,7 +32,7 @@ Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg d
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Aktivitäten}} \\*
   GR09 & Jede Aktivität gehört zu genau einem Lebensbereich; eine Mehrfachzuordnung ist nicht möglich. Der Titel umfasst 1--80 Zeichen, die Notiz höchstens 500 Zeichen. & Aktivitaet, GP01 & US05 \\
-  GR10 & Die Dauer beträgt 1--1440~min. Sind Beginn und Ende angegeben, wird die Dauer daraus berechnet; ein Ende ohne Beginn ist unzulässig, Beginn und Ende dürfen nicht gleich sein. & Aktivitaet, GP01 & US05 \\
+  GR10 & Die Dauer beträgt 1--1.440~min. Sind Beginn und Ende angegeben, wird die Dauer daraus berechnet. Ein Ende ohne Beginn ist unzulässig, und Beginn und Ende dürfen nicht gleich sein. & Aktivitaet, GP01 & US05 \\
   GR11 & Liegt das Ende vor dem Beginn, verläuft die Aktivität über Mitternacht: Die Dauer ist Ende $-$ Beginn $+$ 24~h, die Aktivität zählt vollständig zum Datum des Beginns (z.\,B. Schlaf 23:00--06:30). & Aktivitaet, GP01, GP03 & US05 \\
   GR12 & Der Status DURCHGEFUEHRT ist für Daten in der Zukunft nicht zulässig. & Aktivitaet, GP01 & US05, US06 \\
   GR13 & Zufriedenheit, Belastung und Erholung sind ganze Zahlen von 1 bis 5 und nur bei Status DURCHGEFUEHRT erfassbar. Wechselt der Status, werden vorhandene Bewertungen entfernt. & Aktivitaet & US05, US06 \\
@@ -40,7 +40,7 @@ Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg d
   GR15 & Eine Bewegungsart kann nur bei Aktivitäten im Standardbereich Bewegung angegeben werden. R01 und R02 berücksichtigen nur Aktivitäten mit Bewegungsart. & Aktivitaet, GP04 & US05, US12 \\
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Wiederholungsserien}} \\*
-  GR16 & Eine Serie hat mindestens einen Wochentag, eine Dauer von 1--1440~min und ein Enddatum, das nicht vor dem Startdatum liegt. & Wiederholungs\-serie & US07 \\
+  GR16 & Eine Serie hat mindestens einen Wochentag, eine Dauer von 1--1.440~min und ein Enddatum, das nicht vor dem Startdatum liegt. & Wiederholungs\-serie & US07 \\
   GR17 & Termine entstehen nur an den gewählten Wochentagen zwischen Start- und Enddatum und höchstens 52~Wochen im Voraus. & Wiederholungs\-serie, GP02 & US07 \\
   GR18 & Eine Ausnahme ist nur für ein Termindatum der Serie zulässig (Datum im Gültigkeitszeitraum und an einem gewählten Wochentag), je Datum höchstens einmal. Für ein Datum mit Ausnahme entsteht kein Termin. Auch das Löschen oder Verschieben eines einzelnen Termins legt für sein ursprüngliches Datum eine Ausnahme an. & Ausnahme, GP02 & US08 \\
   GR19 & Das Bearbeiten eines einzelnen Termins ändert nur diesen Termin. Änderungen an der Serie wirken nur auf zukünftige, nicht einzeln bearbeitete Termine im Status GEPLANT. & Wiederholungs\-serie, Aktivitaet & US06, US07 \\

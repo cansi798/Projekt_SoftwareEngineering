@@ -5,15 +5,15 @@
 %  -> Abweichungen später im Abstract reflektieren.
 % =====================================================================
 \section{Zeitplanung}
-Die Zeitplanung legt fest, in welcher Reihenfolge und mit welchem Aufwand die Arbeitspakete bearbeitet werden und an welchen Meilensteinen der Fortschritt überprüft wird. Nach den Planungsannahmen folgen die Arbeitspakete, die Meilensteine und der Zeitplan als Gantt-Diagramm mit Erläuterung des kritischen Pfads.
+Die Zeitplanung legt fest, in welcher Reihenfolge und mit welchem Aufwand die Arbeitspakete bearbeitet werden. Sie bestimmt außerdem, an welchen Meilensteinen der Fortschritt überprüft wird. Nach den Planungsannahmen folgen die Arbeitspakete, die Meilensteine und der Zeitplan als Gantt-Diagramm mit Erläuterung des kritischen Pfads.
 
 \subsection{Planungsannahmen}
-Der Planungszeitraum reicht vom 09.11.2026 (Montag, \ac{KW}~46) bis zum 12.12.2026 (Samstag, \ac{KW}~50) und umfasst 34~Kalendertage. Neben beruflichen und privaten Verpflichtungen stehen durchschnittlich etwa 28~h pro Woche für das Projekt zur Verfügung, im gesamten Zeitraum also rund 136~h. Verplant sind 120~h, sodass eine Reserve von rund 16~h (etwa 12~\%) für Unvorhergesehenes bleibt. Die Wochenbelastung schwankt: In der ersten Woche ist der Aufwand für AP1 bis AP3 bis zur Abgabe am 12.11.2026 verdichtet, in der Implementierung verteilt er sich gleichmäßiger.
+Der Planungszeitraum reicht vom 09.11.2026 (Montag, \ac{KW}~46) bis zum 12.12.2026 (Samstag, \ac{KW}~50) und umfasst 34~Kalendertage. Neben beruflichen und privaten Verpflichtungen stehen durchschnittlich etwa 28~h pro Woche für das Projekt zur Verfügung, im gesamten Zeitraum also rund 136~h. Verplant sind 120~h, sodass eine Reserve von rund 16~h (etwa 12~\%) für Unvorhergesehenes bleibt. Die Wochenbelastung schwankt. In der ersten Woche ballt sich der Aufwand für AP1 bis AP3 bis zur Abgabe am 12.11.2026. In der Implementierung verteilt er sich gleichmäßiger.
 
-Die Termine richten sich nach den drei Phasen der Aufgabenstellung. Nach jeder Abgabe der Phasen~1 und~2 folgt ein Feedback der Tutor:innen, das bis zu sieben Tage dauern kann. Erwartet wird das Feedback zu Phase~1 bis zum 19.11.2026 und zu Phase~2 bis zum 07.12.2026. Damit diese Wartezeiten nicht ungenutzt verstreichen, beginnen direkt nach jeder Abgabe feedbackunabhängige Arbeitspakete; die Einarbeitung des Feedbacks ist als eigenes Arbeitspaket (AP5, AP8) eingeplant. Als zusätzlicher Puffer dient der 12.12.2026, der Tag nach dem geplanten Abgabetermin.
+Die Termine richten sich nach den drei Phasen der Aufgabenstellung. Nach jeder Abgabe der Phasen~1 und~2 folgt ein Feedback der Tutor:innen, das bis zu sieben Tage dauern kann. Erwartet wird das Feedback zu Phase~1 bis zum 19.11.2026 und zu Phase~2 bis zum 07.12.2026. Damit diese Wartezeiten nicht ungenutzt verstreichen, beginnen direkt nach jeder Abgabe Arbeitspakete, die nicht vom Feedback abhängen. Für die Einarbeitung des Feedbacks ist jeweils ein eigenes Arbeitspaket (AP5, AP8) eingeplant. Als zusätzlicher Puffer dient der 12.12.2026, der Tag nach dem geplanten Abgabetermin.
 
 \subsection{Arbeitspakete}
-Das Projekt ist in zehn Arbeitspakete gegliedert (Tabelle~\ref{tab:arbeitspakete}). Jedes Arbeitspaket hat einen Zeitraum, einen geschätzten Aufwand und ein prüfbares Ergebnis; die Spalte \enquote{Vorgänger} nennt die Abhängigkeiten. Das umfangreichste Arbeitspaket ist die Implementierung (AP6) mit 45~h, die in die Inkremente I1 bis I5 gegliedert ist (siehe Abschnitt~\ref{sec:vorgehen}).
+Das Projekt ist in zehn Arbeitspakete gegliedert (Tabelle~\ref{tab:arbeitspakete}). Jedes Arbeitspaket hat einen Zeitraum, einen geschätzten Aufwand und ein prüfbares Ergebnis. Die Spalte \enquote{Vorgänger} nennt die Abhängigkeiten. Das umfangreichste Arbeitspaket ist die Implementierung (AP6) mit 45~h. Sie ist in die Inkremente I1 bis I5 gegliedert (siehe Abschnitt~\ref{sec:vorgehen}).
 
 \begingroup
 \setstretch{1.0}
@@ -48,7 +48,7 @@ Das Projekt ist in zehn Arbeitspakete gegliedert (Tabelle~\ref{tab:arbeitspakete
 \quelle{Eigene Darstellung.}
 
 \subsection{Meilensteine}
-Vier Meilensteine markieren die Abgaben der drei Phasen sowie den Abschluss von Implementierung und Test (Tabelle~\ref{tab:meilensteine}). Jeder Meilenstein ist mit einem überprüfbaren Kriterium verbunden.
+Vier Meilensteine markieren die Abgaben der drei Phasen sowie den Abschluss von Implementierung und Test (Tabelle~\ref{tab:meilensteine}). Zu jedem Meilenstein gehört ein überprüfbares Kriterium.
 
 \begin{table}[H]
   \caption{Meilensteine mit Termin und Prüfkriterium}\label{tab:meilensteine}
@@ -68,7 +68,7 @@ Vier Meilensteine markieren die Abgaben der drei Phasen sowie den Abschluss von 
 \end{table}
 
 \subsection{Zeitplan und kritischer Pfad}
-Abbildung~\ref{abb:zeitplan} stellt die Arbeitspakete und Meilensteine als Gantt-Diagramm auf Tagesbasis dar, gruppiert nach den drei Phasen der Aufgabenstellung. Schraffiert sind die erwarteten Wartezeiten auf das Feedback der Tutor:innen.
+Abbildung~\ref{abb:zeitplan} zeigt die Arbeitspakete und Meilensteine als Gantt-Diagramm auf Tagesbasis. Sie sind nach den drei Phasen der Aufgabenstellung gruppiert. Schraffiert sind die erwarteten Wartezeiten auf das Feedback der Tutor:innen.
 
 \begin{figure}[H]
   \caption{Zeitplan der Arbeitspakete und Meilensteine}\label{abb:zeitplan}
@@ -77,9 +77,9 @@ Abbildung~\ref{abb:zeitplan} stellt die Arbeitspakete und Meilensteine als Gantt
   \quelle{Eigene Darstellung.}
 \end{figure}
 
-Der kritische Pfad verläuft über AP1, AP2 und AP3 zu M1, weiter über AP4 und AP6 zu M2, anschließend über AP7 zu M3 und schließlich über AP8, AP9 und AP10 zu M4. Jede Verzögerung auf diesem Pfad verschiebt die folgenden Meilensteine. Besonders kritisch ist die Implementierung (AP6): Sie bindet mit 45~h 37,5~\% des Gesamtaufwands, und das Testen (AP7) kann erst nach ihrem Abschluss vollständig beginnen. Um dieses Risiko zu begrenzen, ist AP6 in Inkremente gegliedert; das letzte Inkrement I5 enthält nur Should-Funktionen und kann bei Verzug gekürzt werden, ohne den Kern zu gefährden (vgl. RI01 und RI02 in Tabelle~\ref{tab:risiken}).
+Der kritische Pfad verläuft über AP1, AP2 und AP3 zu M1 und weiter über AP4 und AP6 zu M2. Danach führt er über AP7 zu M3 und schließlich über AP8, AP9 und AP10 zu M4. Jede Verzögerung auf diesem Pfad verschiebt die folgenden Meilensteine. Besonders kritisch ist die Implementierung (AP6). Sie bindet mit 45~h 37,5~\% des Gesamtaufwands, und das Testen (AP7) kann erst nach ihrem Abschluss vollständig beginnen. Um dieses Risiko zu begrenzen, ist AP6 in Inkremente gegliedert. Das letzte Inkrement I5 enthält nur Should-Funktionen. Bei Verzug lässt es sich kürzen, ohne den Kern zu gefährden (vgl. RI01 und RI02 in Tabelle~\ref{tab:risiken}).
 
-AP4 startet direkt nach M1 und hängt nicht vom Feedback ab, weil die Architektur auf der abgegebenen Spezifikation aufbaut. Sobald die Grobarchitektur steht, beginnt AP6 bereits am 16.11.2026 mit dem Grundgerüst (I1), das von späteren Änderungen an den Anforderungen kaum betroffen ist. AP5 liegt parallel zur Implementierung und besitzt damit Puffer: Trifft das Feedback später ein, verschiebt sich die Einarbeitung innerhalb von AP6, ohne M2 zu gefährden. Ähnlich verhält es sich in Phase~3: Testen und Benutzeranleitung sind weitgehend feedbackunabhängig, sodass nur AP8 vom Eingang des Feedbacks zu Phase~2 abhängt. Der Fortschritt wird wöchentlich mit dem Plan verglichen; Abweichungen werden dokumentiert und im Abstract reflektiert.
+AP4 startet direkt nach M1 und hängt nicht vom Feedback ab, weil die Architektur auf der abgegebenen Spezifikation aufbaut. Sobald die Grobarchitektur steht, beginnt AP6 bereits am 16.11.2026 mit dem Grundgerüst (I1). Spätere Änderungen an den Anforderungen betreffen dieses Grundgerüst kaum. AP5 liegt parallel zur Implementierung und hat damit Puffer. Trifft das Feedback später ein, verschiebt sich die Einarbeitung innerhalb von AP6, ohne M2 zu gefährden. In Phase~3 ist es ähnlich. Testen und Benutzeranleitung hängen weitgehend nicht vom Feedback ab, sodass nur AP8 vom Eingang des Feedbacks zu Phase~2 abhängt. Der Fortschritt wird wöchentlich mit dem Plan verglichen. Abweichungen werden dokumentiert und im Abstract reflektiert.
 
 \subsection{Fortschrittskontrolle zu M2}
-Geplant war, AP4 am 13.11.2026 und AP6 am 16.11.2026 zu beginnen. Tatsächlich begann die Arbeit an Phase~2 erst am 23.11.2026, nachdem das Feedback zu Phase~1 eingegangen war. Damit trat RI02 ein. Als Gegenmaßnahme laut Notfallplan wurden Architektur, Feedback-Einarbeitung und Implementierung (AP4 bis AP6) verdichtet und die Reserve genutzt. Alle fünf Inkremente I1 bis I5 wurden am 23.11.2026 umgesetzt, der Umfang von I5 musste nicht gekürzt werden. Damit war der Stand für M2 eine Woche vor dem Abgabetermin am 30.11.2026 fertig. Wie diese Abweichung zu bewerten ist, reflektiert das Abstract in Phase~3.
+Geplant war, AP4 am 13.11.2026 und AP6 am 16.11.2026 zu beginnen. Tatsächlich begann die Arbeit an Phase~2 erst am 23.11.2026, nachdem das Feedback zu Phase~1 eingegangen war. Damit trat RI02 ein. Laut Notfallplan wurden deshalb Architektur, Feedback-Einarbeitung und Implementierung (AP4 bis AP6) verdichtet, und die Reserve wurde genutzt. Alle fünf Inkremente I1 bis I5 wurden am 23.11.2026 umgesetzt. Der Umfang von I5 musste nicht gekürzt werden. Der Stand für M2 wurde am 23.11.2026 eingereicht, eine Woche vor dem geplanten Termin am 30.11.2026. Das Abstract in Phase~3 reflektiert, wie diese Abweichung zu bewerten ist.

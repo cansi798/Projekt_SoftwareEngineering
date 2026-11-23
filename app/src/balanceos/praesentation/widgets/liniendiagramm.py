@@ -23,6 +23,7 @@ class _Zeichenflaeche(QWidget):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
     def paintEvent(self, _event) -> None:  # noqa: N802 – Qt-Methodenname
+        """Zeichnet Gitter, Achsen und eine Linie je Lebensbereich."""
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
         p.fillRect(self.rect(), QColor("white"))
@@ -38,6 +39,7 @@ class _Zeichenflaeche(QWidget):
             return
 
         def punkt(i: int, wert: int) -> QPointF:
+            """Rechnet Woche ``i`` und Prozentwert in Bildpunkte um."""
             x = flaeche.left() + (flaeche.width() * (i + 0.5) / n)
             y = flaeche.bottom() - flaeche.height() * wert / 100
             return QPointF(x, y)

@@ -3,7 +3,7 @@
 %  anvisierten Ziel-/Benutzergruppe(n)“)
 % =====================================================================
 \section{Stakeholder}\label{sec:stakeholder}
-Stakeholder sind alle Personen und Organisationen, die Anforderungen an BalanceOS stellen oder von der Anwendung betroffen sind. Dieses Kapitel gibt zunächst einen Überblick über alle Stakeholder und beschreibt anschließend die primäre Zielgruppe sowie die daraus abgeleitete Persona.
+Stakeholder sind alle Personen und Organisationen, die Anforderungen an BalanceOS stellen oder von der Anwendung betroffen sind. Dieses Kapitel gibt zuerst einen Überblick über alle Stakeholder. Danach beschreibt es die primäre Zielgruppe und die daraus abgeleitete Persona.
 
 \subsection{Stakeholderübersicht}
 Tabelle~\ref{tab:stakeholder} fasst die identifizierten Stakeholder mit ihren Interessen und ihrem Einfluss auf das Projekt zusammen. Der Einfluss beschreibt, wie stark ein Stakeholder Umfang, Gestaltung oder Bewertung der Anwendung bestimmt.
@@ -50,21 +50,21 @@ Tabelle~\ref{tab:stakeholder} fasst die identifizierten Stakeholder mit ihren In
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Die Tutor:innen nehmen eine Doppelrolle ein: Als Prüfende bewerten sie das Portfolio, als Benutzer:innen testen sie die Anwendung. Da sie die Anwendung in der Regel ohne eigene Vorgeschichte an Daten kennenlernen, müssen Demodaten den Nutzen unmittelbar sichtbar machen (US18). Die Urheber:innen der Modelle und Instrumente stellen keine aktiven Anforderungen, begrenzen aber den Lösungsraum. So wird etwa der Fragebogen COPSOQ nicht verwendet, weil die deutsche Fassung lizenzpflichtig ist (Abschnitt~\ref{sec:abgrenzung}).
+Die Tutor:innen haben eine Doppelrolle. Als Prüfende bewerten sie das Portfolio, als Benutzer:innen testen sie die Anwendung. Sie lernen die Anwendung in der Regel ohne eigene bisherige Daten kennen. Deshalb müssen Demodaten den Nutzen sofort sichtbar machen (US18). Die Urheber:innen der Modelle und Instrumente stellen keine aktiven Anforderungen, begrenzen aber den Lösungsraum. So verwendet BalanceOS etwa den Fragebogen COPSOQ nicht, weil die deutsche Fassung lizenzpflichtig ist (Abschnitt~\ref{sec:abgrenzung}).
 
 \subsection{Zielgruppe}
-Die primäre Zielgruppe sind berufstätige Erwachsene im Alter von etwa 25 bis 55 Jahren, die neben dem Beruf weitere Verantwortung tragen, zum Beispiel für Kinder, ein berufsbegleitendes Studium oder die Pflege von Angehörigen. Diese Mehrfachbelastung führt dazu, dass einzelne Lebensbereiche über Wochen hinweg zu kurz kommen, ohne dass dies im Alltag bewusst wahrgenommen wird.
+Die primäre Zielgruppe sind berufstätige Erwachsene im Alter von etwa 25 bis 55 Jahren. Neben dem Beruf tragen sie weitere Verantwortung, zum Beispiel für Kinder, ein berufsbegleitendes Studium oder die Pflege von Angehörigen. Durch diese Mehrfachbelastung kommen einzelne Lebensbereiche über Wochen hinweg zu kurz, ohne dass die Betroffenen es im Alltag bewusst wahrnehmen.
 
 \textbf{Bedürfnisse:} Die Zielgruppe möchte mit geringem Aufwand einen ehrlichen Überblick darüber erhalten, wie sich die eigene Zeit tatsächlich auf die Lebensbereiche verteilt. Wichtig ist der Vergleich mit den eigenen Wünschen statt mit einer allgemeinen Norm. Hinweise sollen verständlich und nachvollziehbar sein und auf anerkannten Richtwerten beruhen, etwa zur Bewegung oder zum Schlaf.
 
-\textbf{Probleme:} Warum bestehende Werkzeuge nicht genügen, beschreibt die Projektdokumentation. Für die Anforderungen zählen drei Vorbehalte der Zielgruppe: Persönliche Daten sollen nicht in die Cloud gelangen, Ratschläge brauchen eine erkennbare Begründung, und lückenhafte Einträge in stressigen Wochen dürfen nicht zu einer schlechten Bewertung führen.
+\textbf{Probleme:} Warum bestehende Werkzeuge nicht genügen, beschreibt die Projektdokumentation. Für die Anforderungen zählen drei Vorbehalte der Zielgruppe. Persönliche Daten sollen nicht in die Cloud gelangen, und Ratschläge brauchen eine erkennbare Begründung. Außerdem dürfen lückenhafte Einträge in stressigen Wochen nicht zu einer schlechten Bewertung führen.
 
-\textbf{Nutzungskontext:} Die Anwendung wird am privaten Windows-Rechner genutzt, typischerweise abends für wenige Minuten zum Erfassen der Aktivitäten des Tages und am Wochenende für einen Wochenrückblick. Die Nutzung erfolgt allein und ohne Zeitdruck; Unterbrechungen sind häufig, weshalb Eingaben sofort gespeichert werden müssen.
+\textbf{Nutzungskontext:} Die Zielgruppe nutzt die Anwendung am privaten Windows-Rechner. Typischerweise erfasst sie abends in wenigen Minuten die Aktivitäten des Tages und blickt am Wochenende auf die Woche zurück. Sie arbeitet dabei allein und ohne Zeitdruck. Weil Unterbrechungen häufig sind, müssen Eingaben sofort gespeichert werden.
 
-\textbf{Technische Voraussetzungen:} Die Zielgruppe verfügt über durchschnittliche PC-Kenntnisse und nutzt Windows~10 oder Windows~11. Eine Installation von Python oder weiteren Komponenten kann nicht vorausgesetzt werden. Eine Internetverbindung wird nicht benötigt.
+\textbf{Technische Voraussetzungen:} Die Zielgruppe hat durchschnittliche PC-Kenntnisse und nutzt Windows~10 oder Windows~11. Es kann nicht vorausgesetzt werden, dass Python oder weitere Komponenten installiert sind. Eine Internetverbindung wird nicht benötigt.
 
 \subsection{Persona}\label{sec:persona}
-Eine Persona verdichtet die Merkmale der Zielgruppe zu einer fiktiven, aber realistischen Person. Sie dient als Prüfstein für Anforderungen: Jede User Story muss für die Persona einen erkennbaren Nutzen haben. Tabelle~\ref{tab:persona} beschreibt die Persona Sarah Keller. Die Demodaten der Anwendung (acht Wochen) bilden ihren Alltag ab.
+Eine Persona verdichtet die Merkmale der Zielgruppe zu einer fiktiven, aber realistischen Person. Sie ist ein Prüfstein für Anforderungen, denn jede User Story muss für die Persona einen erkennbaren Nutzen haben. Tabelle~\ref{tab:persona} beschreibt die Persona Sarah Keller. Die Demodaten der Anwendung (acht Wochen) bilden ihren Alltag ab.
 
 \begingroup\tabsatz
 \begin{longtable}{@{}L{3.4cm}L{11.8cm}@{}}
@@ -95,4 +95,4 @@ Eine Persona verdichtet die Merkmale der Zielgruppe zu einer fiktiven, aber real
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Aus der Persona ergeben sich zentrale Anforderungen: Wiederholungsserien entlasten die Erfassung fester Termine (US07), die Datenvollständigkeit verhindert eine Abwertung lückenhafter Wochen (US11), und die Begründung jedes Hinweises schafft Vertrauen (US13). Die rein lokale Datenhaltung und die vollständige Löschbarkeit der Daten adressieren Sarahs Datenschutzbedenken (US17, NFA05).
+Aus der Persona ergeben sich wichtige Anforderungen. Wiederholungsserien erleichtern die Erfassung fester Termine (US07), und die Datenvollständigkeit verhindert, dass lückenhafte Wochen abgewertet werden (US11). Die Begründung jedes Hinweises schafft Vertrauen (US13). Auf Sarahs Datenschutzbedenken antworten die rein lokale Datenhaltung und die Möglichkeit, die Daten vollständig zu löschen (US17, NFA05).

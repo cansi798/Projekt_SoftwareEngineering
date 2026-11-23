@@ -88,6 +88,7 @@ class _Woche:
         minuten: int,
         **bewertung,
     ) -> None:
+        """Hängt eine Demo-Aktivität am Wochentag ``tag`` an; Tage nach heute bleiben geplant."""
         datum = self.kw.montag() + timedelta(days=tag)
         geplant = datum > self.heute
         bewegungsart = bewertung.pop("bewegungsart", None)
@@ -114,6 +115,7 @@ class _Woche:
         )
 
     def zufrieden(self, von: int = 3, bis: int = 5) -> int:
+        """Liefert eine zufällige Zufriedenheit zwischen ``von`` und ``bis``."""
         return self.rng.randint(von, bis)
 
 

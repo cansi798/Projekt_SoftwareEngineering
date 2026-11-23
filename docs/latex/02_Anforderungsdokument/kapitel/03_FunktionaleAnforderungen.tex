@@ -7,10 +7,10 @@
 %  Testdokument wiederverwendet (Nachverfolgbarkeit).
 % =====================================================================
 \section{Funktionale Anforderungen}\label{sec:fa}
-Funktionale Anforderungen beschreiben, welche Funktionen BalanceOS den Nutzer:innen bereitstellt. Sie werden in diesem Kapitel als User Stories mit Akzeptanzkriterien formuliert, gegen nicht umgesetzte Funktionen abgegrenzt und abschließend in einem \ac{UML}-Use-Case-Diagramm zusammengefasst.
+Funktionale Anforderungen beschreiben, welche Funktionen BalanceOS den Nutzer:innen bereitstellt. Dieses Kapitel formuliert sie als User Stories mit Akzeptanzkriterien und grenzt sie gegen nicht umgesetzte Funktionen ab. Abschließend fasst ein \ac{UML}-Use-Case-Diagramm sie zusammen.
 
 \subsection{User Stories}\label{sec:userstories}
-Eine User Story beschreibt eine Anforderung aus Sicht einer Rolle in der Form \anf{Als \textless Rolle\textgreater{} möchte ich \textless Fähigkeit\textgreater, damit \textless Nutzen\textgreater} \parencite[S.~1-12]{swebok2026}. Das Format verbindet die gewünschte Funktion mit ihrem Nutzen und macht so sichtbar, warum eine Anforderung besteht. Rolle ist in allen User Stories die Nutzer:in; die Tutor:innen nehmen beim Test der Anwendung ebenfalls diese Rolle ein. Damit jede User Story eindeutig überprüft werden kann, ist sie mit zwei bis vier Akzeptanzkriterien versehen. Diese bilden die Grundlage der späteren Systemtests.
+Eine User Story beschreibt eine Anforderung aus Sicht einer Rolle in der Form \anf{Als \textless Rolle\textgreater{} möchte ich \textless Fähigkeit\textgreater, damit \textless Nutzen\textgreater} \parencite[S.~1-12]{swebok2026}. Das Format verbindet die gewünschte Funktion mit ihrem Nutzen und macht so sichtbar, warum eine Anforderung besteht. In allen User Stories ist die Rolle die Nutzer:in. Auch die Tutor:innen nehmen beim Test der Anwendung diese Rolle ein. Jede User Story hat zwei bis vier Akzeptanzkriterien, damit sie sich eindeutig überprüfen lässt. Diese Kriterien sind die Grundlage der späteren Systemtests.
 
 Ausgangspunkt der Erfassung sind die zehn Standard-Lebensbereiche aus der Ideenskizze (Tabelle~\ref{tab:lebensbereiche}). Jeder Bereich hat einen Bereichstyp: Bei einem \emph{Mindestziel} ist mehr Zeit bis zum Soll besser, bei einer \emph{Obergrenze} ist eine Überschreitung des Solls ungünstig. Die Standard-Soll-Werte in Stunden pro Woche sind Vorschläge und werden im Wunschprofil persönlich angepasst.
 
@@ -31,7 +31,7 @@ Ausgangspunkt der Erfassung sind die zehn Standard-Lebensbereiche aus der Ideens
   \quelle{Eigene Darstellung.}
 \end{table}
 
-Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktionsbereichen. US01--US18 haben die Priorität Must und bilden den Kern der Anwendung; US19--US22 haben die Priorität Should und werden nach den Must-Anforderungen umgesetzt.
+Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktionsbereichen. US01--US18 haben die Priorität Must und bilden den Kern der Anwendung. US19--US22 haben die Priorität Should und werden nach den Must-Anforderungen umgesetzt.
 
 \begingroup\tabsatz
 \begin{longtable}{@{}L{1.0cm}L{4.9cm}L{1.1cm}L{8.2cm}@{}}
@@ -137,7 +137,7 @@ Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktio
   US12 & Als Nutzer:in möchte ich regelbasierte Hinweise zu meiner Woche erhalten, damit ich auf ungünstige Muster und auf Erfolge aufmerksam werde. & Must &
   \begin{akz}
     \item Nach jeder Neuberechnung werden die aktiven Regeln R01--R10 geprüft.
-    \item Hinweise sind nach Hinweisart (Warnung vor positiv vor System) und Regelkennung sortiert.
+    \item Hinweise sind nach Hinweisart (Warnung vor positivem Hinweis vor Systemhinweis) und Regelkennung sortiert.
     \item Beispiel R01: Weniger als 150~min moderate Ausdaueraktivität pro Woche (intensive Minuten zählen doppelt) ergibt eine Warnung.
     \item Hinweise beschreiben Zusammenhänge, stellen keine Diagnose und lassen sich ausblenden.
   \end{akz} \\
@@ -222,14 +222,14 @@ Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktio
 \quelle{Eigene Darstellung.}
 
 \subsection{Abgrenzung des Funktionsumfangs}\label{sec:abgrenzung}
-Die MoSCoW-Priorisierung grenzt den Funktionsumfang bewusst ein, damit alle Must- und Should-Anforderungen im Bearbeitungszeitraum vollständig umgesetzt werden können. Could-Funktionen werden nur umgesetzt, wenn nach Abschluss der Must- und Should-Anforderungen Zeit verbleibt, und sind deshalb nicht als User Stories formuliert. Dazu zählen persönliche Ziele je Lebensbereich, eine Ersteinrichtung mit Lebensprofil-Vorlagen, eine Tages- und Monatsansicht, Windows-Benachrichtigungen, ein Hell- und Dunkelmodus, ein Passwortschutz, ein Wochenbericht als \ac{PDF} sowie eine Datensicherung mit Wiederherstellung.
+Die MoSCoW-Priorisierung grenzt den Funktionsumfang bewusst ein, damit alle Must- und Should-Anforderungen im Bearbeitungszeitraum vollständig umgesetzt werden können. Could-Funktionen werden nur umgesetzt, wenn nach Abschluss der Must- und Should-Anforderungen noch Zeit bleibt. Deshalb sind sie nicht als User Stories formuliert. Dazu zählen persönliche Ziele je Lebensbereich, eine Ersteinrichtung mit Lebensprofil-Vorlagen, eine Tages- und Monatsansicht, Windows-Benachrichtigungen, ein Hell- und Dunkelmodus, ein Passwortschutz, ein Wochenbericht als \ac{PDF} sowie eine Datensicherung mit Wiederherstellung.
 
-Als Won't-Funktionen sind in dieser Version ausdrücklich ausgeschlossen: jede Form von \ac{KI}, Cloud-Synchronisation, Benutzerkonten und Mehrbenutzerbetrieb, der Fragebogen COPSOQ (die deutsche Fassung ist lizenzpflichtig), eine Datenbankverschlüsselung, ein frei per Drag-and-Drop anordenbares Dashboard, eine Jahresansicht, komplexe Wiederholungsmuster (z.\,B. monatliche Wiederholungen oder Urlaubsausnahmen), die Zuordnung einer Aktivität zu mehreren Lebensbereichen sowie eine mobile App. Diese Punkte dienen als Ausblick für mögliche Weiterentwicklungen. Der Verzicht auf \ac{KI}, Cloud und Benutzerkonten ist dabei keine Einschränkung aus Zeitgründen, sondern Teil des Produktversprechens: Alle Auswertungen sind deterministisch nachvollziehbar, und die Daten verlassen den Rechner nicht.
+Als Won't-Funktionen sind in dieser Version ausdrücklich ausgeschlossen: jede Form von \ac{KI}, Cloud-Synchronisation, Benutzerkonten und Mehrbenutzerbetrieb, der Fragebogen COPSOQ (die deutsche Fassung ist lizenzpflichtig), eine Datenbankverschlüsselung, ein frei per Drag-and-Drop anordenbares Dashboard, eine Jahresansicht, komplexe Wiederholungsmuster (z.\,B. monatliche Wiederholungen oder Urlaubsausnahmen), die Zuordnung einer Aktivität zu mehreren Lebensbereichen sowie eine mobile App. Diese Punkte sind ein Ausblick auf mögliche Weiterentwicklungen. Der Verzicht auf \ac{KI}, Cloud und Benutzerkonten hat dabei keine Zeitgründe. Er gehört zum Produktversprechen: Alle Auswertungen sind deterministisch nachvollziehbar, und die Daten verlassen den Rechner nicht.
 
 \subsection{Use-Case-Diagramm}\label{sec:usecase}
 Ein Use Case beschreibt eine Funktion, die ein beobachtbares Ergebnis mit Wert für einen oder mehrere Akteure liefert \parencite[S.~639]{omg2017uml}. Abbildung~\ref{abb:usecase} fasst die funktionalen Anforderungen als \ac{UML}-Use-Case-Diagramm zusammen. Use Cases werden als Ellipsen innerhalb eines Rechtecks dargestellt, das die Systemgrenze bildet und oben den Namen des Systems trägt; Akteure stehen außerhalb der Systemgrenze und sind über Assoziationen mit den Use Cases verbunden \parencite[S.~641]{omg2017uml}.
 
-Tabelle~\ref{tab:ucus} ordnet jedem Use Case die zugehörigen User Stories zu und stellt so die Nachverfolgbarkeit zwischen Diagramm und User Stories her. Jede User Story ist genau einem Use Case zugeordnet; UC01 bündelt die drei User Stories zu den Lebensbereichen, UC09 umfasst sowohl die Wochenbewertung (US11) als auch den optionalen Gesamt-Score (US19).
+Tabelle~\ref{tab:ucus} ordnet jedem Use Case die zugehörigen User Stories zu und stellt so die Nachverfolgbarkeit zwischen Diagramm und User Stories her. Jede User Story ist genau einem Use Case zugeordnet. UC01 bündelt die drei User Stories zu den Lebensbereichen. UC09 umfasst sowohl die Wochenbewertung (US11) als auch den optionalen Gesamt-Score (US19).
 
 \begin{table}[!htb]
   \caption{Zuordnung der Use Cases zu den User Stories}\label{tab:ucus}
@@ -260,11 +260,11 @@ Tabelle~\ref{tab:ucus} ordnet jedem Use Case die zugehörigen User Stories zu un
   \quelle{Eigene Darstellung.}
 \end{figure}
 
-Einziger Akteur ist die Nutzer:in, die links außerhalb der Systemgrenze \anf{BalanceOS} steht. Weitere Akteure, etwa externe Systeme, gibt es nicht, da die Anwendung ohne Netzwerkverbindung arbeitet. Die Use Cases sind von oben nach unten nach Funktionsbereichen angeordnet: Stammdaten (UC01, UC02), Erfassung (UC03--UC07), Auswertung (UC08--UC11), Kompass (UC12, UC13), Datenverwaltung (UC14--UC16) und Should-Funktionen (UC17--UC19). Die Should-Use-Cases sind hell dargestellt und mit \anf{(Should)} beschriftet; eine Notiz an UC09 weist auf den optionalen Gesamt-Score (US19, Should) hin.
+Einziger Akteur ist die Nutzer:in, die links außerhalb der Systemgrenze \anf{BalanceOS} steht. Weitere Akteure, etwa externe Systeme, gibt es nicht, da die Anwendung ohne Netzwerkverbindung arbeitet. Die Use Cases sind von oben nach unten nach Funktionsbereichen angeordnet: Stammdaten (UC01, UC02), Erfassung (UC03--UC07), Auswertung (UC08--UC11), Kompass (UC12, UC13), Datenverwaltung (UC14--UC16) und Should-Funktionen (UC17--UC19). Die Should-Use-Cases sind hell dargestellt und mit \anf{(Should)} beschriftet. Eine Notiz an UC09 weist auf den optionalen Gesamt-Score (US19, Should) hin.
 
 Die Nutzer:in ist nur mit den Basis-Use-Cases direkt verbunden. Die übrigen Use Cases werden über zwei Beziehungsarten erreicht:
 \begin{itemize}
-  \item \textbf{«include»:} Der Basis-Use-Case enthält das Verhalten des inkludierten Use Case stets. Der Pfeil zeigt vom Basis-Use-Case zum inkludierten Use Case. Das Dashboard (UC08) berechnet immer die Wochenbewertung (UC09) und zeigt immer die Hinweise an (UC10). Auch die Statistik (UC18) greift stets auf die Wochenbewertung (UC09) zurück.
-  \item \textbf{«extend»:} Der erweiternde Use Case ergänzt den Basis-Use-Case optional. Der Pfeil zeigt vom erweiternden zum Basis-Use-Case. Beim Erfassen einer Aktivität (UC03) kann eine Wiederholung festgelegt werden (UC05), beim Bearbeiten (UC04) kann ein einzelner Termin übersprungen werden (UC06), und zu einem angezeigten Hinweis (UC10) kann die Begründung abgerufen werden (UC11).
+  \item \textbf{«include»:} Der Basis-Use-Case enthält immer das Verhalten des inkludierten Use Case. Der Pfeil zeigt vom Basis-Use-Case zum inkludierten Use Case. Das Dashboard (UC08) berechnet immer die Wochenbewertung (UC09) und zeigt immer die Hinweise an (UC10). Auch die Statistik (UC18) greift stets auf die Wochenbewertung (UC09) zurück.
+  \item \textbf{«extend»:} Der erweiternde Use Case ergänzt den Basis-Use-Case optional. Der Pfeil zeigt vom erweiternden zum Basis-Use-Case. Beim Erfassen einer Aktivität (UC03) kann eine Wiederholung festgelegt werden (UC05). Beim Bearbeiten (UC04) lässt sich ein einzelner Termin überspringen (UC06). Zu einem angezeigten Hinweis (UC10) kann die Begründung abgerufen werden (UC11).
 \end{itemize}
 

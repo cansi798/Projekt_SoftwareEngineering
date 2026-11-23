@@ -4,14 +4,14 @@
 %  Eintrittswahrscheinlichkeit und Schwere der potenziellen Auswirkungen“)
 % =====================================================================
 \section{Risikomanagement}\label{sec:risikomanagement}
-Ein Einzelprojekt mit festen Abgabeterminen und begrenzter Wochenarbeitszeit ist anfällig für Verzögerungen und Qualitätsmängel. Dieses Kapitel beschreibt daher zunächst die Methodik der Risikobewertung, stellt anschließend alle identifizierten Risiken mit ihren Gegenmaßnahmen dar und ordnet sie abschließend in einer Risikomatrix ein.
+Ein Einzelprojekt mit festen Abgabeterminen und begrenzter Wochenarbeitszeit ist anfällig für Verzögerungen und Qualitätsmängel. Dieses Kapitel beschreibt daher zuerst die Methodik der Risikobewertung. Danach stellt es alle identifizierten Risiken mit ihren Gegenmaßnahmen dar und ordnet sie in einer Risikomatrix ein.
 
 \subsection{Methodik der Risikobewertung}
-Das Risikomanagement folgt dem Vorgehen, das \textcite[S.~9-9]{swebok2026} beschreibt: Risikofaktoren werden identifiziert, nach Eintrittswahrscheinlichkeit und möglicher Auswirkung analysiert und priorisiert; für die bedeutsamen Risiken werden Gegenmaßnahmen entwickelt und in einem Risikoregister festgehalten. Da sich Risiken im Projektverlauf verändern, wird diese Analyse regelmäßig wiederholt \parencite[S.~9-9]{swebok2026}.
+Das Risikomanagement folgt dem Vorgehen, das \textcite[S.~9-9]{swebok2026} beschreibt. Danach werden Risikofaktoren identifiziert, nach Eintrittswahrscheinlichkeit und möglicher Auswirkung analysiert und priorisiert. Für die bedeutsamen Risiken werden Gegenmaßnahmen entwickelt und in einem Risikoregister festgehalten. Da sich Risiken im Projektverlauf verändern, wird diese Analyse regelmäßig wiederholt \parencite[S.~9-9]{swebok2026}.
 
-Die Identifikation erfolgte anhand der Aufgabenstellung, des Konzepts und des Zeitplans entlang von vier Kategorien: zeitlich-organisatorische Risiken (RI01, RI02, RI03, RI10), technische Risiken (RI04, RI05, RI06, RI08), fachliche Risiken (RI07) sowie formale und rechtliche Risiken (RI09, RI11, RI12). Die Risiko-IDs beginnen mit \enquote{RI}, damit sie nicht mit den Regelkennungen R01--R10 der Anwendung verwechselt werden.
+Grundlage für die Identifikation waren die Aufgabenstellung, das Konzept und der Zeitplan. Die Risiken sind vier Kategorien zugeordnet: zeitlich-organisatorische Risiken (RI01, RI02, RI03, RI10), technische Risiken (RI04, RI05, RI06, RI08), fachliche Risiken (RI07) sowie formale und rechtliche Risiken (RI09, RI11, RI12). Die Risiko-IDs beginnen mit \enquote{RI}, damit sie nicht mit den Regelkennungen R01--R10 der Anwendung verwechselt werden.
 
-Jedes Risiko wird auf zwei Skalen von 1 bis 5 bewertet: nach der Eintrittswahrscheinlichkeit W und nach der Schwere der Auswirkung S. Damit die Einstufung nachvollziehbar bleibt, ist jede Stufe verbal definiert (Tabelle~\ref{tab:skalen}). Der Risikowert ergibt sich als Produkt R\,=\,W\,×\,S und liegt zwischen 1 und 25.
+Jedes Risiko wird auf zwei Skalen von 1 bis 5 bewertet: nach der Eintrittswahrscheinlichkeit W und nach der Schwere der Auswirkung S. Jede Stufe ist in Worten definiert, damit die Einstufung nachvollziehbar bleibt (Tabelle~\ref{tab:skalen}). Der Risikowert ergibt sich als Produkt R\,=\,W\,×\,S und liegt zwischen 1 und 25.
 
 \begin{table}[H]
   \caption{Bewertungsskalen für Eintrittswahrscheinlichkeit und Schwere}\label{tab:skalen}
@@ -29,16 +29,16 @@ Jedes Risiko wird auf zwei Skalen von 1 bis 5 bewertet: nach der Eintrittswahrsc
   \quelle{Eigene Darstellung.}
 \end{table}
 
-Aus dem Risikowert leitet sich der Handlungsbedarf ab:
+Der Risikowert bestimmt den Handlungsbedarf:
 \begin{itemize}
   \item \textbf{hoch} (R\,≥\,15): Die Gegenmaßnahme wird sofort umgesetzt und laufend überwacht.
-  \item \textbf{mittel} (8\,≤\,R\,≤\,14): Eine Gegenmaßnahme ist geplant und wird im Projektverlauf umgesetzt; das Risiko wird wöchentlich geprüft.
-  \item \textbf{niedrig} (R\,≤\,7): Das Risiko wird beobachtet; kostengünstige Vorsorge wird dennoch getroffen.
+  \item \textbf{mittel} (8\,≤\,R\,≤\,14): Eine Gegenmaßnahme ist geplant und wird im Projektverlauf umgesetzt. Das Risiko wird wöchentlich geprüft.
+  \item \textbf{niedrig} (R\,≤\,7): Das Risiko wird beobachtet. Kostengünstige Vorsorge wird trotzdem getroffen.
 \end{itemize}
-Die Risikoliste in Tabelle~\ref{tab:risiken} dient als Risikoregister. Sie wird jeden Montag sowie an jedem Meilenstein überprüft: Bewertungen werden angepasst, neue Risiken aufgenommen und eingetretene Risiken mit ihren Folgen vermerkt. Da das Projekt von einer Person bearbeitet wird, liegt die Verantwortung für alle Risiken bei der Entwickler:in. Die Erfahrungen fließen in die Reflexion im Abstract (Phase~3) ein.
+Die Risikoliste in Tabelle~\ref{tab:risiken} ist das Risikoregister. Sie wird jeden Montag und an jedem Meilenstein überprüft. Dabei werden Bewertungen angepasst, neue Risiken aufgenommen und eingetretene Risiken mit ihren Folgen vermerkt. Das Projekt bearbeitet eine einzelne Person. Deshalb liegt die Verantwortung für alle Risiken bei der Entwickler:in. Die Erfahrungen fließen in die Reflexion im Abstract (Phase~3) ein.
 
 \subsection{Risikoliste und Gegenmaßnahmen}
-Tabelle~\ref{tab:risiken} enthält alle zwölf identifizierten Risiken mit Bewertung. Für jedes Risiko ist eine vorbeugende Gegenmaßnahme festgelegt, die Eintrittswahrscheinlichkeit oder Auswirkung senkt, sowie eine Notfallmaßnahme für den Fall, dass das Risiko dennoch eintritt.
+Tabelle~\ref{tab:risiken} enthält alle zwölf identifizierten Risiken mit Bewertung. Für jedes Risiko ist eine vorbeugende Gegenmaßnahme festgelegt, die Eintrittswahrscheinlichkeit oder Auswirkung senkt. Hinzu kommt eine Notfallmaßnahme für den Fall, dass das Risiko dennoch eintritt.
 
 \begingroup
 \setstretch{1.0}
@@ -106,4 +106,4 @@ Abbildung~\ref{abb:risikomatrix} ordnet die Risiken in einer 5\,×\,5-Matrix nac
   \quelle{Eigene Darstellung.}
 \end{figure}
 
-Die Auswertung zeigt ein hohes Risiko (RI01), neun mittlere und zwei niedrige Risiken (RI11, RI12). Auffällig ist die Häufung in der Spalte S\,=\,4: Sieben der zwölf Risiken würden einen Meilenstein oder Must-Anforderungen gefährden. Die Gegenmaßnahmen setzen deshalb nicht nur bei der Eintrittswahrscheinlichkeit an, sondern begrenzen vor allem die Auswirkung, insbesondere durch die \ac{MoSCoW}-Priorisierung mit I5 als Puffer, die Zeitreserve und die frühzeitige Prüfung der ausführbaren Datei. Das einzige hohe Risiko, der wachsende Umfang (RI01), wird von Projektbeginn an aktiv begrenzt, indem der Umfang im Anforderungsdokument verbindlich festgelegt ist. Als Frühwarnindikatoren dienen eine Stundenabweichung von mehr als 10~\% gegenüber dem Plan eines Arbeitspakets (RI01, RI02) sowie fehlschlagende automatisierte Tests der Bewertungslogik (RI06). Durch die geplanten Maßnahmen sollen die mittleren Risiken im Projektverlauf in den niedrigen Bereich sinken; die wöchentliche Überprüfung macht diese Entwicklung sichtbar.
+Die Auswertung zeigt ein hohes Risiko (RI01), neun mittlere und zwei niedrige Risiken (RI11, RI12). Auffällig ist die Häufung in der Spalte S\,=\,4. Sieben der zwölf Risiken würden einen Meilenstein oder Must-Anforderungen gefährden. Die Gegenmaßnahmen setzen deshalb auch bei der Eintrittswahrscheinlichkeit an, vor allem aber begrenzen sie die Auswirkung. Dazu dienen besonders die \ac{MoSCoW}-Priorisierung mit I5 als Puffer, die Zeitreserve und die frühzeitige Prüfung der ausführbaren Datei. Das einzige hohe Risiko ist der wachsende Umfang (RI01). Er wird von Projektbeginn an aktiv begrenzt, weil das Anforderungsdokument den Umfang verbindlich festlegt. Ein Frühwarnindikator ist eine Stundenabweichung von mehr als 10~\% gegenüber dem Plan eines Arbeitspakets (RI01, RI02). Ein zweiter sind fehlschlagende automatisierte Tests der Bewertungslogik (RI06). Die geplanten Maßnahmen sollen die mittleren Risiken im Projektverlauf in den niedrigen Bereich senken. Die wöchentliche Überprüfung macht diese Entwicklung sichtbar.

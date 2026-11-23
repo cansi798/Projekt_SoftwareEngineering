@@ -7,7 +7,7 @@
 Quellcode, Dokumente und Diagrammquellen liegen gemeinsam in einem Git-Repository auf GitHub. Dieses Kapitel nennt den Zugang, die Ordnerstruktur und die Regeln für Zweige, Tags und Commits.
 
 \subsection{GitHub-Repository}
-Der Quellcode der Anwendung, alle Dokumente sowie sämtliche zur Ausführung notwendigen Dateien sind im folgenden GitHub-Repository abgelegt:
+Der Quellcode der Anwendung, alle Dokumente und alle Dateien, die zur Ausführung nötig sind, liegen im folgenden GitHub-Repository:
 
 \url{\GitHubURL}
 
@@ -23,4 +23,4 @@ Das Repository ist in vier Hauptordner gegliedert:
 \end{itemize}
 
 \subsection{Konventionen}
-Jede Phase wird auf einem eigenen Zweig bearbeitet, in Phase~2 auf \texttt{phase2}. Nach der Abgabe wird dieser Zweig in \texttt{main} zusammengeführt, und ein Tag markiert den eingereichten Stand (\texttt{phase1-abgabe}, \texttt{phase2-abgabe}). So lässt sich jede Abgabe später genau wiederherstellen. Commit-Nachrichten sind auf Deutsch und beginnen bei der Implementierung mit dem Inkrement, etwa \enquote{I3: Regelwerk R01--R10 mit Begründung und Evidenzkennzeichnung}. Jedes Inkrement endet mit grünen Tests und wird auf GitHub hochgeladen. Commits, an denen das \ac{KI}-Werkzeug Claude Code beteiligt war, tragen eine \texttt{Co-Authored-By}-Zeile (siehe Abschnitt~\ref{sec:vorgehen}).
+Jede Phase wird auf einem eigenen Zweig bearbeitet, in Phase~2 auf \texttt{phase2}. Nach der Abgabe wird dieser Zweig in \texttt{main} zusammengeführt, und ein Tag markiert den eingereichten Stand (\texttt{phase1-abgabe}, \texttt{phase2-abgabe}). So lässt sich jede Abgabe später genau wiederherstellen. Commit-Nachrichten sind auf Deutsch verfasst. In der Implementierung beginnen sie mit dem Inkrement, etwa \enquote{I3: Regelwerk R01--R10 mit Begründung und Evidenzkennzeichnung}. Jedes Inkrement endet mit erfolgreich durchlaufenen Tests und wird auf GitHub hochgeladen. Commits, an denen das \ac{KI}-Werkzeug Claude Code beteiligt war, tragen eine \texttt{Co-Authored-By}-Zeile (siehe Abschnitt~\ref{sec:vorgehen}).

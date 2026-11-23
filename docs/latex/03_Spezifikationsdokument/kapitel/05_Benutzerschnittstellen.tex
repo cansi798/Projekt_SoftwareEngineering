@@ -6,10 +6,10 @@
 %  Mock-ups in docs/diagramme/06_Mockups/, Export nach docs/diagramme/export/.
 % =====================================================================
 \section{Benutzerschnittstellen}\label{sec:benutzerschnittstellen}
-Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\ac{GUI}) von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes; sie legen Inhalt, Anordnung und Verhalten fest, nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
+Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\ac{GUI}) von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes. Sie legen Inhalt, Anordnung und Verhalten fest, aber nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
 
 \subsection{Gestaltungsgrundsätze}\label{sec:gestaltungsgrundsaetze}
-Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlangt Erlernbarkeit (erste Aktivität ohne Anleitung in höchstens zwei Minuten), NFA02 Fehlertoleranz (ungültige Eingaben werden vor dem Speichern abgefangen und am Feld erklärt). Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}; Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
+Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlangt Erlernbarkeit (erste Aktivität ohne Anleitung in höchstens zwei Minuten). NFA02 verlangt Fehlertoleranz (ungültige Eingaben werden vor dem Speichern abgefangen und am Feld erklärt). Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}. Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
 
 \begin{longtable}{@{}L{3.6cm}L{12.0cm}@{}}
   \caption{Umsetzung der Interaktionsprinzipien in BalanceOS}\label{tab:interaktionsprinzipien}\\
@@ -34,7 +34,7 @@ Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlang
 \quelle{Eigene Darstellung.}
 
 \subsection{Hauptfenster und Navigation}\label{sec:hauptfenster}
-BalanceOS besitzt ein Hauptfenster mit drei Zonen (Abbildung~\ref{abb:mockup-haupt}). Die \textbf{Seitenleiste} enthält die sieben Seiten in fester Reihenfolge; der aktive Eintrag ist hervorgehoben. Die \textbf{Kopfzeile} zeigt Seitentitel, die gewählte Woche mit zwei Pfeilschaltflächen zum Blättern und die Schaltfläche \enquote{+ Aktivität}; die gewählte Woche gilt für alle Seiten. Der \textbf{Inhaltsbereich} stellt die Seite dar. Das Fenster ist ab 1.280 × 720 Bildpunkten vollständig und auch per Tastatur bedienbar.
+BalanceOS hat ein Hauptfenster mit drei Zonen (Abbildung~\ref{abb:mockup-haupt}). Die \textbf{Seitenleiste} enthält die sieben Seiten in fester Reihenfolge; der aktive Eintrag ist hervorgehoben. Die \textbf{Kopfzeile} zeigt Seitentitel, die gewählte Woche mit zwei Pfeilschaltflächen zum Blättern und die Schaltfläche \enquote{+ Aktivität}. Die gewählte Woche gilt für alle Seiten. Der \textbf{Inhaltsbereich} stellt die Seite dar. Das Fenster ist ab 1.280 × 720 Bildpunkten vollständig und auch per Tastatur bedienbar.
 
 \begin{figure}[H]
   \caption{Mock-up des Hauptfensters mit Dashboard (\ac{KW}~46/2026)}\label{abb:mockup-haupt}
@@ -54,15 +54,15 @@ Die Seiten haben folgende Aufgaben:
   \item \textbf{Einstellungen}: Reiter \enquote{Lebensbereiche} (Liste, Neu, Bearbeiten, Deaktivieren), \enquote{Wunschprofil} (Soll-Stunden mit Summenzeile, Gesamt-Score mit Gewichten, Schieberegler für $\alpha$), \enquote{Regeln} (R01--R10 mit Schalter und Evidenzart) und \enquote{Daten} (Export, Demodaten, Alle Daten löschen). Gültige Änderungen werden sofort gespeichert (NFA04).
 \end{itemize}
 
-Das \textbf{Dashboard} zeigt vier Elemente. Die Kachel \enquote{Datenvollständigkeit} nennt die Tage mit mindestens einer durchgeführten Aktivität; unter vier Tagen erscheint statt der Scores nur der Systemhinweis R10. Die Kachel \enquote{Gesamt-Score} erscheint nur, wenn sie eingeschaltet ist, und ist stets als programmeigen gekennzeichnet. Die \textbf{Bereichsliste} zeigt je Lebensbereich Typ, Soll-Ist-Balken, Ist- und Soll-Stunden und Score. Der Balken reicht bis 150~\% des Solls, eine Marke zeigt das Soll; bei einem Mindestziel wird der erreichte Balken grün, bei einer Obergrenze der überschreitende Teil rot. So ist \enquote{zu wenig} von \enquote{zu viel} ohne Erklärung unterscheidbar. Der Bereich Bewegung (Score 65) entspricht dem Rechenbeispiel in Abschnitt~\ref{sec:kernprozess}; Sarah hat ihr Wunschprofil angepasst (Arbeit 30~h, Persönliche Entwicklung 10~h). Die \textbf{Hinweisliste} zeigt höchstens fünf Hinweise (Warnung vor positivem Hinweis vor Systemhinweis) mit Symbol, Text, Regelkennung, \enquote{Warum?} und Ausblenden.
+Das \textbf{Dashboard} zeigt vier Elemente. Die Kachel \enquote{Datenvollständigkeit} nennt die Tage mit mindestens einer durchgeführten Aktivität. Unter vier Tagen erscheint statt der Scores nur der Systemhinweis R10. Die Kachel \enquote{Gesamt-Score} erscheint nur, wenn sie eingeschaltet ist, und ist stets als programmeigen gekennzeichnet. Die \textbf{Bereichsliste} zeigt je Lebensbereich Typ, Soll-Ist-Balken, Ist- und Soll-Stunden und Score. Der Balken reicht bis 150~\% des Solls, und eine Marke zeigt das Soll. Bei einem Mindestziel wird der erreichte Balken grün, bei einer Obergrenze der überschreitende Teil rot. So lässt sich \enquote{zu wenig} ohne Erklärung von \enquote{zu viel} unterscheiden. Der Bereich Bewegung (Score 65) entspricht dem Rechenbeispiel in Abschnitt~\ref{sec:kernprozess}. Sarah hat ihr Wunschprofil angepasst (Arbeit 30~h, Persönliche Entwicklung 10~h). Die \textbf{Hinweisliste} zeigt höchstens fünf Hinweise (Warnung vor positivem Hinweis vor Systemhinweis) mit Symbol, Text, Regelkennung, \enquote{Warum?} und Ausblenden.
 
-\textbf{Erster Start.} Die zehn Standard-Lebensbereiche sind angelegt (US01), Aktivitäten fehlen. Das Dashboard zeigt einen leeren Zustand mit drei Schritten (Wunschprofil prüfen, Aktivitäten erfassen, Woche auswerten) und den Schaltflächen \enquote{Erste Aktivität erfassen} und \enquote{Demodaten laden}. Letztere lädt die acht Demowochen ohne Rückfrage, da noch keine Daten vorhanden sind (US18), und nennt den Weg zum Entfernen.
+\textbf{Erster Start.} Die zehn Standard-Lebensbereiche sind angelegt (US01), Aktivitäten fehlen. Das Dashboard zeigt einen leeren Zustand mit drei Schritten (Wunschprofil prüfen, Aktivitäten erfassen, Woche auswerten) und den Schaltflächen \enquote{Erste Aktivität erfassen} und \enquote{Demodaten laden}. Die zweite Schaltfläche lädt die acht Demowochen ohne Rückfrage, weil noch keine Daten vorhanden sind (US18). Sie nennt außerdem den Weg zum Entfernen.
 
 \subsection{Dialoge}\label{sec:dialoge}
 Alle Dialoge sind modal: Das Hauptfenster bleibt sichtbar, ist aber gesperrt. Jeder Dialog hat eine Titelleiste mit Schließen-Symbol und eine Fußzeile mit \enquote{Abbrechen} und der Hauptaktion rechts unten.
 
 \subsubsection{Aktivität erfassen und bearbeiten}\label{sec:dlg-aktivitaet}
-Der wichtigste Dialog dient dem Erfassen, Bearbeiten und Wiederholen von Aktivitäten (US05--US08). Er öffnet sich über \enquote{+ Aktivität}, per Doppelklick in der Wochenansicht oder über \enquote{Bearbeiten} auf der Seite Aktivitäten. Links stehen die Grunddaten, rechts die freiwilligen Angaben (Abbildung~\ref{abb:mockup-aktivitaet}).
+Im wichtigsten Dialog erfassen, bearbeiten und wiederholen Nutzer:innen Aktivitäten (US05--US08). Er öffnet sich über \enquote{+ Aktivität}, per Doppelklick in der Wochenansicht oder über \enquote{Bearbeiten} auf der Seite Aktivitäten. Links stehen die Grunddaten, rechts die freiwilligen Angaben (Abbildung~\ref{abb:mockup-aktivitaet}).
 
 \begin{figure}[H]
   \caption{Mock-up des Dialogs \enquote{Aktivität erfassen} mit Fehlermeldung am Feld}\label{abb:mockup-aktivitaet}
@@ -73,16 +73,16 @@ Der wichtigste Dialog dient dem Erfassen, Bearbeiten und Wiederholen von Aktivit
 
 Der Dialog zeigt nur Felder, die im jeweiligen Zusammenhang sinnvoll sind:
 \begin{itemize}
-  \item Datum ist heute bzw. der angeklickte Tag; der Status ist für heutige und vergangene Tage \enquote{Durchgeführt}, sonst \enquote{Geplant}.
-  \item Ein Optionsfeld wählt \enquote{Beginn und Ende} oder \enquote{Dauer}; die Dauer wird dann berechnet. Liegt das Ende vor dem Beginn, erscheint \enquote{endet am Folgetag}.
+  \item Das Datum ist heute bzw. der angeklickte Tag. Der Status ist für heutige und vergangene Tage \enquote{Durchgeführt}, sonst \enquote{Geplant}.
+  \item Ein Optionsfeld wählt \enquote{Beginn und Ende} oder \enquote{Dauer}. Im ersten Fall wird die Dauer berechnet. Liegt das Ende vor dem Beginn, erscheint \enquote{endet am Folgetag}.
   \item Die Bewertungsskalen (1--5) sind nur bei \enquote{Durchgeführt} aktiv, die Bewegungsart nur beim Bereich Bewegung.
   \item \enquote{Wöchentlich wiederholen} aktiviert Wochentage (Wochentag des Datums vorausgewählt) und das Enddatum.
   \item Beim Bearbeiten lautet der Titel \enquote{Aktivität bearbeiten}; hinzu kommen \enquote{Löschen} mit Rückfrage und bei Serienterminen \enquote{Termin überspringen} (US08).
 \end{itemize}
-Im Beispiel liegt das Enddatum vor dem Datum: Das Feld ist rot umrandet, die Meldung steht darunter, \enquote{Speichern} bleibt gesperrt.
+Im Beispiel liegt das Enddatum vor dem Datum: Das Feld ist rot umrandet, die Meldung steht darunter, und \enquote{Speichern} bleibt gesperrt.
 
 \subsubsection{Begründungsdialog}\label{sec:dlg-begruendung}
-Der Dialog \enquote{Warum sehe ich das?} (US13, NFA11) öffnet sich über \enquote{Warum?} und nennt in fester Reihenfolge Regel, Modell, Datenbasis, Zeitraum, Schwelle, eigenen Wert, Quelle, Evidenzart und Grenzen (Abbildung~\ref{abb:mockup-begruendung}). Im Beispiel stehen 90~min Ausdauerbewegung der Schwelle von 150~min aus der Bewegungsempfehlung der \ac{WHO} gegenüber \parencite[S.~1451]{bull2020}. Ein Kasten stellt klar, dass der Hinweis keine Diagnose ist. \enquote{Regel R01 deaktivieren} schaltet die Regel aus (US14); dies ist im Reiter \enquote{Regeln} umkehrbar.
+Der Dialog \enquote{Warum sehe ich das?} (US13, NFA11) öffnet sich über \enquote{Warum?}. Er nennt in fester Reihenfolge Regel, Modell, Datenbasis, Zeitraum, Schwelle, eigenen Wert, Quelle, Evidenzart und Grenzen (Abbildung~\ref{abb:mockup-begruendung}). Im Beispiel stehen 90~min Ausdauerbewegung der Schwelle von 150~min aus der Bewegungsempfehlung der \ac{WHO} gegenüber \parencite[S.~1451]{bull2020}. Ein Kasten stellt klar, dass der Hinweis keine Diagnose ist. \enquote{Regel R01 deaktivieren} schaltet die Regel aus (US14). Im Reiter \enquote{Regeln} lässt sich das rückgängig machen.
 
 \begin{figure}[H]
   \caption{Mock-up des Begründungsdialogs zu Regel R01}\label{abb:mockup-begruendung}
@@ -92,7 +92,7 @@ Der Dialog \enquote{Warum sehe ich das?} (US13, NFA11) öffnet sich über \enquo
 \end{figure}
 
 \subsubsection{Wochenansicht}\label{sec:dlg-woche}
-Die Wochenansicht (US09) zeigt sieben Tagesspalten mit einer Zeitachse von 0 bis 24~Uhr (Abbildung~\ref{abb:mockup-woche}). Die volle Tageslänge ist nötig, weil Schlaf über Mitternacht verläuft; der Block wird auf zwei Tage verteilt gezeichnet, zählt aber zum Datum des Beginns. Die Farbe zeigt den Lebensbereich, die Darstellungsart den Status. Kurze Blöcke zeigen ihren Titel beim Zeigen mit der Maus. Ein Doppelklick auf einen Block öffnet \enquote{Aktivität bearbeiten}, auf eine freie Fläche \enquote{Aktivität erfassen} mit vorbelegtem Datum und Beginn. Der Sonntag enthält nur geplante Termine, daher meldet das Dashboard 6 von 7 Tagen.
+Die Wochenansicht (US09) zeigt sieben Tagesspalten mit einer Zeitachse von 0 bis 24~Uhr (Abbildung~\ref{abb:mockup-woche}). Die volle Tageslänge ist nötig, weil Schlaf über Mitternacht verläuft. Der Block wird auf zwei Tage verteilt gezeichnet, zählt aber zum Datum des Beginns. Die Farbe zeigt den Lebensbereich, die Darstellungsart den Status. Bei kurzen Blöcken erscheint der Titel, wenn der Mauszeiger darauf zeigt. Ein Doppelklick auf einen Block öffnet \enquote{Aktivität bearbeiten}, auf eine freie Fläche \enquote{Aktivität erfassen} mit vorbelegtem Datum und Beginn. Der Sonntag enthält nur geplante Termine. Deshalb meldet das Dashboard 6 von 7 Tagen.
 
 \begin{figure}[H]
   \caption{Mock-up der Wochenansicht (\ac{KW}~46/2026)}\label{abb:mockup-woche}
@@ -116,7 +116,7 @@ Tabelle~\ref{tab:weitere-dialoge} beschreibt die übrigen Dialoge; ihre Feldrege
   \endhead
   \bottomrule
   \endfoot
-  Lebensbereich bearbeiten & Name, Typ (Mindestziel oder Obergrenze mit Erklärung), Farbe aus einer Palette, aktiv, Soll-Stunden und Gewicht; Anzeige \enquote{140 von 168~h verplant}. Standardbereiche sind nicht löschbar, genutzte eigene Bereiche nur deaktivierbar. & US02--04 \\
+  Lebensbereich bearbeiten & Name, Typ (Mindestziel oder Obergrenze mit Erklärung), Farbe aus einer Palette, aktiv, Soll-Stunden und Gewicht; Anzeige \enquote{140 von 168~h verplant}. Standardbereiche sind nicht löschbar, genutzte eigene Bereiche nur deaktivierbar. & US02--US04 \\
   WHO-5-Frage\-bogen & Datum und fünf Aussagen zum Wohlbefinden der letzten zwei Wochen, je Skala 0 (\enquote{zu keinem Zeitpunkt}) bis 5 (\enquote{die ganze Zeit}); kurzes, valides Instrument \parencite[S.~167]{topp2015}. \enquote{Auswerten} zeigt Rohwert (0--25) und Prozentwert (× 4); bis 50~\% folgt die Empfehlung, bei anhaltender Niedergeschlagenheit ärztliche oder psychotherapeutische Hilfe zu suchen. & US20 \\
   Export & Format \ac{CSV} oder \ac{JSON}, bei CSV Zeitraum von--bis; Speicherort über den Speichern-Dialog von Windows, Dateiname nach Abschnitt~\ref{sec:csv} bzw.~\ref{sec:json}. Meldet nach Erfolg Datei und Ordner. & US16 \\
   Lösch\-bestätigung & Warnung, betroffene Daten, Hinweis auf erhaltene Exportdateien, Eingabefeld für LÖSCHEN; \enquote{Endgültig löschen} erst bei exakter Eingabe aktiv, Fokus auf \enquote{Abbrechen}. Danach leeres Dashboard. & US17 \\
@@ -125,9 +125,9 @@ Tabelle~\ref{tab:weitere-dialoge} beschreibt die übrigen Dialoge; ihre Feldrege
 \quelle{Eigene Darstellung.}
 
 \subsection{Dialogfluss}\label{sec:dialogfluss}
-Abbildung~\ref{abb:dialogfluss} zeigt den Dialogfluss als \ac{UML}-Zustandsdiagramm \parencite[S.~319]{omg2017uml}. Seiten und Dialoge sind Zustände, Übergänge sind mit \enquote{Ereignis [Wächterbedingung] / Effekt} beschriftet. Die sieben Seiten sind Unterzustände des Zustands \enquote{Hauptfenster}, dessen Anfangszustand zum Dashboard führt. Die Navigation ist ein einziger Übergang vom Rand des Oberzustands zu einem Auswahlpseudozustand: Er gilt in jeder Seite, die Wächter wählen das Ziel. So entfallen 42 Einzelübergänge. Das Dashboard enthält die interne Transition \enquote{Demodaten laden}.
+Abbildung~\ref{abb:dialogfluss} zeigt den Dialogfluss als \ac{UML}-Zustandsdiagramm \parencite[S.~319]{omg2017uml}. Seiten und Dialoge sind Zustände, Übergänge sind mit \enquote{Ereignis [Wächterbedingung] / Effekt} beschriftet. Die sieben Seiten sind Unterzustände des Zustands \enquote{Hauptfenster}, dessen Anfangszustand zum Dashboard führt. Die Navigation ist ein einziger Übergang vom Rand des Oberzustands zu einem Auswahlpseudozustand: Er gilt auf jeder Seite, und die Wächter wählen das Ziel. So entfallen 42 Einzelübergänge. Das Dashboard enthält die interne Transition \enquote{Demodaten laden}.
 
-Die modalen Dialoge liegen außerhalb des Hauptfensters, weil dessen Seiten währenddessen gesperrt sind. Die meisten Dialoge kehren zu ihrer aufrufenden Seite zurück, der bestätigende Übergang trägt eine Wächterbedingung wie \enquote{[Eingaben gültig]}. \enquote{Aktivität erfassen/bearbeiten} ist von jeder Seite erreichbar und führt über die flache Historie (H) zur zuletzt aktiven Seite zurück. Die bestätigte Löschung endet am Rand des Oberzustands, sodass das leere Dashboard erscheint. Das Schließen des Fensters ist der Endzustand. \enquote{Abbrechen}, Esc und Schließen-Symbol führen ohne Änderung zurück; sie sind laut Kommentar nur teilweise eingezeichnet.
+Die modalen Dialoge liegen außerhalb des Hauptfensters, weil dessen Seiten währenddessen gesperrt sind. Die meisten Dialoge kehren zu der Seite zurück, von der sie aufgerufen wurden. Der bestätigende Übergang trägt dabei eine Wächterbedingung wie \enquote{[Eingaben gültig]}. \enquote{Aktivität erfassen/bearbeiten} ist von jeder Seite erreichbar und führt über die flache Historie (H) zur zuletzt aktiven Seite zurück. Die bestätigte Löschung endet am Rand des Oberzustands, sodass das leere Dashboard erscheint. Das Schließen des Fensters ist der Endzustand. \enquote{Abbrechen}, Esc und Schließen-Symbol führen ohne Änderung zurück. Diese Übergänge sind laut Kommentar nur teilweise eingezeichnet.
 
 \begin{figure}[H]
   \caption{Dialogfluss als UML-Zustandsdiagramm}\label{abb:dialogfluss}
@@ -137,7 +137,7 @@ Die modalen Dialoge liegen außerhalb des Hauptfensters, weil dessen Seiten wäh
 \end{figure}
 
 \subsection{Eingabevalidierung}\label{sec:validierung}
-Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:geschaeftsregeln} an der Oberfläche um. Jedes Feld wird beim Verlassen geprüft, beim Speichern zusätzlich alle feldübergreifenden Regeln. Ein ungültiges Feld erhält einen roten Rahmen, die Meldung steht rot direkt darunter und nennt den Weg zur Korrektur. Die Hauptaktion (\enquote{Speichern}, \enquote{Auswerten}, \enquote{Exportieren}, \enquote{Endgültig löschen}) ist erst bei gültigen Eingaben aktiv; ein Hinweistext an der gesperrten Schaltfläche nennt die offenen Felder. Wo möglich, verhindern Auswahllisten, Skalen und Schieberegler ungültige Werte von vornherein. Tabelle~\ref{tab:validierung} legt alle Eingabefelder fest; jede Zeile wird im Testdokument geprüft.
+Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:geschaeftsregeln} an der Oberfläche um. BalanceOS prüft jedes Feld beim Verlassen und beim Speichern zusätzlich alle feldübergreifenden Regeln. Ein ungültiges Feld erhält einen roten Rahmen. Die Meldung steht rot direkt darunter und nennt den Weg zur Korrektur. Die Hauptaktion (\enquote{Speichern}, \enquote{Auswerten}, \enquote{Exportieren}, \enquote{Endgültig löschen}) ist erst bei gültigen Eingaben aktiv. Ein Hinweistext an der gesperrten Schaltfläche nennt die offenen Felder. Wo möglich, verhindern Auswahllisten, Skalen und Schieberegler ungültige Werte von vornherein. Tabelle~\ref{tab:validierung} legt alle Eingabefelder fest, und jede Zeile wird im Testdokument geprüft.
 
 \begin{longtable}{@{}L{2.8cm}L{2.2cm}L{5.8cm}L{4.4cm}@{}}
   \caption{Gültigkeitsregeln für Eingabefelder}\label{tab:validierung}\\
