@@ -46,6 +46,7 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "D"]
+ignore = ["N818"]  # deutsche Namen: Fehler statt Error
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
