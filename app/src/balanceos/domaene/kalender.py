@@ -87,9 +87,11 @@ def kaufmaennisch_runden(wert: float) -> int:
     """Rundet kaufmännisch auf eine ganze Zahl (0,5 wird stets aufgerundet).
 
     Über ``repr`` wird der kürzeste Dezimalwert des Floats verwendet, damit
-    Rechenrauschen wie ``65.00000000000001`` keine Rolle spielt.
+    Rechenrauschen wie ``65.00000000000001`` keine Rolle spielt; zusätzlich wird
+    vor dem Runden auf neun Nachkommastellen geglättet (72,4999999… → 72,5 → 73).
     """
-    return int(Decimal(repr(float(wert))).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    geglaettet = Decimal(repr(float(wert))).quantize(Decimal("1e-9"))
+    return int(geglaettet.quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
 
 def zahl_text(wert: float, stellen: int = 1) -> str:
