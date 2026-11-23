@@ -9,6 +9,7 @@ from balanceos.anwendung.aktivitaet_service import AktivitaetService
 from balanceos.anwendung.auswertung_service import AuswertungService
 from balanceos.anwendung.daten_service import DatenService
 from balanceos.anwendung.export_service import ExportService
+from balanceos.anwendung.reflexion_service import ReflexionService
 from balanceos.anwendung.stammdaten_service import StammdatenService
 from balanceos.persistenz.datenbank import Datenbank
 from balanceos.persistenz.repo_aktivitaeten import AktivitaetRepository, SerieRepository
@@ -69,6 +70,7 @@ class AppKontext:
     auswertung: AuswertungService
     export: ExportService
     daten: DatenService
+    reflexion: ReflexionService
 
     @classmethod
     def erstellen(cls, pfad: Path | str, heute: Callable[[], date] = date.today) -> "AppKontext":
@@ -106,6 +108,7 @@ class AppKontext:
                 r.reflexionen,
             ),
             daten=DatenService(db, r.aktivitaeten, r.bereiche, heute),
+            reflexion=ReflexionService(r.who5, r.reflexionen, heute),
         )
         kontext.aktivitaeten.horizont_fortschreiben()
         return kontext
