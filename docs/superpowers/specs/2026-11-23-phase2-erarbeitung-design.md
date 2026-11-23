@@ -162,7 +162,7 @@ Die NFA-Änderungen und NFA12 gelten als signifikante Änderung und werden in de
 ## 8 Offen für die Nutzerin bzw. den Nutzer
 
 1. ~~GitHub-Schreibrechte~~: erledigt am 23.11.2026. Neuer Token, Phase-1-Commits und Tag `phase1-abgabe` sind gepusht.
-2. **Tutorin bzw. Tutor und Zugang:** Name mit Titel für `\Tutor` und optional das GitHub-Konto. *Standard, falls bis zum Bauen der PDF keine Angabe kommt (Assistent):* Die Tutor-Zeile entfällt wie in Phase 1, das Repo bleibt öffentlich und ist damit über den Link erreichbar. Soll es privat werden, wird es erst nach einer Einladung umgestellt, damit der Link für die Tutorin oder den Tutor nie ins Leere führt.
+2. **Zugang (entschieden am 23.11.2026):** Das Repo bleibt öffentlich, damit die Tutorin oder der Tutor direkt über den Link zugreifen kann. Das Kapitel Versionsverwaltung beschreibt das so. Der Punkt der Checkliste „privat stellen“ entfällt. **Tutor-Name:** Kommt bis zum Bauen der PDF keine Angabe, entfällt die Zeile wie in Phase 1.
 
 ## 9 Dem Builder überlassen
 
