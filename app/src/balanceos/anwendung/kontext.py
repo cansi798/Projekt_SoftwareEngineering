@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
+from balanceos.anwendung.aktivitaet_service import AktivitaetService
 from balanceos.anwendung.stammdaten_service import StammdatenService
 from balanceos.persistenz.datenbank import Datenbank
 from balanceos.persistenz.repo_aktivitaeten import AktivitaetRepository, SerieRepository
@@ -61,6 +62,7 @@ class AppKontext:
     heute: Callable[[], date]
     repos: Repositories
     stammdaten: StammdatenService
+    aktivitaeten: AktivitaetService
 
     @classmethod
     def erstellen(cls, pfad: Path | str, heute: Callable[[], date] = date.today) -> "AppKontext":
@@ -73,9 +75,12 @@ class AppKontext:
         db = Datenbank(pfad)
         initialisiere(db)
         r = Repositories.fuer(db)
-        return cls(
+        kontext = cls(
             db=db,
             heute=heute,
             repos=r,
             stammdaten=StammdatenService(r.bereiche, r.einstellungen),
+            aktivitaeten=AktivitaetService(r.aktivitaeten, r.serien, r.bereiche, db, heute),
         )
+        kontext.aktivitaeten.horizont_fortschreiben()
+        return kontext

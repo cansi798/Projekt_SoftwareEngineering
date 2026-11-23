@@ -47,5 +47,6 @@ def erzeuge_termin(serie: Wiederholungsserie, tag: date) -> Aktivitaet:
         status=Aktivitaetsstatus.GEPLANT,
         beginn=serie.beginn,
         ende=ende,
+        bewegungsart=serie.bewegungsart,
         serie_id=serie.id,
     )

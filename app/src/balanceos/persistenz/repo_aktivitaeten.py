@@ -150,6 +150,7 @@ def _serie(z: sqlite3.Row, ausnahmen: set[date]) -> Wiederholungsserie:
         beginn=_zeit(z["beginn"]),
         ausnahmen=ausnahmen,
         generiert_bis=_datum(z["generiert_bis"]),
+        bewegungsart=Bewegungsart(z["bewegungsart"]) if z["bewegungsart"] else None,
         id=z["id"],
     )
 
@@ -187,13 +188,14 @@ class SerieRepository:
             _text(s.beginn),
             s.dauer_minuten,
             _text(s.generiert_bis),
+            s.bewegungsart,
         )
         with self._db.transaktion() as con:
             if s.id is None:
                 cur = con.execute(
                     "INSERT INTO wiederholungsserie (titel, lebensbereich_id, wochentage,"
-                    " startdatum, enddatum, beginn, dauer_minuten, generiert_bis)"
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    " startdatum, enddatum, beginn, dauer_minuten, generiert_bis, bewegungsart)"
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     werte,
                 )
                 s.id = cur.lastrowid
@@ -201,7 +203,7 @@ class SerieRepository:
                 con.execute(
                     "UPDATE wiederholungsserie SET titel = ?, lebensbereich_id = ?,"
                     " wochentage = ?, startdatum = ?, enddatum = ?, beginn = ?,"
-                    " dauer_minuten = ?, generiert_bis = ? WHERE id = ?",
+                    " dauer_minuten = ?, generiert_bis = ?, bewegungsart = ? WHERE id = ?",
                     (*werte, s.id),
                 )
                 con.execute("DELETE FROM ausnahme WHERE serie_id = ?", (s.id,))

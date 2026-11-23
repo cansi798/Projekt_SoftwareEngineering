@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS wiederholungsserie (
     enddatum TEXT,
     beginn TEXT,
     dauer_minuten INTEGER NOT NULL,
-    generiert_bis TEXT
+    generiert_bis TEXT,
+    bewegungsart TEXT
 );
 CREATE TABLE IF NOT EXISTS ausnahme (
     serie_id INTEGER NOT NULL REFERENCES wiederholungsserie(id) ON DELETE CASCADE,

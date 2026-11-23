@@ -113,6 +113,7 @@ def test_serie_mit_ausnahmen_roundtrip(db):
         beginn=time(18, 0),
         ausnahmen={date(2026, 11, 19)},
         generiert_bis=date(2027, 11, 2),
+        bewegungsart=Bewegungsart.AUSDAUER_MODERAT,
     )
     gespeichert = repo.speichern(s)
     assert repo.nach_id(gespeichert.id) == gespeichert

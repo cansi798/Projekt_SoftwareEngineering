@@ -84,6 +84,7 @@ class Wiederholungsserie:
     beginn: time | None = None
     ausnahmen: set[date] = field(default_factory=set)
     generiert_bis: date | None = None
+    bewegungsart: Bewegungsart | None = None
     id: int | None = None
 
 
