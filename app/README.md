@@ -1,34 +1,75 @@
-# Anwendung (Work-Life-Balance-App für Windows)
+# BalanceOS
 
-> **Status: Hier liegt noch kein Code.** Die Implementierung beginnt erst in **Phase 2**
-> (Erarbeitungs- und Reflexionsphase), nachdem Portfolioteil 1 eingereicht wurde.
-> Der Prüfungsleitfaden schreibt vor, die Phasen strikt in der vorgegebenen
-> Reihenfolge zu bearbeiten. Ein Verstoß gilt als nicht bestanden.
-> Mock-ups für die Konzeptionsphase gehören nach `docs/diagramme/06_Mockups/`.
+BalanceOS ist eine Windows-Desktopanwendung zur Work-Life-Balance. Sie vergleicht die erfasste Zeit je Lebensbereich mit einem persönlichen Wunschprofil, bewertet jede Kalenderwoche mit einem Score und gibt regelbasierte Hinweise mit Quelle und Evidenzart. Alle Daten bleiben lokal in einer SQLite-Datei; die Anwendung baut keine Netzwerkverbindung auf.
 
-## Vorgaben aus der Aufgabenstellung
+Das Projekt entstand im Kurs DLMCSPSE01_D (Projekt: Software Engineering) der IU Internationale Hochschule. Anforderungen, Spezifikation und Architektur stehen im Ordner `docs/` des Repositorys.
 
-- Windows-10/11-Desktopanwendung in einer modernen objektorientierten Hochsprache: **Python**
-- Grafische Benutzeroberfläche, selbsterklärend und intuitiv
-- Funktionsfähige Anwendung mit ausreichend Quellcode, kein Mock-up
-- Sinnvolle **Testdaten**, damit der Nutzen sofort sichtbar wird
-- Third-Party-Bibliotheken sind erlaubt, müssen aber im Architekturdokument
-  **dokumentiert und begründet** werden. Fremden Quellcode zu kopieren ist verboten.
-- Vorausgesetzt werden dürfen nur Standard-Laufzeitumgebungen (Python-Interpreter).
-  Alles darüber hinaus muss beschrieben **und mitgeliefert** werden.
-- Der Code muss gut strukturiert und verständlich kommentiert sein.
+## Voraussetzungen
 
-## Geplante Struktur (wird im Architekturdokument festgelegt)
+- Windows 10 oder 11
+- Python 3.12 oder neuer (getestet mit 3.12.10)
+- PySide6 ab 6.8 (wird bei der Installation mitinstalliert)
+
+## Installation
+
+Im Ordner `app/`:
+
+```
+python -m venv .venv
+.venv\Scripts\activate
+pip install -e ".[dev]"
+```
+
+Ohne Entwicklungswerkzeuge genügt `pip install -e .`.
+
+## Start
+
+```
+python -m balanceos
+```
+
+Nach der Installation startet auch der Befehl `balanceos` die Anwendung. Die Datenbank liegt unter `%APPDATA%\BalanceOS\balanceos.db` und wird beim ersten Start angelegt. Wer die Anwendung ausprobieren möchte, lädt auf dem Dashboard oder unter Einstellungen → Daten die Demodaten: acht Wochen aus dem Alltag der Persona Sarah Keller, in denen jede Regel R01 bis R10 mindestens einmal auslöst. Die Demodaten lassen sich dort auch wieder entfernen, ohne eigene Einträge zu berühren.
+
+## Tests
+
+```
+pytest                          # Unit-, Integrations- und Oberflächentests
+pytest -m leistung -v -s        # Lasttests (NFA03, NFA12) mit Messwerten
+pytest --cov=balanceos          # mit Zeilenabdeckung
+ruff check . && ruff format --check .
+```
+
+Die Oberflächentests laufen mit pytest-qt ohne sichtbare Fenster (`tests/conftest.py` setzt `QT_QPA_PLATFORM=offscreen`). Die Lasttests sind vom normalen Lauf ausgenommen und füllen eine Datenbank mit 3.000 bzw. 30.000 Aktivitäten.
+
+## Probebuild
+
+```
+pyinstaller balanceos.spec
+```
+
+Der Build erzeugt `dist/BalanceOS/BalanceOS.exe` als Ordner-Build ohne Konsolenfenster. `dist/` und `build/` werden nicht eingecheckt. Die exe ist nicht signiert; ist unter Windows die intelligente App-Steuerung (Smart App Control) aktiv, blockiert Windows den Start. In diesem Fall startet man BalanceOS mit `python -m balanceos`.
+
+## Ordnerstruktur
 
 ```
 app/
-├── src/<paketname>/     Quellcode (Schichten laut Architekturdokument)
-├── tests/               automatisierte Tests (pytest): Unit- und Integrationstests
-├── testdaten/           mitgelieferte Beispieldaten
-├── release/             ausführbare Anwendung für die Abgabe (z. B. .exe)
-├── pyproject.toml       Abhängigkeiten und Projektkonfiguration
-└── README.md
+├── src/balanceos/
+│   ├── domaene/         Fachlogik ohne Qt und SQLite: Modell, Bewertung, Regeln, Validierung
+│   ├── anwendung/       Services, Demodaten, Export und AppKontext (Verdrahtung)
+│   ├── persistenz/      SQLite-Datenbank, Schema, Stammdaten und Repositories
+│   └── praesentation/   PySide6-Oberfläche: Hauptfenster, Seiten, Dialoge, Widgets
+├── tests/
+│   ├── unit/            Domänenlogik, darunter die Rechenbeispiele der Spezifikation
+│   ├── integration/     Services mit echter Datenbank, Export, Lasttests
+│   └── gui/             Seiten und Dialoge mit pytest-qt
+├── balanceos.spec       PyInstaller-Konfiguration für den Probebuild
+└── pyproject.toml       Abhängigkeiten, pytest- und ruff-Konfiguration
 ```
 
-Der Quellcode-Anhang der Projektdokumentation wird ab Phase 2 automatisch aus allen
-`*.py`-Dateien unter `app/` erzeugt (`python tools/build_docs.py --phase 2`).
+Die Schichten hängen nur in eine Richtung voneinander ab: Präsentation → Anwendung → Domäne ← Persistenz. Ein Architekturtest prüft, dass die Domäne weder Qt noch SQLite importiert.
+
+## Hinweis
+
+BalanceOS ist kein Medizinprodukt und stellt keine Diagnosen. Scores und Schwellenwerte sind programmeigen und nicht validiert; das WHO-5-Ergebnis wird getrennt davon angezeigt.
+
+Bei der Entwicklung wurde KI-Unterstützung (Claude, Anthropic) für Code, Tests und Textentwürfe genutzt. Alle Ergebnisse wurden geprüft und verantwortet.
