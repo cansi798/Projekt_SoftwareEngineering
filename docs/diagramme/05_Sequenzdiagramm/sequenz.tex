@@ -1,0 +1,122 @@
+% =====================================================================
+%  UML-Sequenzdiagramm (UML 2.5.1, Kap. 17): „Aktivität speichern ->
+%  Dashboard aktualisiert sich“. Abgelesen aus dem eingefrorenen Code:
+%  AktivitaetDialog._speichern, AktivitaetService.speichern,
+%  AktivitaetRepository.speichern, Seite._geaendert,
+%  DashboardSeite.aktualisieren, AuswertungService.wochenbewertung/hinweise.
+%  Export: docs/diagramme/export/sequenz.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\tikzset{
+  kopf/.style={draw, fill=iuFlaeche, align=center, minimum height=0.85cm, text width=1.55cm,
+               inner sep=2pt, font=\fontsize{7.3pt}{8.4pt}\selectfont, anchor=south},
+  leben/.style={dashed, draw=iuGrau},
+  akt/.style={draw, fill=white, minimum width=0.18cm, inner sep=0pt},
+  sync/.style={-{Triangle[length=2mm,width=1.6mm]}},
+  async/.style={-{Straight Barb[length=2mm]}},
+  antwort/.style={dashed, -{Straight Barb[length=2mm]}},
+  lab/.style={font=\fontsize{7pt}{8pt}\selectfont, inner sep=1pt, fill=white, fill opacity=0.85,
+              text opacity=1},
+  rahmen/.style={draw, inner sep=0pt},
+  waechter/.style={font=\fontsize{7pt}{8pt}\selectfont, inner sep=1.5pt},
+}
+% Lebenslinien: x-Positionen
+\def\xN{0}\def\xD{1.95}\def\xS{3.95}\def\xV{5.85}\def\xR{7.75}\def\xB{9.55}
+\def\xZ{11.3}\def\xH{13.05}\def\xA{14.85}\def\xW{16.6}\def\xG{18.3}
+% Nachricht von x#1 nach x#2 auf Höhe #3 mit Beschriftung #4 (Stil #5)
+\newcommand{\nachricht}[5][sync]{%
+  \draw[#1] (#2,#4) -- (#3,#4) node[lab, above, midway] {#5};}
+% Nachricht an sich selbst bei x#1, Höhe #2, Beschriftung #3
+\newcommand{\selbst}[3]{%
+  \draw[sync] (#1+0.09,#2) -- ++(0.45,0) -- ++(0,-0.32) -- ++(-0.36,0);
+  \node[lab, anchor=west] at (#1+0.6,#2-0.16) {#3};}
+\newcommand{\aktiv}[3]{\draw[fill=white] (#1-0.09,#2) rectangle (#1+0.09,#3);}
+
+\begin{document}
+\begin{tikzpicture}
+
+% ---------------------------------------------------------------------
+%  Köpfe und Lebenslinien
+% ---------------------------------------------------------------------
+\akteur{nutzer}{\xN,0.45}{}
+\node[font=\fontsize{7.3pt}{8.4pt}\selectfont, anchor=south] at (\xN,1.05) {Nutzer:in};
+\node[kopf] at (\xD,0) {:Aktivitaet\-Dialog};
+\node[kopf] at (\xS,0) {:Aktivitaet\-Service};
+\node[kopf] at (\xV,0) {«module»\\validierung};
+\node[kopf] at (\xR,0) {:Aktivitaet\-Repository};
+\node[kopf] at (\xB,0) {:Datenbank};
+\node[kopf] at (\xZ,0) {:Zustand};
+\node[kopf] at (\xH,0) {:Dashboard\-Seite};
+\node[kopf] at (\xA,0) {:Auswertung\-Service};
+\node[kopf] at (\xW,0) {«module»\\bewertung};
+\node[kopf] at (\xG,0) {«module»\\regeln};
+\foreach \x in {\xD,\xS,\xV,\xR,\xB,\xZ,\xH,\xA,\xW,\xG} { \draw[leben] (\x,0) -- (\x,-16.6); }
+\draw[leben] (\xN,-0.1) -- (\xN,-16.6);
+
+% ---------------------------------------------------------------------
+%  Ausführungsbalken
+% ---------------------------------------------------------------------
+\aktiv{\xD}{-0.55}{-16.1}
+\aktiv{\xS}{-1.65}{-5.45}
+\aktiv{\xV}{-2.05}{-2.45}
+\aktiv{\xR}{-3.4}{-4.95}
+\aktiv{\xB}{-3.95}{-4.45}
+\aktiv{\xZ}{-6.0}{-6.55}
+\aktiv{\xH}{-6.55}{-13.35}
+\aktiv{\xA}{-7.75}{-10.35}
+\aktiv{\xR}{-8.3}{-8.8}
+\aktiv{\xW}{-9.35}{-9.85}
+\aktiv{\xA}{-10.9}{-12.45}
+\aktiv{\xG}{-11.45}{-11.95}
+\aktiv{\xS}{-14.45}{-14.75}
+
+% ---------------------------------------------------------------------
+%  Nachrichten
+% ---------------------------------------------------------------------
+\nachricht[async]{\xN}{\xD-0.09}{-0.55}{Speichern}
+\selbst{\xD}{-0.8}{\_pruefen() : keine Fehler}
+\nachricht{\xD+0.09}{\xS-0.09}{-1.65}{speichern(a)}
+\nachricht{\xS+0.09}{\xV-0.09}{-2.05}{pruefe\_aktivitaet(a, \dots)}
+\nachricht[antwort]{\xV-0.09}{\xS+0.09}{-2.45}{fehler : list[Fehler]}
+
+% alt-Fragment
+\draw[rahmen] (\xD-0.5,-2.75) rectangle (\xG+0.75,-16.25);
+\draw (\xD-0.5,-3.05) -- (\xD+0.15,-3.05) -- (\xD+0.3,-2.9) -- (\xD+0.3,-2.75);
+\node[waechter, anchor=north west] at (\xD-0.48,-2.77) {\textbf{alt}};
+\node[waechter, anchor=west] at (\xD+0.45,-2.98) {[fehler ist leer]};
+\draw[dashed] (\xD-0.5,-13.85) -- (\xG+0.75,-13.85);
+\node[waechter, anchor=west] at (\xD+0.45,-14.07) {[sonst]};
+
+\nachricht{\xS+0.09}{\xR-0.09}{-3.4}{speichern(a)}
+\nachricht{\xR+0.09}{\xB-0.09}{-3.95}{transaktion()}
+\nachricht[antwort]{\xB-0.09}{\xR+0.09}{-4.45}{INSERT bzw. UPDATE, Commit}
+\nachricht[antwort]{\xR-0.09}{\xS+0.09}{-4.95}{a (mit id)}
+\nachricht[antwort]{\xS-0.09}{\xD+0.09}{-5.45}{a}
+\nachricht[async]{\xD+0.09}{\xZ-0.09}{-6.0}{daten\_geaendert.emit()}
+\nachricht[async]{\xZ+0.09}{\xH-0.09}{-6.55}{\_geaendert()}
+\selbst{\xH}{-6.85}{[sichtbar] aktualisieren()}
+\nachricht{\xH+0.09}{\xA-0.09}{-7.75}{wochenbewertung(kw)}
+\nachricht{\xA-0.09}{\xR+0.09}{-8.3}{im\_zeitraum(montag, sonntag)}
+\nachricht[antwort]{\xR+0.09}{\xA-0.09}{-8.8}{aktivitaeten : list[Aktivitaet]}
+\nachricht{\xA+0.09}{\xW-0.09}{-9.35}{bewerte\_woche(\dots)}
+\nachricht[antwort]{\xW-0.09}{\xA+0.09}{-9.85}{Wochenbewertung}
+\nachricht[antwort]{\xA-0.09}{\xH+0.09}{-10.35}{Wochenbewertung}
+\nachricht{\xH+0.09}{\xA-0.09}{-10.9}{hinweise(kw)}
+\nachricht{\xA+0.09}{\xG-0.09}{-11.45}{pruefe\_regeln(k)}
+\node[notiz, anchor=north west, text width=3.1cm, execute at begin node=\hyphenpenalty 10000\relax, font=\fontsize{6.8pt}{7.8pt}\selectfont]
+  at (\xR-0.6,-10.75) {hinweise() lädt zuvor ebenfalls Aktivitäten (drei Wochen) und bewertet sie;
+  diese Aufrufe sind hier weggelassen.};
+\nachricht[antwort]{\xG-0.09}{\xA+0.09}{-11.95}{list[Hinweis]}
+\nachricht[antwort]{\xA-0.09}{\xH+0.09}{-12.45}{list[Hinweis]}
+\selbst{\xH}{-12.8}{Balken und Hinweise anzeigen}
+\selbst{\xD}{-13.3}{accept()}
+
+% sonst: Eingaben ungültig
+\nachricht[antwort]{\xS-0.09}{\xD+0.09}{-14.6}{raise ValidierungsFehler}
+\selbst{\xD}{-15.0}{\_fehler\_anzeigen(e.fehler)}
+\nachricht[antwort]{\xD-0.09}{\xN}{-15.75}{Meldung am Feld}
+
+\end{tikzpicture}
+\end{document}

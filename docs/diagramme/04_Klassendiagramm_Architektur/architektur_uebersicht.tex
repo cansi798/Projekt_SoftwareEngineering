@@ -1,0 +1,74 @@
+% =====================================================================
+%  Architekturübersicht BalanceOS: vier Schichten (Python-Pakete) mit
+%  Abhängigkeitsrichtung und Artefakten (SQLite-Datei, Exportdateien).
+%  Abgelesen aus app/src/balanceos (Code-Freeze Phase 2).
+%  Export: docs/diagramme/export/architektur_uebersicht.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\tikzset{
+  schicht/.style={draw, fill=iuFlaeche, rounded corners=3pt, align=left, inner sep=5pt,
+                  text width=#1, anchor=north west},
+  schicht/.default=14.6cm,
+  artefakt/.style={draw, fill=white, align=center, inner sep=4pt, text width=3.4cm,
+                   font=\fontsize{8pt}{9.5pt}\selectfont,
+                   path picture={\draw[iuLinie] ([xshift=-2.2mm]path picture bounding box.north east)
+                     -- ([yshift=-2.2mm]path picture bounding box.north east);}},
+  abh/.style={dashed, -{Straight Barb[length=2.2mm]}},
+  klein/.style={font=\fontsize{8pt}{9.5pt}\selectfont},
+}
+\newcommand{\kopf}{\fontsize{9.5pt}{11pt}\selectfont\bfseries}
+\newcommand{\klein}{\fontsize{8pt}{9.5pt}\selectfont}
+
+\begin{document}
+\begin{tikzpicture}
+
+\node[schicht] (pr) at (0,0) {%
+  {\kopf «layer» Präsentation \hfill\normalfont\ttfamily praesentation/}\\[2pt]
+  \klein Hauptfenster mit Seitenleiste, sieben Seiten (Dashboard, Woche, Aktivitäten, Statistik,
+  Reflexion, Kompass, Einstellungen), Dialoge, eigene Widgets (Wochenkalender, Soll-Ist-Balken,
+  Liniendiagramm), \texttt{Zustand} mit den Qt-Signalen \texttt{daten\_geaendert} und
+  \texttt{woche\_geaendert}\\[2pt]
+  \klein\itshape nutzt PySide6 (Qt Widgets)};
+
+\node[schicht] (an) at (0,-2.75) {%
+  {\kopf «layer» Anwendung \hfill\normalfont\ttfamily anwendung/}\\[2pt]
+  \klein \texttt{AppKontext} (Verdrahtung), Services: \texttt{StammdatenService},
+  \texttt{AktivitaetService}, \texttt{AuswertungService}, \texttt{ReflexionService},
+  \texttt{ExportService}, \texttt{DatenService}; Demodaten; Fehlerklassen
+  \texttt{ValidierungsFehler}, \texttt{RegelVerletzung}};
+
+\node[schicht=6.3cm] (do) at (0,-5.15) {%
+  {\kopf «layer» Domäne \hfill\normalfont\ttfamily domaene/}\\[2pt]
+  \klein Datenklassen und Aufzählungen (\texttt{modell}, \texttt{typen}), \texttt{validierung}
+  (GR01--GR30), \texttt{bewertung} (Score), \texttt{regeln} (R01--R10), \texttt{serien},
+  \texttt{kalender} (ISO-Woche), \texttt{who5}\\[2pt]
+  \klein\itshape nur Python-Standardbibliothek, ohne Qt und SQLite};
+
+\node[schicht=6.3cm] (pe) at (8.3,-5.15) {%
+  {\kopf «layer» Persistenz \hfill\normalfont\ttfamily persistenz/}\\[2pt]
+  \klein \texttt{Datenbank} (Verbindung, Schema, Transaktionen), Repositories je Aggregat,
+  Stammdaten (zehn Standardbereiche, Regeln, Kompass-Modelle)\\[2pt]
+  \klein\itshape nutzt \texttt{sqlite3} (Standardbibliothek)};
+
+\node[artefakt, anchor=north] (db) at ([yshift=-0.9cm]pe.south) {«file»\\\texttt{balanceos.db}\\im Benutzerprofil (\%APPDATA\%)};
+\node[artefakt, anchor=west] (ex) at ([xshift=1.5cm]an.east) {«file»\\CSV- und JSON-Export\\(vom Nutzer gewählter Ordner)};
+
+% Abhängigkeiten (gestrichelt, Pfeil zur genutzten Schicht)
+\draw[abh] ([xshift=3cm]pr.south west) -- node[klein, right] {nutzt Services} ([xshift=3cm]an.north west);
+\draw[abh] (pr.west) -- ++(-0.45,0) |- node[klein, pos=0.25, left, align=right] {Datenklassen,\\Feld-\\prüfung} (do.west);
+\draw[abh] ([xshift=3cm]an.south west) -- node[klein, right] {Fachlogik} ([xshift=3cm]do.north west);
+\draw[abh] ([xshift=3cm]pe.north west |- an.south) -- node[klein, right] {Repositories} ([xshift=3cm]pe.north west);
+\draw[abh] (pe.west) -- node[klein, above] {Daten-} node[klein, below] {klassen} (do.east);
+\draw[abh] (pe.south) -- node[klein, right] {SQL} (db.north);
+\draw[abh] (an.east) -- node[klein, above] {schreibt} (ex.west);
+
+\node[klein, anchor=north west, align=left, text width=14.6cm] at ([yshift=-0.35cm]do.south west |- db.south) {%
+  Gestrichelte Pfeile: Abhängigkeit (Import) in Pfeilrichtung. Die Präsentation greift über die
+  Anwendungsschicht auf die Daten zu und nutzt aus der Domäne nur Datenklassen und Prüffunktionen
+  (lockere Schichtung). Einzige Ausnahme ist der Programmstart \texttt{praesentation/app.py}, der
+  den Speicherort der Datenbank aus der Persistenz erfragt.};
+
+\end{tikzpicture}
+\end{document}

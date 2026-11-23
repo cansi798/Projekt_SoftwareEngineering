@@ -2,17 +2,33 @@
 %  2 Architekturübersicht  (Aufgabenstellung: „Beschreibung und Begründung
 %  der verwendeten Architektur (z. B. Schichtenarchitektur, Microservices,
 %  Client-Server-Architektur etc.)“)
-%  Bewertung „Methodik“: sinnvolle, nachvollziehbare Entwurfsentscheidungen;
-%  Architekturmuster mit Fachliteratur belegen.
 % =====================================================================
 \section{Architekturübersicht}
-\TODO{Kurze Hinführung}
+Dieses Kapitel beschreibt den gewählten Architekturstil, die vier Schichten von BalanceOS und ihre Abhängigkeiten. Am Ende stehen die Änderungen, die sich in der Erarbeitungsphase gegenüber Anforderungen und Spezifikation ergeben haben.
 
 \subsection{Gewählter Architekturstil}
-\TODO{Architekturstil/Muster beschreiben und mit Quelle begründen; betrachtete Alternativen}
+\subsubsection{Grundlagen}
+Eine Schichtenarchitektur ordnet ein System in Schichten, von denen jede Dienste für die darüberliegende Schicht anbietet. Eine Schicht hängt nur von der Schicht unter ihr ab. Dadurch lässt sich eine Schicht ersetzen oder ändern, ohne die anderen anzufassen, solange ihre Schnittstelle gleich bleibt. Als Nachteil nennt die Literatur, dass eine saubere Trennung in der Praxis schwer durchzuhalten ist und Aufrufe durch mehrere Schichten gereicht werden müssen \parencite[S.~177--178]{sommerville2016}.
+
+\subsubsection{Entscheidung für BalanceOS}
+BalanceOS folgt diesem Stil mit vier Schichten. Drei Gründe gaben den Ausschlag:
+\begin{itemize}
+  \item \textbf{Testbarkeit:} Bewertung, Regelwerk und Validierung liegen in einer Schicht ohne Qt und ohne Datenbank. Sie lassen sich daher mit einfachen Unit-Tests prüfen, darunter die Rechenbeispiele der Spezifikation (NFA06, NFA07).
+  \item \textbf{Nähe zur Spezifikation:} Die Seiten und Dialoge der Präsentationsschicht entsprechen eins zu eins den Mock-ups, die Klassen der Domäne dem Datenmodell.
+  \item \textbf{Geringes Risiko:} Standard-Widgets von Qt und ein bekanntes Muster halten den Aufwand für eine Person beherrschbar (Risiko RI04 der Projektdokumentation).
+\end{itemize}
+
+Zwei Alternativen wurden verworfen. Ein \ac{MVVM}-Ansatz mit \ac{QML} hätte eine deklarative, modernere Oberfläche ermöglicht, aber eine zweite Sprache, eine aufwendigere Paketierung und eine Neugestaltung der Mock-ups mit sich gebracht. Eine hexagonale Architektur (Ports und Adapter) entkoppelt die Fachlogik noch stärker von Oberfläche und Speicher. Für eine Offline-Anwendung mit genau einem Datenspeicher und einer Oberfläche wäre dieser Aufwand aber nicht gerechtfertigt.
 
 \subsection{Schichten und Verantwortlichkeiten}
-\TODO{Komponenten bzw. Schichten und ihre Aufgaben; Abhängigkeitsrichtung; Übersichtsgrafik}
+Jede Schicht ist ein Python-Paket unterhalb von \texttt{app/src/balanceos} (Abbildung~\ref{abb:architektur}):
+\begin{itemize}
+  \item \textbf{Präsentation} (\texttt{praesentation}): Hauptfenster mit Seitenleiste, sieben Seiten, sieben Dialoge und eigene Widgets wie Wochenkalender, Soll-Ist-Balken und Liniendiagramm. Die Klasse \texttt{Zustand} hält die gewählte Kalenderwoche und meldet Änderungen über Qt-Signale.
+  \item \textbf{Anwendung} (\texttt{anwendung}): Je Anwendungsfall ein Service, etwa \texttt{AktivitaetService} oder \texttt{AuswertungService}. Die Services rufen Prüfungen und Berechnungen der Domäne auf, legen die Transaktionsgrenzen fest und melden Fehler als \texttt{ValidierungsFehler} oder \texttt{RegelVerletzung}. \texttt{AppKontext} erzeugt beim Start Datenbank, Repositories und Services und reicht sie über den Konstruktor weiter (Dependency Injection von Hand).
+  \item \textbf{Domäne} (\texttt{domaene}): Datenklassen und Aufzählungen des Datenmodells, die Gültigkeitsregeln GR01--GR30, die Wochenbewertung, die Regeln R01--R10, die Auflösung von Serien, die ISO-Kalenderwoche und die WHO-5-Auswertung. Die Domäne nutzt nur die Standardbibliothek.
+  \item \textbf{Persistenz} (\texttt{persistenz}): Die Klasse \texttt{Datenbank} kapselt die SQLite-Verbindung, das Schema und die Transaktionen. Je Aggregat gibt es ein Repository, das Zeilen in Domänenobjekte übersetzt. Beim ersten Start legt die Persistenz die Stammdaten an: zehn Standardbereiche, die Regeln und die Modelle des Balance-Kompasses.
+\end{itemize}
+
 \begin{figure}[H]
   \caption{Architekturübersicht}\label{abb:architektur}
   \centering
@@ -20,5 +36,19 @@
   \quelle{Eigene Darstellung.}
 \end{figure}
 
+Die Abhängigkeiten zeigen von oben nach unten: Präsentation $\rightarrow$ Anwendung $\rightarrow$ Domäne $\leftarrow$ Persistenz. Die Persistenz hängt von der Domäne ab, weil sie deren Datenklassen liest und schreibt; die Domäne kennt die Persistenz nicht. Die Schichtung ist bewusst locker: Die Präsentation darf Datenklassen und Prüffunktionen der Domäne direkt verwenden, damit ein Dialog Eingaben schon vor dem Speichern am Feld prüfen kann. Daten liest und schreibt sie aber nur über Services. Einzige Ausnahme ist der Programmstart in \texttt{praesentation/app.py}, der den Speicherort der Datenbank von der Persistenz erfragt. Ein Architekturtest (\texttt{tests/unit/test\_architektur.py}) prüft bei jedem Testlauf, dass die Domäne weder Qt noch SQLite importiert und dass Anwendung und Persistenz kein Qt verwenden.
+
+Die Wochenbewertung wird nicht gespeichert, sondern bei jeder Anzeige aus den Aktivitäten berechnet, so wie es das Datenmodell vorsieht. Ändert sich eine Aktivität oder ein Wunschprofil, kann daher kein veralteter Score stehen bleiben. Dass diese Berechnung auch bei großen Datenmengen schnell genug ist, zeigen die Lasttests: Mit 30.000 Aktivitäten braucht das Dashboard rund 4~ms und die Statistik rund 3~ms, die Datenbankdatei ist 3,2~MB groß.
+
 \subsection{Änderungen gegenüber der Konzeptionsphase}
-\TODO{Signifikante Änderungen an Anforderungen oder Spezifikation begründen (Aufgabenstellung 1.2); sonst „keine“ vermerken}
+In der Erarbeitungsphase wurden Anforderungen und Spezifikation an folgenden Stellen geändert oder ergänzt:
+\begin{itemize}
+  \item \textbf{Neue Anforderung NFA12 (Skalierbarkeit):} Auf das Feedback zu Portfolioteil~1 hin beschreibt NFA12, wie sich die Anwendung bei wachsendem Datenbestand verhält. Bei 30.000 Aktivitäten, also etwa zehn Jahren Nutzung, dürfen Dashboard und Statistik höchstens 2~s brauchen, und die Datenbankdatei muss unter 50~MB bleiben.
+  \item \textbf{Geschärfte Prüfkriterien:} Die Prüfkriterien der übrigen nichtfunktionalen Anforderungen nennen jetzt messbare Werte, etwa Anzahl der Testpersonen, Abdeckungsgrad oder Zahl der Abbruchversuche.
+  \item \textbf{Zeichengrenze der Wochenreflexion:} Das Datenmodell nannte 500 Zeichen je Antwort, die Validierungstabelle 1.000. Einheitlich gilt jetzt 1.000 Zeichen.
+  \item \textbf{Bewegungsart in der Wiederholungsserie:} Die Klasse \texttt{Wiederholungsserie} hat ein zusätzliches, optionales Attribut \texttt{bewegungsart}. Ohne dieses Attribut würden Termine einer Serie im Bereich Bewegung bei den Regeln R01 und R02 nicht mitzählen. Der JSON-Export enthält das Feld deshalb auch je Serie.
+  \item \textbf{Wochenansicht:} Aktivitäten ohne Uhrzeit stehen in einer eigenen Zeile über der Zeitachse. Die Spezifikation hatte für sie keinen Platz vorgesehen.
+  \item \textbf{Bearbeiten einer Serie:} Beim Bearbeiten eines Serientermins gibt es ein Kontrollkästchen \enquote{Änderungen auf alle zukünftigen Termine der Serie anwenden}. Ohne Haken betrifft die Änderung nur diesen Termin.
+  \item \textbf{Demodaten:} Hat die aktuelle Woche nach dem Laden der Demodaten weniger als vier Tage mit Einträgen, zeigt das Dashboard die Vorwoche und nennt sie in der Meldung. Sonst sähe man zunächst nur den Hinweis auf unvollständige Daten.
+\end{itemize}
+Die Projektdokumentation fasst alle Änderungen gegenüber Portfolioteil~1 in einer Tabelle zusammen. Alle 22 User Stories sind vollständig umgesetzt; gekürzte Funktionen oder bekannte technische Schulden gibt es zum Code-Freeze nicht.

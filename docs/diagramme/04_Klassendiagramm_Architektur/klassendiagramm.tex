@@ -1,0 +1,192 @@
+% =====================================================================
+%  UML-Klassendiagramm der Anwendung BalanceOS (UML 2.5.1)
+%  Abgelesen aus dem eingefrorenen Code (app/src/balanceos, Code-Freeze
+%  Phase 2). Pakete als UML-Pakete, wichtigste Klassen je Schicht,
+%  Funktionsmodule als «module». Typangaben in Python-Schreibweise.
+%  Eine Eigenschaft steht entweder als Attribut oder als Assoziation.
+%  Export: docs/diagramme/export/klassendiagramm.pdf
+% =====================================================================
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{iu-diagramm}
+
+\newcommand{\kfont}{\fontsize{7.3pt}{8.6pt}\selectfont\hyphenpenalty=10000\exhyphenpenalty=10000}
+\tikzset{
+  kl/.style={rectangle split, rectangle split parts=3, draw, fill=white,
+             rectangle split part fill={iuFlaeche,white,white},
+             rectangle split part align={center,left,left},
+             text width=4.1cm, inner sep=2.2pt, font=\kfont, anchor=north west,
+             execute at begin node=\centering},
+  kl2/.style={kl, rectangle split parts=2, rectangle split part fill={iuFlaeche,white},
+              rectangle split part align={center,left}},
+  paket/.style={draw, inner sep=0.2cm},
+  rolle/.style={font=\fontsize{6.8pt}{7.5pt}\selectfont, inner sep=1.2pt},
+  abh/.style={dashed, -{Straight Barb[length=2mm]}},
+  ass/.style={-{Straight Barb[length=2mm]}},
+  komp/.style={{Diamond[length=2.6mm,width=2mm]}-{Straight Barb[length=2mm]}},
+  gen/.style={-{Triangle[open,length=2.6mm,width=2.6mm]}},
+}
+% UML-Paket: Rahmen um die Knoten #2, Reiter mit dem Paketnamen #1, Name des Rahmens #3
+\newcommand{\paket}[3]{%
+  \node[paket, fit=#2] (#3) {};
+  \node[draw, fill=white, anchor=south west, inner sep=2pt, font=\fontsize{8pt}{9pt}\selectfont\bfseries]
+    at (#3.north west) {#1};}
+
+\begin{document}
+\begin{tikzpicture}
+\def\xa{0}\def\xb{4.9}\def\xc{9.8}\def\xd{14.7}
+
+% =====================================================================
+%  praesentation
+% =====================================================================
+\node[kl] (hf) at (\xa,0) {%
+  \textbf{Hauptfenster}\\«QMainWindow»
+  \nodepart{second}\raggedright +kontext : AppKontext
+  \nodepart{third}\raggedright +zeige\_seite(index : int)\\+neue\_aktivitaet()};
+\node[kl] (se) at (\xb,0) {%
+  \textbf{Seite}\\«QWidget»
+  \nodepart{second}\raggedright +kontext : AppKontext
+  \nodepart{third}\raggedright +aktualisieren()};
+\node[kl] (zu) at (\xc,0) {%
+  \textbf{Zustand}\\«QObject»
+  \nodepart{second}\raggedright +daten\_geaendert : Signal\\+woche\_geaendert : Signal\\-\_kw : KW
+  \nodepart{third}\raggedright +kw() : KW\\+setze\_kw(kw : KW)};
+\node[kl] (ad) at (\xd,0) {%
+  \textbf{AktivitaetDialog}\\«QDialog»
+  \nodepart{second}\raggedright -\_kontext : AppKontext
+  \nodepart{third}\raggedright -\_pruefen() : list[Fehler]\\-\_speichern()};
+\node[kl2] (ds) at (\xb,-2.45) {%
+  \textbf{DashboardSeite}
+  \nodepart{second}\raggedright +aktualisieren()\\+begruendung\_zeigen(hinweis\\\quad : Hinweis)\\+demodaten\_laden()};
+\node[notiz, anchor=north west, text width=3.9cm] (sn) at (\xc,-2.75) {%
+  Weitere Unterklassen von \textit{Seite}: WocheSeite, AktivitaetenSeite, StatistikSeite,
+  ReflexionSeite, KompassSeite, EinstellungenSeite};
+\paket{praesentation}{(hf)(se)(zu)(ad)(ds)(sn)}{pPr}
+
+% =====================================================================
+%  anwendung
+% =====================================================================
+\def\ya{-5.7}
+\node[kl, text width=5.4cm] (ak) at (\xa,\ya) {%
+  \textbf{AppKontext}\\«dataclass»
+  \nodepart{second}\raggedright +db : Datenbank\\+heute : Callable[[], date]\\+repos : Repositories\\
+  +stammdaten : StammdatenService\\+aktivitaeten : AktivitaetService\\
+  +auswertung : AuswertungService\\+export : ExportService\\+daten : DatenService\\
+  +reflexion : ReflexionService
+  \nodepart{third}\raggedright \underline{+erstellen(pfad : Path | str,}\\\underline{\quad heute) : AppKontext}};
+\node[kl] (au) at (\xc,\ya) {%
+  \textbf{AuswertungService}
+  \nodepart{second}\raggedright -\_regeln : RegelRepository\\-\_db : Datenbank
+  \nodepart{third}\raggedright +wochenbewertung(kw : KW)\\\quad : Wochenbewertung\\+hinweise(kw : KW,\\\quad mit\_ausgeblendeten : bool)\\\quad : list[Hinweis]\\+verlauf(bis\_kw : KW, wochen : int)\\\quad : list[Wochenbewertung]};
+\node[kl] (as) at (\xd,\ya) {%
+  \textbf{AktivitaetService}
+  \nodepart{second}\raggedright -\_db : Datenbank\\-\_heute : Callable[[], date]
+  \nodepart{third}\raggedright +fuer\_woche(kw : KW)\\\quad : list[Aktivitaet]\\+speichern(a : Aktivitaet)\\\quad : Aktivitaet\\+serie\_anlegen(vorlage : Aktivitaet,\\\quad wochentage, enddatum)\\\quad : Wiederholungsserie\\+loeschen(aktivitaet\_id : int)};
+\paket{anwendung}{(ak)(au)(as)}{pAn}
+
+% =====================================================================
+%  domaene
+% =====================================================================
+\def\yd{-11.55}
+\node[kl] (lb) at (\xa,\yd) {%
+  \textbf{Lebensbereich}
+  \nodepart{second}\raggedright +name : str\\+typ : Bereichstyp\\+soll\_stunden : float\\+gewicht : int\\+aktiv : bool
+  \nodepart{third}\raggedright +ist\_standard() : bool};
+\node[kl2] (mb) at (\xb,\yd) {%
+  «module»\\\textbf{bewertung}
+  \nodepart{second}\raggedright +bewerte\_woche(kw : KW,\\\quad bereiche, aktivitaeten,\\\quad einstellungen) : Wochenbewertung\\+zielerfuellung(typ, ist, soll)\\\quad : float | None};
+\node[kl2] (mr) at (\xc,\yd) {%
+  «module»\\\textbf{regeln}
+  \nodepart{second}\raggedright +pruefe\_regeln(k : RegelKontext)\\\quad : list[Hinweis]};
+\node[kl2] (mv) at (\xd,\yd) {%
+  «module»\\\textbf{validierung}
+  \nodepart{second}\raggedright +pruefe\_aktivitaet(a : Aktivitaet,\\\quad bereich, heute) : list[Fehler]\\+pruefe\_lebensbereich(b, alle)\\\quad : list[Fehler]};
+\def\ye{-14.6}
+\node[kl] (kw) at (\xa,\ye) {%
+  \textbf{KW}
+  \nodepart{second}\raggedright +jahr : int\\+woche : int
+  \nodepart{third}\raggedright +montag() : date\\+verschoben(wochen : int) : KW};
+\node[kl] (wb) at (\xb,\ye) {%
+  \textbf{Wochenbewertung}
+  \nodepart{second}\raggedright +vollstaendigkeit\_tage : int\\+ausreichende\_daten : bool\\+gesamtscore : int | None
+  \nodepart{third}\raggedright +bereich(lebensbereich\_id : int)\\\quad : Bereichsbewertung | None};
+\node[kl2] (hi) at (\xc,\ye) {%
+  \textbf{Hinweis}
+  \nodepart{second}\raggedright +regel : str\\+art : Hinweisart\\+text : str\\+begruendung : Begruendung\\+kw : KW};
+\node[kl] (av) at (\xd,\ye) {%
+  \textbf{Aktivitaet}
+  \nodepart{second}\raggedright +titel : str\\+lebensbereich\_id : int\\+datum : date\\+dauer\_minuten : int\\+status : Aktivitaetsstatus
+  \nodepart{third}\raggedright +stunden() : float};
+\paket{domaene}{(lb)(mb)(mr)(mv)(kw)(wb)(hi)(av)}{pDo}
+
+% =====================================================================
+%  persistenz
+% =====================================================================
+\def\yp{-18.75}
+\node[kl] (db) at (\xa,\yp) {%
+  \textbf{Datenbank}
+  \nodepart{second}\raggedright +pfad : str\\+verbindung : Connection
+  \nodepart{third}\raggedright +transaktion()\\+abfrage(sql : str,\\\quad parameter : tuple) : list[Row]\\+ausfuehren(sql : str,\\\quad parameter : tuple) : Cursor};
+\node[kl] (rl) at (\xb,\yp) {%
+  \textbf{LebensbereichRepository}
+  \nodepart{second}\raggedright \mbox{}
+  \nodepart{third}\raggedright +alle() : list[Lebensbereich]\\+nach\_id(bereich\_id : int)\\\quad : Lebensbereich | None};
+\node[kl] (rr) at (\xc,\yp) {%
+  \textbf{RegelRepository}
+  \nodepart{second}\raggedright \mbox{}
+  \nodepart{third}\raggedright +alle() : list[Regel]\\+aktiv\_setzen(kennung : str,\\\quad aktiv : bool)};
+\node[kl] (ra) at (\xd,\yp) {%
+  \textbf{AktivitaetRepository}
+  \nodepart{second}\raggedright \mbox{}
+  \nodepart{third}\raggedright +im\_zeitraum(von : date, bis : date)\\\quad : list[Aktivitaet]\\+speichern(a : Aktivitaet)\\\quad : Aktivitaet};
+\paket{persistenz}{(db)(rl)(rr)(ra)}{pPe}
+
+% =====================================================================
+%  Beziehungen
+% =====================================================================
+% praesentation
+\path (se.text split) ++(0,0.12) coordinate (h1);
+\draw[komp] (hf.east |- h1) -- (se.west |- h1)
+  node[rolle, above, pos=0.72] {seiten} node[rolle, below, pos=0.85] {7};
+\path (se.text split) ++(0,-0.12) coordinate (h2);
+\draw[ass] (se.east |- h2) -- (zu.west |- h2)
+  node[rolle, above, pos=0.7] {zustand} node[rolle, below, pos=0.85] {1};
+\path (zu.three split) ++(0,-0.28) coordinate (h3);
+\draw[ass] (ad.west |- h3) -- (zu.east |- h3)
+  node[rolle, above, pos=0.7] {\_zustand} node[rolle, below, pos=0.85] {1};
+\draw[gen] (ds.north) -- (se.south);
+% praesentation -> anwendung
+\draw[ass] ([xshift=1.0cm]ad.south west) -- ([xshift=1.0cm]as.north west)
+  node[rolle, right, pos=0.82] {\_service} node[rolle, left, pos=0.82] {1};
+% anwendung -> domaene
+\path (au.text split) ++(0,-0.35) coordinate (h4);
+\draw[abh] (au.west |- h4) -| (mb.north) node[rolle, above, pos=0.25] {«use»};
+\draw[abh] ([xshift=-0.6cm]au.south) -- ([xshift=-0.6cm]au.south |- mr.north)
+  node[rolle, right, pos=0.5] {«use»};
+\draw[abh] ([xshift=1.0cm]as.south west) -- ([xshift=1.0cm]as.south west |- mv.north)
+  node[rolle, right, pos=0.5] {«use»};
+% domaene intern
+\draw[abh] (mb.south) -- (wb.north) node[rolle, right, pos=0.45] {«create»};
+\draw[abh] (mr.south) -- (hi.north) node[rolle, right, pos=0.45] {«create»};
+\path (wb.text split) ++(0,0.12) coordinate (h5);
+\draw[ass] (wb.west |- h5) -- (kw.east |- h5)
+  node[rolle, above, pos=0.7] {kw} node[rolle, below, pos=0.85] {1};
+% anwendung -> persistenz (Spuren am rechten Rand)
+\path (as.text split) ++(0,0.12) coordinate (h6);
+\draw[ass] (as.east |- h6) -- ++(0.45,0) coordinate (l1) -- (l1 |- ra.text split)
+  node[rolle, sloped, above, pos=0.93] {\_aktivitaeten} -- (ra.east |- ra.text split)
+  node[rolle, above, pos=0.5] {1};
+\draw[ass] ([xshift=1.2cm]au.south) -- ++(0,-0.25) coordinate (l2) -- (l2 -| pDo.east) -- ++(0.95,0) coordinate (l3)
+  -- (l3 |- ra.three split) node[rolle, sloped, above, pos=0.9] {\_aktivitaeten}
+  -- (ra.east |- ra.three split) node[rolle, above, pos=0.5] {1};
+% Repositories -> Datenbank
+\path (db.text split) ++(0,0.12) coordinate (h7);
+\draw[ass] (rl.west |- h7) -- (db.east |- h7)
+  node[rolle, above, pos=0.7] {\_db} node[rolle, below, pos=0.85] {1};
+\path (db.south) ++(0,-0.3) coordinate (t1) ++(0,-0.3) coordinate (t2);
+\draw[ass] (rr.south) -- (rr.south |- t1) -| ([xshift=2.8cm]db.south west)
+  node[rolle, right, pos=0.93] {1};
+\draw[ass] (ra.south) -- (ra.south |- t2) -| ([xshift=1.8cm]db.south west)
+  node[rolle, left, pos=0.93] {1};
+
+\end{tikzpicture}
+\end{document}
