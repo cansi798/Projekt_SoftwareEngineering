@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "balanceos"
+version = "1.0.0"
+description = "BalanceOS – Work-Life-Balance über Lebensbereiche (Windows-Desktopanwendung)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Alle Rechte vorbehalten (Studienprojekt)" }
+dependencies = ["PySide6>=6.8,<7"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "pytest-qt>=4.4",
+    "ruff>=0.6",
+    "pyinstaller>=6.10",
+]
+
+[project.gui-scripts]
+balanceos = "balanceos.praesentation.app:starte"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+qt_api = "pyside6"
+markers = [
+    "leistung: Lasttests für NFA03 und NFA12",
+    "gui: Oberflächentests",
+]
+addopts = "-m 'not leistung'"
+
+[tool.coverage.run]
+source = ["balanceos"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]

@@ -1,0 +1,1 @@
+"""Eigene Widgets der Oberfläche."""
