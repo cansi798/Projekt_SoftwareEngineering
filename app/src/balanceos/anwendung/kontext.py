@@ -7,6 +7,7 @@ from pathlib import Path
 
 from balanceos.anwendung.aktivitaet_service import AktivitaetService
 from balanceos.anwendung.auswertung_service import AuswertungService
+from balanceos.anwendung.export_service import ExportService
 from balanceos.anwendung.stammdaten_service import StammdatenService
 from balanceos.persistenz.datenbank import Datenbank
 from balanceos.persistenz.repo_aktivitaeten import AktivitaetRepository, SerieRepository
@@ -65,6 +66,7 @@ class AppKontext:
     stammdaten: StammdatenService
     aktivitaeten: AktivitaetService
     auswertung: AuswertungService
+    export: ExportService
 
     @classmethod
     def erstellen(cls, pfad: Path | str, heute: Callable[[], date] = date.today) -> "AppKontext":
@@ -91,6 +93,15 @@ class AppKontext:
                 r.kompass,
                 r.ausblendungen,
                 db,
+            ),
+            export=ExportService(
+                r.aktivitaeten,
+                r.serien,
+                r.bereiche,
+                r.einstellungen,
+                r.regeln,
+                r.who5,
+                r.reflexionen,
             ),
         )
         kontext.aktivitaeten.horizont_fortschreiben()
