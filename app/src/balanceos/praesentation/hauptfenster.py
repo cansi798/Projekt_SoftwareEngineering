@@ -94,6 +94,7 @@ class Hauptfenster(QMainWindow):
         self.setCentralWidget(zentral)
 
         zustand.woche_geaendert.connect(self._kw_anzeigen)
+        zustand.seite_angefordert.connect(self.seitenleiste.setCurrentRow)
         self._kw_anzeigen(zustand.kw)
         self.seitenleiste.setCurrentRow(0)
 

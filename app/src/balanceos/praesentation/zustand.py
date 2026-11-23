@@ -15,6 +15,8 @@ class Zustand(QObject):
 
     daten_geaendert = Signal()
     woche_geaendert = Signal(object)
+    seite_angefordert = Signal(int)
+    """Bittet das Hauptfenster, die Seite mit diesem Index zu zeigen (0 = Dashboard)."""
 
     def __init__(self, kw: KW) -> None:
         """Erzeugt den Zustand mit der Startwoche."""

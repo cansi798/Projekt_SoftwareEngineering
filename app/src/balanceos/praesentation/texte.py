@@ -1,6 +1,6 @@
 """Anzeigetexte für Aufzählungswerte in der Oberfläche."""
 
-from balanceos.domaene.typen import Aktivitaetsstatus, Bewegungsart, Wochentag
+from balanceos.domaene.typen import Aktivitaetsstatus, Bewegungsart, Evidenzart, Wochentag
 
 STATUS_TEXT: dict[Aktivitaetsstatus, str] = {
     Aktivitaetsstatus.GEPLANT: "Geplant",
@@ -23,3 +23,12 @@ WOCHENTAG_TEXT: dict[Wochentag, str] = {
     Wochentag.SA: "Sa",
     Wochentag.SO: "So",
 }
+
+EVIDENZART_TEXT = {
+    Evidenzart.THEORIE: "Theorie",
+    Evidenzart.EMPFEHLUNG: "Empfehlung",
+    Evidenzart.VALIDIERTES_INSTRUMENT: "validiertes Instrument",
+    Evidenzart.PERSOENLICHE_REGEL: "persönliche Regel",
+    Evidenzart.PROGRAMMEIGEN: "programmeigen",
+}
+"""Anzeigetexte der Evidenzarten (Balance-Kompass, Begründungsdialog)."""

@@ -1,7 +1,7 @@
 """Basisklasse und Hilfsbausteine für die Seiten des Hauptfensters."""
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame, QLabel, QScrollArea, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QLabel, QLayout, QScrollArea, QVBoxLayout, QWidget
 
 from balanceos.anwendung.kontext import AppKontext
 from balanceos.praesentation.zustand import Zustand
@@ -73,3 +73,18 @@ def etikett(text: str, farbe: str) -> QLabel:
     label.setObjectName("etikett")
     label.setStyleSheet(f"background: {farbe};")
     return label
+
+
+def leeren(layout: QLayout) -> None:
+    """Entfernt alle Einträge eines Layouts.
+
+    Die Widgets werden sofort ausgeblendet und vom Elternwidget gelöst, damit sie bis
+    zur verzögerten Freigabe durch ``deleteLater`` nicht über dem neuen Inhalt liegen.
+    """
+    while layout.count():
+        eintrag = layout.takeAt(0)
+        widget = eintrag.widget()
+        if widget is not None:
+            widget.hide()
+            widget.setParent(None)
+            widget.deleteLater()

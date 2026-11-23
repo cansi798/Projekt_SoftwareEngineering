@@ -4,6 +4,7 @@ from balanceos.anwendung.fehler import RegelVerletzung, ValidierungsFehler
 from balanceos.domaene.modell import Einstellungen, Lebensbereich
 from balanceos.domaene.validierung import pruefe_alpha, pruefe_lebensbereich
 from balanceos.persistenz.repo_bereiche import EinstellungenRepository, LebensbereichRepository
+from balanceos.persistenz.stammdaten import FARBPALETTE
 
 M_STANDARD_LOESCHEN = "Standardbereiche können nicht gelöscht, nur deaktiviert werden."
 M_GENUTZT_LOESCHEN = "Dieser Bereich wird verwendet und kann nur deaktiviert werden."
@@ -49,6 +50,17 @@ class StammdatenService:
         Raises:
             RegelVerletzung: bei Standardbereichen (GR03) oder verwendeten Bereichen (GR04).
         """
+        if self._bereiche.nach_id(bereich_id) is None:
+            return
+        self.loeschen_pruefen(bereich_id)
+        self._bereiche.loeschen(bereich_id)
+
+    def loeschen_pruefen(self, bereich_id: int) -> None:
+        """Prüft, ob ein Bereich gelöscht werden darf, ohne ihn zu löschen.
+
+        Raises:
+            RegelVerletzung: mit derselben Meldung wie :meth:`loeschen`.
+        """
         b = self._bereiche.nach_id(bereich_id)
         if b is None:
             return
@@ -59,7 +71,11 @@ class StammdatenService:
         rest = [x for x in self._bereiche.alle() if x.id != bereich_id]
         if not any(x.aktiv and x.soll_stunden > 0 for x in rest):
             raise RegelVerletzung("Mindestens ein aktiver Bereich braucht ein Soll.")
-        self._bereiche.loeschen(bereich_id)
+
+    @staticmethod
+    def farbpalette() -> list[str]:
+        """Die zwölf Auswahlfarben für Lebensbereiche."""
+        return list(FARBPALETTE)
 
     def verplante_stunden(self) -> float:
         """Summe der Soll-Stunden aller aktiven Bereiche."""

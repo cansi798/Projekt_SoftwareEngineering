@@ -18,7 +18,7 @@ from balanceos.domaene.modell import Hinweis
 from balanceos.domaene.typen import Bereichstyp
 from balanceos.praesentation.dialoge.aktivitaet import aktivitaet_bearbeiten
 from balanceos.praesentation.dialoge.begruendung import BegruendungDialog
-from balanceos.praesentation.seiten.basis import Seite, karte, scrollbar
+from balanceos.praesentation.seiten.basis import Seite, karte, leeren, scrollbar
 from balanceos.praesentation.stil import FARBE_HINWEISART, SYMBOL_HINWEISART
 from balanceos.praesentation.widgets.soll_ist_balken import SollIstBalken
 
@@ -238,10 +238,7 @@ class DashboardSeite(Seite):
         self._hinweise_fuellen()
 
     def _bereiche_fuellen(self, bewertung) -> None:
-        while self._raster.count():
-            eintrag = self._raster.takeAt(0)
-            if eintrag.widget():
-                eintrag.widget().deleteLater()
+        leeren(self._raster)
         self.score_labels = {}
         for spalte, titel in enumerate(
             ["Lebensbereich", "Typ", "Soll-Ist-Balken", "Ist / Soll", "Score"]
@@ -275,10 +272,7 @@ class DashboardSeite(Seite):
         self._raster.setColumnStretch(2, 1)
 
     def _hinweise_fuellen(self) -> None:
-        while self._hinweis_layout.count():
-            eintrag = self._hinweis_layout.takeAt(0)
-            if eintrag.widget():
-                eintrag.widget().deleteLater()
+        leeren(self._hinweis_layout)
         self.hinweis_zeilen = []
         anzahl = len(self._hinweise)
         self.hinweise_titel.setText(f"Hinweise der Woche ({anzahl})")
@@ -325,7 +319,10 @@ class DashboardSeite(Seite):
         aktivitaet_bearbeiten(self.kontext, self.zustand, datum=self.kontext.heute(), parent=self)
 
     def demodaten_laden(self) -> None:
-        """Lädt Demodaten (wird in Inkrement I4 mit dem Datenservice verbunden)."""
+        """Lädt die Demodaten und zeigt eine Woche mit ausreichend Daten (US18)."""
+        from balanceos.praesentation.dialoge.demodaten import demodaten_laden
+
+        demodaten_laden(self.kontext, self.zustand, self)
 
 
 class HinweisLeer(QLabel):
