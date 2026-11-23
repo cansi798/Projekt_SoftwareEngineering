@@ -18,7 +18,7 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 - ☐ Endergebnisse von Phase 1 und Phase 2 **separat speichern** und in Phase 3 erneut einreichen [P]. ⚙ `abgabe/` und Git-Tags `phase1-abgabe` und `phase2-abgabe`; das Skript verhindert ein Überschreiben.
 - ☐ **Eidesstattliche Erklärung** elektronisch über myCampus abgeben. Vorher ist keine Einreichung möglich [A][P].
 - ☐ Die eigenständige Erarbeitung ist Teil der Bewertung [A]. Die **KI-Richtlinie der IU** (myCampus) prüfen und einhalten [R][Z]. KI ist keine zitierfähige Quelle [Z].
-- ☐ Keine Lösungen teilen (Plagiatsprüfung) [A]. **GitHub-Repository auf „privat“ stellen** und die Tutor:in einladen, ⚠ aktuell ist es öffentlich.
+- ☐ Keine Lösungen teilen (Plagiatsprüfung) [A]. Entschieden am 23.11.2026: Das GitHub-Repository **bleibt öffentlich**, damit die Tutor:in ohne Einladung zugreifen kann (Projektdokumentation, Kapitel Versionsverwaltung).
 - ⚙ Die Aufgabenstellung wird nicht veröffentlicht (Urheberrecht der IU) [A]. `Vorgaben/` steht in `.gitignore`.
 
 ## 1. Anforderungen an die Anwendung [A]

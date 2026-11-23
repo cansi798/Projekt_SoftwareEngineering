@@ -60,6 +60,7 @@ Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{
   enddatum & Datum & optional & nicht vor startdatum; fehlt es: unbefristet \\
   beginn & Uhrzeit & optional & Uhrzeit der Termine \\
   dauerMinuten & Ganzzahl & ja & 1--1440~min \\
+  bewegungsart & Bewegungsart & optional & nur im Bereich Bewegung; wird in die Termine übernommen (ergänzt in Phase~2) \\
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Ausnahme}} \\*
   datum & Datum & ja & übersprungenes Termindatum der Serie \\
@@ -113,7 +114,7 @@ Für die Attribute werden die fachlichen Datentypen \emph{String} (Text), \emph{
   \multicolumn{4}{@{}l}{\textbf{Wochenreflexion} (Should)} \\*
   jahr & Ganzzahl & ja & Jahr der Kalenderwoche nach ISO~8601 \\
   kalenderwoche & Ganzzahl & ja & 1--53; höchstens eine je Woche \\
-  antworten & String [1..*] & ja & je Leitfrage ein Text, höchstens 500 Zeichen \\
+  antworten & String [1..*] & ja & je Leitfrage ein Text, höchstens 1.000 Zeichen \\
   stimmung & Ganzzahl & optional & 1 (sehr schlecht) bis 5 (sehr gut) \\
 \end{longtable}
 \quelle{Eigene Darstellung.}

@@ -28,6 +28,12 @@ Der Kundennutzen (Customer Value) lässt sich in vier Punkten zusammenfassen:
 \end{itemize}
 Damit der Nutzen ohne lange Eingabephase sichtbar wird, lassen sich Demodaten per Knopfdruck laden und wieder entfernen. Dies entspricht auch der Aufgabenstellung, nach der die Tutor:innen als Benutzer:innen der Anwendung gelten.
 
+Aus Ausgangslage und Zielsetzung ergibt sich die Frage, die das Projekt beantworten soll:
+\begin{quote}
+  \textbf{Projektfrage:} \emph{Wie lässt sich eine Desktop-Anwendung gestalten, die die Wochenbalance über Lebensbereiche transparent und modellbasiert auswertet, ohne fehlende Einträge als schlechte Balance zu werten?}
+\end{quote}
+Die Dokumente beantworten jeweils einen Teil dieser Frage. Den modellbasierten Teil legt das Spezifikationsdokument fest: Die Wochenbewertung vergleicht die erfasste Zeit mit dem Wunschprofil, und der Regelkatalog R01--R10 stützt sich auf Modelle und Richtwerte aus der Literatur. Für die Transparenz sorgen die Begründung jedes Hinweises und die Evidenzkennzeichnung im Balance-Kompass (US13, NFA11). Damit fehlende Einträge nicht als schlechte Balance zählen, berechnet BalanceOS für eine Woche mit weniger als vier erfassten Tagen keine Scores und zeigt stattdessen den Hinweis der Regel R10. Wie sich diese Teile technisch umsetzen lassen, zeigt das Architekturdokument; ob die Umsetzung die Frage beantwortet, prüft das Testdokument in Phase~3.
+
 \subsection{Projektumfang und Abgrenzung}
 Der Umfang wird nach der Priorisierungsmethode \ac{MoSCoW} geordnet \parencite[Kap.~10]{dsdm2014}. Must-Anforderungen bilden den Kern, ohne den die Anwendung ihren Nutzen verfehlt; Should-Anforderungen sind wichtig und fest eingeplant. Nur diese beiden Kategorien werden im Anforderungsdokument als User Stories (US01--US22) beschrieben:
 \begin{itemize}
@@ -62,7 +68,11 @@ Am Projektende steht eine funktionsfähige, unter Windows~10 und~11 (64~Bit) lau
 Zum Ergebnis gehören außerdem die von der Aufgabenstellung geforderten Dokumente: diese Projektdokumentation (ab Phase~2 mit Link zum Repository, in Phase~3 mit Benutzeranleitung), das Anforderungsdokument, das Spezifikationsdokument, das Architekturdokument, das Testdokument mit Teststrategie und Testprotokoll sowie ein zweiseitiges Abstract zur Reflexion. Quellcode, ausführbare Anwendung und alle Dokumente werden im GitHub-Repository \url{\GitHubURL} abgelegt. Nicht vollständig erfüllte Anforderungen werden in Phase~3 ausdrücklich als technische Schuld dokumentiert.
 
 \subsection{Vorgehensmodell und Werkzeuge}\label{sec:vorgehen}
-Das Projekt folgt einem iterativ-inkrementellen Vorgehen. Bei der inkrementellen Entwicklung überlappen sich Anforderungen, Entwurf, Implementierung und Test; das Produkt wird schrittweise fertiggestellt \parencite[S.~10-5]{swebok2026}. Die drei Phasen der Aufgabenstellung (Konzeption, Erarbeitung und Reflexion, Finalisierung) bilden dabei den äußeren Rahmen. Innerhalb der Implementierung (Arbeitspaket AP6) entsteht die Anwendung in fünf Inkrementen, die jeweils mit einem lauffähigen, getesteten und auf GitHub gesicherten Stand abschließen:
+\subsubsection{Grundlagen}
+Bei der inkrementellen Entwicklung überlappen sich Anforderungen, Entwurf, Implementierung und Test; das Produkt wird schrittweise fertiggestellt \parencite[S.~10-5]{swebok2026}.
+
+\subsubsection{Entscheidung für \Projektname{}}
+Das Projekt folgt einem iterativ-inkrementellen Vorgehen. Die drei Phasen der Aufgabenstellung (Konzeption, Erarbeitung und Reflexion, Finalisierung) bilden dabei den äußeren Rahmen. Innerhalb der Implementierung (Arbeitspaket AP6) entsteht die Anwendung in fünf Inkrementen, die jeweils mit einem lauffähigen, getesteten und auf GitHub gesicherten Stand abschließen:
 \begin{enumerate}[label=I\arabic*]
   \item \textbf{Grundgerüst:} Datenbank, Hauptfenster und Navigation.
   \item \textbf{Erfassen:} Lebensbereiche, Aktivitäten, Wiederholungen und Wochenansicht (US01--US03, US05--US09).
@@ -72,10 +82,15 @@ Das Projekt folgt einem iterativ-inkrementellen Vorgehen. Bei der inkrementellen
 \end{enumerate}
 Die Reihenfolge folgt der \ac{MoSCoW}-Priorisierung \parencite[Kap.~10]{dsdm2014}: Alle Must-Anforderungen sind nach I4 umgesetzt, I5 dient zugleich als Puffer. Gerät der Zeitplan unter Druck, wird zuerst der Umfang von I5 reduziert, nicht die Qualität des Kerns. Gegenüber einem streng sequenziellen Wasserfallmodell erlaubt dieses Vorgehen, Feedback der Tutor:innen einzuarbeiten und früh lauffähige Zwischenstände zu prüfen; ein vollständig agiler Ansatz mit festen Sprints wäre für eine Einzelperson mit festen Abgabeterminen dagegen unnötig aufwendig.
 
+\subsubsection{Werkzeuge}
 Folgende Werkzeuge werden eingesetzt:
 \begin{itemize}
   \item \textbf{LaTeX} (LuaLaTeX mit biblatex im APA-Stil) für alle Dokumente; die Diagramme (Diagramme der \ac{UML}, Risikomatrix, Zeitplan) entstehen textbasiert mit \textbf{TikZ}. Dadurch sind Dokumente und Diagramme versionierbar und typografisch einheitlich.
   \item \textbf{Git und GitHub} zur Versionsverwaltung von Quellcode und Dokumenten, wie von der Aufgabenstellung gefordert.
   \item \textbf{Python~3.12} als objektorientierte Programmiersprache und \textbf{Visual Studio Code} als Entwicklungsumgebung.
-  \item \textbf{PySide6} als geplante \ac{GUI}-Bibliothek; die Begründung dieser Wahl sowie aller weiteren Bibliotheken folgt im Architekturdokument (Phase~2).
+  \item \textbf{PySide6} als \ac{GUI}-Bibliothek; die Begründung dieser Wahl und aller weiteren Bibliotheken steht im Architekturdokument.
+  \item \textbf{Claude Code} (Anthropic) als \ac{KI}-Werkzeug, siehe den folgenden Abschnitt.
 \end{itemize}
+
+\subsubsection{Hinweis zum Einsatz von KI-Werkzeugen}
+Bei der Erstellung dieses Projekts wurde das \ac{KI}-Werkzeug Claude Code (Anthropic) eingesetzt, und zwar für Quellcode und automatisierte Tests, für die TikZ-Diagramme sowie für Entwürfe und die sprachliche Überarbeitung der Dokumente. Der Einsatz von \ac{KI} wurde vorab mit der Hochschule abgestimmt. Konzept, fachliche Entscheidungen, Prüfung und Freigabe aller Ergebnisse liegen beim Autor. Commits, an denen das Werkzeug beteiligt war, sind im Repository mit einer \texttt{Co-Authored-By}-Zeile gekennzeichnet. \ac{KI}-Ausgaben werden nicht als Quelle zitiert.

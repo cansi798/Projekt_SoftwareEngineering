@@ -28,19 +28,19 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \endlastfoot
   NFA01 & Benutzbarkeit (Erlernbarkeit)
     & Die grafische Oberfläche ist selbsterklärend und vollständig deutschsprachig; die Navigation erfolgt einheitlich über eine Seitenleiste.
-    & Eine Testperson ohne Anleitung erfasst ihre erste Aktivität in höchstens 2~Minuten. \\
+    & Mindestens 4 von 5 Testpersonen erfassen ohne Anleitung ihre erste Aktivität in höchstens 2~Minuten. \\
   \midrule
   NFA02 & Benutzbarkeit (Fehlertoleranz)
     & Ungültige Eingaben werden vor dem Speichern abgefangen und mit einer verständlichen Meldung direkt am betroffenen Feld erklärt.
-    & Alle Regeln der Validierungstabelle des Spezifikationsdokuments sind getestet. \\
+    & 100~\% der Zeilen der Validierungstabelle des Spezifikationsdokuments sind durch Testfälle abgedeckt, und alle diese Testfälle bestehen. \\
   \midrule
   NFA03 & Leistungs\-effizienz
     & Die Anwendung startet in höchstens 5~s; die Neuberechnung des Dashboards dauert bei 3.000 Aktivitäten (etwa ein Jahr) höchstens 1~s.
-    & Zeitmessung auf dem Referenzrechner. \\
+    & Automatisierter Lasttest mit 3.000 Aktivitäten und Messung der Startzeit auf dem Referenzrechner; beide Werte liegen unter der Grenze. \\
   \midrule
   NFA04 & Zuverlässigkeit
     & Es entstehen keine Datenverluste: Jede bestätigte Änderung wird sofort transaktional gespeichert.
-    & Nach einem erzwungenen Beenden der Anwendung sind alle bestätigten Änderungen vorhanden. \\
+    & 0 verlorene bestätigte Änderungen in 10 Versuchen, die Anwendung direkt nach dem Speichern zwangsweise zu beenden. \\
   \midrule
   NFA05 & Sicherheit und Datenschutz
     & Die Anwendung baut keine Netzwerkverbindung auf, speichert Daten nur lokal im Benutzerprofil und ermöglicht deren vollständige Löschung.
@@ -48,7 +48,7 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \midrule
   NFA06 & Funktionale Korrektheit
     & Score, Datenvollständigkeit und Regeln werden exakt nach der Spezifikation berechnet.
-    & Unit-Tests mit den Rechenbeispielen der Spezifikation sind erfolgreich. \\
+    & 100~\% der Rechenbeispiele der Spezifikation sind als Unit-Tests umgesetzt und bestehen. \\
   \midrule
   NFA07 & Wartbarkeit (Modularität, Testbarkeit)
     & Oberfläche, Fachlogik und Datenhaltung sind getrennt; die Fachlogik ist ohne grafische Oberfläche testbar.
@@ -56,7 +56,7 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \midrule
   NFA08 & Wartbarkeit (Analysier\-barkeit)
     & Der Quellcode ist mit Docstrings kommentiert und folgt dem Stilleitfaden \ac{PEP}~8.
-    & Eine statische Prüfung des Quellcodes meldet keine Fehler. \\
+    & 0 Befunde der statischen Prüfung mit \texttt{ruff check}; Docstrings für 100~\% der öffentlichen Module, Klassen und Methoden. \\
   \midrule
   NFA09 & Portabilität/ Flexibilität (Installierbarkeit)
     & Die Anwendung läuft unter Windows~10 und 11 (64~Bit), ohne dass Python installiert sein muss.
@@ -64,16 +64,20 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \midrule
   NFA10 & Kompatibilität
     & Der Export erfolgt als CSV (UTF-8, Semikolon, in Excel lesbar) und als JSON.
-    & Die exportierten Dateien lassen sich in Excel bzw. in einem JSON-Validator fehlerfrei öffnen. \\
+    & Die CSV-Datei öffnet sich in Excel mit 16 Spalten und ohne Umlautfehler; die JSON-Datei ist laut \texttt{json.loads} gültig. \\
   \midrule
   NFA11 & Transparenz (funktionale Angemessenheit)
-    & Jeder Hinweis nennt Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart.
-    & Eine Stichprobe über alle Regeln R01--R10 zeigt vollständige Angaben. \\
+    & Jeder Hinweis nennt Regel, Modell, Datenbasis, Zeitraum, Schwelle, ermittelten Wert, Quelle, Evidenzart und Grenzen der Aussage.
+    & 10 von 10 Regeln (R01--R10) liefern alle neun Begründungsangaben. \\
+  \midrule
+  NFA12 & Leistungs\-effizienz (Skalierbarkeit)
+    & Die Anwendung bleibt bei wachsendem Datenbestand nutzbar.
+    & Bei 30.000 Aktivitäten (etwa zehn Jahre) dauern Dashboard und Statistik je höchstens 2~s; die Datenbankdatei bleibt unter 50~MB. \\
 \end{longtable}
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Die Anforderungen an die Benutzbarkeit (NFA01, NFA02) setzen die Vorgabe der Aufgabenstellung um, dass die grafische Oberfläche selbsterklärend und intuitiv bedienbar sein muss. Sie orientieren sich an den Interaktionsprinzipien der DIN~EN~ISO~9241-110, insbesondere an Selbstbeschreibungsfähigkeit, Erwartungskonformität, Erlernbarkeit und Robustheit gegen Benutzungsfehler \parencite[Abschn.~5]{iso9241}. NFA04 und NFA05 tragen dem Nutzungskontext der Zielgruppe Rechnung: Die Erfassung wird häufig unterbrochen, und die erfassten Daten sind persönlich. NFA06 und NFA07 sichern die Korrektheit der Bewertungs- und Regellogik ab, deren Fehler unmittelbar zu falschen Hinweisen führen würden. NFA09 ergibt sich aus der Vorgabe, dass die Anwendung unter Windows~10/11 lauffähig sein muss und alle nicht standardmäßig vorhandenen Komponenten mitzuliefern sind.
+Die Anforderungen an die Benutzbarkeit (NFA01, NFA02) setzen die Vorgabe der Aufgabenstellung um, dass die grafische Oberfläche selbsterklärend und intuitiv bedienbar sein muss. Sie orientieren sich an den Interaktionsprinzipien der DIN~EN~ISO~9241-110, insbesondere an Selbstbeschreibungsfähigkeit, Erwartungskonformität, Erlernbarkeit und Robustheit gegen Benutzungsfehler \parencite[Abschn.~5]{iso9241}. NFA04 und NFA05 tragen dem Nutzungskontext der Zielgruppe Rechnung: Die Erfassung wird häufig unterbrochen, und die erfassten Daten sind persönlich. NFA06 und NFA07 sichern die Korrektheit der Bewertungs- und Regellogik ab, deren Fehler unmittelbar zu falschen Hinweisen führen würden. NFA09 ergibt sich aus der Vorgabe, dass die Anwendung unter Windows~10/11 lauffähig sein muss und alle nicht standardmäßig vorhandenen Komponenten mitzuliefern sind. NFA12 kam nach dem Feedback zu Portfolioteil~1 hinzu. Da BalanceOS über Jahre genutzt werden kann und jede Wochenbewertung bei der Anzeige neu berechnet wird, muss die Anwendung auch mit dem Datenbestand vieler Jahre flüssig bleiben. Die Grenze von 30.000 Aktivitäten entspricht etwa zehn Jahren mit knapp 60 Einträgen pro Woche.
 
 \subsection{Rahmenbedingungen}
 Neben den Qualitätsanforderungen gelten technische und organisatorische Rahmenbedingungen, die nicht verhandelbar sind und den Lösungsraum zusätzlich einschränken.
