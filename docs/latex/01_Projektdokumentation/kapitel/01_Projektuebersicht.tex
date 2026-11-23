@@ -68,11 +68,10 @@ Am Projektende steht eine funktionsfähige, unter Windows~10 und~11 (64~Bit) lau
 Zum Ergebnis gehören außerdem die von der Aufgabenstellung geforderten Dokumente: diese Projektdokumentation (ab Phase~2 mit Link zum Repository, in Phase~3 mit Benutzeranleitung), das Anforderungsdokument, das Spezifikationsdokument, das Architekturdokument, das Testdokument mit Teststrategie und Testprotokoll sowie ein zweiseitiges Abstract zur Reflexion. Quellcode, ausführbare Anwendung und alle Dokumente werden im GitHub-Repository \url{\GitHubURL} abgelegt. Nicht vollständig erfüllte Anforderungen werden in Phase~3 ausdrücklich als technische Schuld dokumentiert.
 
 \subsection{Vorgehensmodell und Werkzeuge}\label{sec:vorgehen}
-\subsubsection{Grundlagen}
+\subsubsection{Vorgehensmodell}
 Bei der inkrementellen Entwicklung überlappen sich Anforderungen, Entwurf, Implementierung und Test; das Produkt wird schrittweise fertiggestellt \parencite[S.~10-5]{swebok2026}.
 
-\subsubsection{Entscheidung für \Projektname{}}
-Das Projekt folgt einem iterativ-inkrementellen Vorgehen. Die drei Phasen der Aufgabenstellung (Konzeption, Erarbeitung und Reflexion, Finalisierung) bilden dabei den äußeren Rahmen. Innerhalb der Implementierung (Arbeitspaket AP6) entsteht die Anwendung in fünf Inkrementen, die jeweils mit einem lauffähigen, getesteten und auf GitHub gesicherten Stand abschließen:
+\Projektname{} folgt diesem iterativ-inkrementellen Vorgehen. Die drei Phasen der Aufgabenstellung (Konzeption, Erarbeitung und Reflexion, Finalisierung) bilden dabei den äußeren Rahmen. Innerhalb der Implementierung (Arbeitspaket AP6) entsteht die Anwendung in fünf Inkrementen, die jeweils mit einem lauffähigen, getesteten und auf GitHub gesicherten Stand abschließen:
 \begin{enumerate}[label=I\arabic*]
   \item \textbf{Grundgerüst:} Datenbank, Hauptfenster und Navigation.
   \item \textbf{Erfassen:} Lebensbereiche, Aktivitäten, Wiederholungen und Wochenansicht (US01--US03, US05--US09).
@@ -80,17 +79,16 @@ Das Projekt folgt einem iterativ-inkrementellen Vorgehen. Die drei Phasen der Au
   \item \textbf{Kompass:} Regeln, Hinweise, Begründung, Modellseiten, Export, Löschen und Demodaten (US12--US18).
   \item \textbf{Should-Funktionen:} Gesamt-Score, WHO-5, Statistik und Wochenreflexion (US19--US22).
 \end{enumerate}
-Die Reihenfolge folgt der \ac{MoSCoW}-Priorisierung \parencite[Kap.~10]{dsdm2014}: Alle Must-Anforderungen sind nach I4 umgesetzt, I5 dient zugleich als Puffer. Gerät der Zeitplan unter Druck, wird zuerst der Umfang von I5 reduziert, nicht die Qualität des Kerns. Gegenüber einem streng sequenziellen Wasserfallmodell erlaubt dieses Vorgehen, Feedback der Tutor:innen einzuarbeiten und früh lauffähige Zwischenstände zu prüfen; ein vollständig agiler Ansatz mit festen Sprints wäre für eine Einzelperson mit festen Abgabeterminen dagegen unnötig aufwendig.
+Die Reihenfolge folgt der \ac{MoSCoW}-Priorisierung \parencite[Kap.~10]{dsdm2014}: Alle Must-Anforderungen sind nach I4 umgesetzt, I5 dient zugleich als Puffer. Gerät der Zeitplan unter Druck, wird zuerst der Umfang von I5 reduziert, nicht die Qualität des Kerns. Anders als ein streng sequenzielles Wasserfallmodell erlaubt dieses Vorgehen, Feedback der Tutor:innen einzuarbeiten und lauffähige Zwischenstände früh zu prüfen. Ein vollständig agiler Ansatz mit festen Sprints wäre für eine Einzelperson mit festen Abgabeterminen dagegen unnötig aufwendig.
 
-\subsubsection{Werkzeuge}
+\subsubsection{Werkzeuge und Einsatz von KI}
 Folgende Werkzeuge werden eingesetzt:
 \begin{itemize}
   \item \textbf{LaTeX} (LuaLaTeX mit biblatex im APA-Stil) für alle Dokumente; die Diagramme (Diagramme der \ac{UML}, Risikomatrix, Zeitplan) entstehen textbasiert mit \textbf{TikZ}. Dadurch sind Dokumente und Diagramme versionierbar und typografisch einheitlich.
   \item \textbf{Git und GitHub} zur Versionsverwaltung von Quellcode und Dokumenten, wie von der Aufgabenstellung gefordert.
   \item \textbf{Python~3.12} als objektorientierte Programmiersprache und \textbf{Visual Studio Code} als Entwicklungsumgebung.
-  \item \textbf{PySide6} als \ac{GUI}-Bibliothek; die Begründung dieser Wahl und aller weiteren Bibliotheken steht im Architekturdokument.
-  \item \textbf{Claude Code} (Anthropic) als \ac{KI}-Werkzeug, siehe den folgenden Abschnitt.
+  \item \textbf{PySide6} \parencite{pyside6} als \ac{GUI}-Bibliothek; die Begründung dieser Wahl und aller weiteren Bibliotheken steht im Architekturdokument.
+  \item \textbf{Claude Code} (Anthropic) als \ac{KI}-Werkzeug.
 \end{itemize}
 
-\subsubsection{Hinweis zum Einsatz von KI-Werkzeugen}
-Bei der Erstellung dieses Projekts wurde das \ac{KI}-Werkzeug Claude Code (Anthropic) eingesetzt, und zwar für Quellcode und automatisierte Tests, für die TikZ-Diagramme sowie für Entwürfe und die sprachliche Überarbeitung der Dokumente. Der Einsatz von \ac{KI} wurde vorab mit der Hochschule abgestimmt. Konzept, fachliche Entscheidungen, Prüfung und Freigabe aller Ergebnisse liegen beim Autor. Commits, an denen das Werkzeug beteiligt war, sind im Repository mit einer \texttt{Co-Authored-By}-Zeile gekennzeichnet. \ac{KI}-Ausgaben werden nicht als Quelle zitiert.
+Claude Code wurde für Quellcode und automatisierte Tests eingesetzt, für die TikZ-Diagramme sowie für Entwürfe und die sprachliche Überarbeitung der Dokumente. Der Einsatz von \ac{KI} wurde vorab mit der Hochschule abgestimmt. Konzept, fachliche Entscheidungen, Prüfung und Freigabe aller Ergebnisse liegen beim Autor. Commits, an denen das Werkzeug beteiligt war, sind im Repository mit einer \texttt{Co-Authored-By}-Zeile gekennzeichnet. \ac{KI}-Ausgaben werden nicht als Quelle zitiert.

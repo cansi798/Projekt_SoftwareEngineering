@@ -8,7 +8,7 @@
 Nichtfunktionale Anforderungen legen fest, \emph{wie gut} BalanceOS seine Funktionen erbringen muss. Sie schränken die Lösung ein, indem sie etwa Antwortzeiten, Zuverlässigkeit oder einzusetzende Technologien vorgeben \parencite[S.~1-4]{swebok2026}. Dieses Kapitel beschreibt das zugrunde gelegte Qualitätsmodell, die daraus abgeleiteten Qualitätsanforderungen und die Rahmenbedingungen des Projekts.
 
 \subsection{Qualitätsanforderungen}
-Als Ordnungsrahmen dient das Produktqualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 \parencite[Abschn.~4.2]{iso25010}. Es beschreibt Qualitätsmerkmale von Softwareprodukten, die sich messen und bewerten lassen \parencite[S.~12-11]{swebok2026}, darunter funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit (in der Fassung von 2023 als Interaktionsfähigkeit bezeichnet), Zuverlässigkeit, Sicherheit, Wartbarkeit und Flexibilität (früher Portabilität). Für BalanceOS sind diejenigen Merkmale ausgewählt, die für die Zielgruppe und die Aufgabenstellung besonders relevant sind. Zusätzlich wird Transparenz als Teil der funktionalen Angemessenheit aufgenommen, weil die Nachvollziehbarkeit der Hinweise das zentrale Alleinstellungsmerkmal der Anwendung ist.
+Als Ordnungsrahmen dient das Produktqualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 \parencite[Abschn.~4.2]{iso25010}. Es beschreibt Qualitätsmerkmale von Softwareprodukten, die sich messen und bewerten lassen \parencite[S.~12-11]{swebok2026}, darunter funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit (in der Fassung von 2023 als Interaktionsfähigkeit bezeichnet), Zuverlässigkeit, Sicherheit, Wartbarkeit und Flexibilität (früher Portabilität). Für BalanceOS sind diejenigen Merkmale ausgewählt, die für die Zielgruppe und die Aufgabenstellung besonders relevant sind. Zusätzlich wird Transparenz als Teil der funktionalen Angemessenheit aufgenommen, weil die Nachvollziehbarkeit der Hinweise die Anwendung von anderen unterscheidet.
 
 Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforderung besitzt ein messbares Prüfkriterium, das im Testdokument der Finalisierungsphase überprüft wird.
 
@@ -56,7 +56,7 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \midrule
   NFA08 & Wartbarkeit (Analysier\-barkeit)
     & Der Quellcode ist mit Docstrings kommentiert und folgt dem Stilleitfaden \ac{PEP}~8.
-    & 0 Befunde der statischen Prüfung mit \texttt{ruff check}; Docstrings für 100~\% der öffentlichen Module, Klassen und Methoden. \\
+    & 0 Befunde der statischen Prüfung mit \texttt{ruff check} \parencite{ruff}; Docstrings für 100~\% der öffentlichen Module, Klassen und Methoden. \\
   \midrule
   NFA09 & Portabilität/ Flexibilität (Installierbarkeit)
     & Die Anwendung läuft unter Windows~10 und 11 (64~Bit), ohne dass Python installiert sein muss.
@@ -84,4 +84,4 @@ Neben den Qualitätsanforderungen gelten technische und organisatorische Rahmenb
 
 \textbf{Technische Rahmenbedingungen:} Die Anwendung wird objektorientiert in Python ab Version~3.12 entwickelt und als native Windows-Desktopanwendung ausgeliefert. Als Plattform zur Versionsverwaltung dient GitHub; das Repository ist unter \url{https://github.com/cansi798/Projekt_SoftwareEngineering} erreichbar. Bibliotheken von Drittanbietern werden nur verwendet, wenn ihr Einsatz begründet ist. Die Begründung erfolgt im Architekturdokument der Phase~2; die Bibliotheken werden mit der Anwendung ausgeliefert. Quellcode aus fremden Anwendungen wird nicht übernommen.
 
-\textbf{Organisatorische Rahmenbedingungen:} Das Projekt wird von einer Person bearbeitet, die alle Rollen von der Anforderungsermittlung bis zum Test übernimmt. Der Bearbeitungszeitraum umfasst den 09.11.2026 bis 12.12.2026 und gliedert sich in die drei Portfolio-Phasen der IU mit festen Abgabeterminen. Das Feedback der Tutor:innen kann bis zu sieben Tage dauern und muss in der Planung berücksichtigt werden. Inhaltlich gilt zudem, dass BalanceOS kein Medizinprodukt ist: Hinweise zeigen Zusammenhänge und keine Ursachen, und die Anwendung stellt keine Diagnosen.
+\textbf{Organisatorische Rahmenbedingungen:} Das Projekt wird von einer Person bearbeitet, die alle Rollen von der Anforderungsermittlung bis zum Test übernimmt. Der Bearbeitungszeitraum umfasst den 09.11.2026 bis 12.12.2026 und gliedert sich in die drei Portfolio-Phasen der IU mit festen Abgabeterminen. Das Feedback der Tutor:innen kann bis zu sieben Tage dauern und muss in der Planung berücksichtigt werden. Inhaltlich gilt außerdem, dass BalanceOS kein Medizinprodukt ist: Hinweise zeigen Zusammenhänge und keine Ursachen, und die Anwendung stellt keine Diagnosen.

@@ -76,8 +76,8 @@ class BegruendungDialog(QDialog):
         knoepfe = QHBoxLayout()
         self.deaktivieren_knopf = QPushButton(f"Regel {hinweis.regel} deaktivieren")
         self.deaktivieren_knopf.setToolTip(
-            "Die Regel erzeugt keine Hinweise mehr; Sie können sie im Balance-Kompass"
-            " wieder einschalten."
+            "Die Regel erzeugt keine Hinweise mehr. Sie können sie unter Einstellungen"
+            " im Reiter „Regeln“ wieder einschalten."
         )
         self.deaktivieren_knopf.setAutoDefault(False)
         schliessen = QPushButton("Schließen")

@@ -8,25 +8,19 @@
 Dieses Kapitel nennt die Programmiersprache, die eingesetzten Bibliotheken und die Werkzeuge der Entwicklung. Für jede Bibliothek außerhalb der Python-Standardbibliothek stehen Version, Lizenz, Zweck und der Grund für die Wahl in Tabelle~\ref{tab:bibliotheken}. Die Versionen sind die beim Code-Freeze von Phase~2 installierten.
 
 \subsection{Programmiersprache und Laufzeitumgebung}
-BalanceOS ist in Python geschrieben und läuft ab Python~3.12; entwickelt und getestet wurde mit Python~3.12.10 unter Windows~11. Python erfüllt die Vorgabe der Aufgabenstellung, eine objektorientierte Sprache zu verwenden. Dazu kommen zwei Gründe aus dem Projekt: Die Standardbibliothek bringt mit \texttt{sqlite3} bereits eine transaktionale Datenhaltung mit (NFA04), und mit \texttt{dataclasses} und \texttt{enum} lässt sich das Datenmodell der Spezifikation fast eins zu eins in Code übertragen. Ab Version~3.12 stehen außerdem die Typangaben in der Kurzform \texttt{list[Hinweis]} und \texttt{int | None} zur Verfügung, die der Code durchgehend nutzt.
+BalanceOS ist in Python geschrieben und setzt Python~3.12 voraus; entwickelt und getestet wurde mit Python~3.12.10 unter Windows~11. Python erfüllt die Vorgabe der Aufgabenstellung, eine objektorientierte Sprache zu verwenden. Für das Projekt sprechen zwei weitere Gründe. Die Standardbibliothek bringt mit \texttt{sqlite3} bereits eine transaktionale Datenhaltung mit (NFA04). Mit \texttt{dataclasses} und \texttt{enum} lässt sich außerdem das Datenmodell der Spezifikation fast eins zu eins in Code übertragen. Die Aufzählungen des Datenmodells sind als \texttt{StrEnum} umgesetzt, das es erst ab Python~3.11 gibt. Die Mindestversion ist auf die getestete Version~3.12 festgelegt.
 
 Zielplattform sind Windows~10 und~11. Die Anwendung arbeitet vollständig offline und baut keine Netzwerkverbindung auf.
 
 \subsection{Bibliotheken und Frameworks}
-Zur Laufzeit braucht BalanceOS nur eine Bibliothek außerhalb der Standardbibliothek: PySide6 für die Oberfläche. Alle übrigen Pakete in Tabelle~\ref{tab:bibliotheken} dienen der Entwicklung, dem Test und der Paketierung und sind nicht Teil der ausgelieferten Anwendung. Die Installation beschreibt die Benutzeranleitung in der Projektdokumentation.
+Zur Laufzeit braucht BalanceOS nur eine Bibliothek außerhalb der Standardbibliothek: PySide6 für die Oberfläche \parencite{pyside6}. Für Entwicklung und Paketierung kommen pytest \parencite{pytest} mit den Erweiterungen pytest-cov \parencite{pytestcov} und pytest-qt \parencite{pytestqt}, ruff \parencite{ruff} und PyInstaller \parencite{pyinstaller} hinzu. Diese Pakete sind nicht Teil der ausgelieferten Anwendung. Tabelle~\ref{tab:bibliotheken} nennt für alle Bibliotheken Version, Lizenz, Zweck und Begründung. Installation, Start und Tests beschreibt die Datei \texttt{app/README.md} im Repository.
 
-\begin{longtable}{@{}L{2.6cm}L{1.5cm}L{2.4cm}L{3.3cm}L{5.4cm}@{}}
-  \caption{Verwendete Bibliotheken und Frameworks}\label{tab:bibliotheken}\\
+\begin{table}[H]
+  \caption{Verwendete Bibliotheken und Frameworks}\label{tab:bibliotheken}
+  \begin{tabular}{@{}L{2.6cm}L{1.5cm}L{2.4cm}L{3.3cm}L{5.4cm}@{}}
   \toprule
   \textbf{Name} & \textbf{Version} & \textbf{Lizenz} & \textbf{Zweck} & \textbf{Begründung} \\
   \midrule
-  \endfirsthead
-  \toprule
-  \textbf{Name} & \textbf{Version} & \textbf{Lizenz} & \textbf{Zweck} & \textbf{Begründung} \\
-  \midrule
-  \endhead
-  \bottomrule
-  \endfoot
   PySide6 (Qt for Python) & 6.12.0 & LGPL-3.0 & Grafische Oberfläche (\ac{GUI}) & Offizielle Qt-Bindung der Qt Company. Die LGPL erlaubt die Weitergabe ohne Offenlegung des eigenen Codes, solange Qt austauschbar bleibt (der Ordner-Build erfüllt das). Bietet alle benötigten Widgets und mit \texttt{QPainter} eigene Diagramme. \\
   \texttt{sqlite3} & Python~3.12 & PSF (SQLite: gemeinfrei) & Datenhaltung & Teil der Standardbibliothek, also keine Zusatzinstallation. Transaktionen mit Rollback sichern bestätigte Änderungen (NFA04); die Daten liegen in einer einzigen Datei im Benutzerprofil. \\
   pytest & 9.0.3 & MIT & Testausführung & Verbreitetes Testwerkzeug für Python mit Fixtures, die jedem Test eine frische Datenbank geben; Lasttests lassen sich über eine Markierung vom normalen Lauf trennen. \\
@@ -34,10 +28,12 @@ Zur Laufzeit braucht BalanceOS nur eine Bibliothek außerhalb der Standardbiblio
   pytest-qt & 4.5.0 & MIT & Oberflächentests & Steuert Seiten und Dialoge ohne sichtbares Fenster (Qt-Plattform \texttt{offscreen}) und wartet auf Qt-Signale. \\
   ruff & 0.17.6 & MIT & Lint und Formatierung & Ein Werkzeug für Stilprüfung nach PEP~8, Docstring-Pflicht und einheitliche Formatierung (NFA08). \\
   PyInstaller & 6.22.3 & GPL-2.0 mit Ausnahme für gebündelte Programme & Paketierung & Erzeugt eine \texttt{.exe}, die ohne Python-Installation startet (NFA09). Die Lizenzausnahme erlaubt die Weitergabe gebündelter Programme unter eigener Lizenz. \\
-\end{longtable}
-\quelle{Eigene Darstellung.}
+  \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
 
-Für die Oberfläche kamen drei weitere Wege in Frage. Tkinter gehört zur Standardbibliothek, kennt aber weder Stylesheets wie Qt noch einen Signalmechanismus, über den eine Änderung alle Seiten benachrichtigt. Die Gestaltung der Mock-ups aus der Spezifikation wäre damit deutlich aufwendiger geworden. PyQt6 entspricht technisch PySide6, steht aber unter der GPL, die bei einer Weitergabe den gesamten Quellcode unter dieselbe Lizenz stellen würde. Eine Weboberfläche mit Electron hätte eine zweite Sprache, einen eingebetteten Browser und eine deutlich größere Auslieferung bedeutet, ohne für eine Offline-Anwendung mit einem Nutzer einen Vorteil zu bringen.
+Für die Oberfläche kamen drei weitere Wege in Frage. Tkinter gehört zur Standardbibliothek, kennt aber weder Stylesheets wie Qt noch einen Signalmechanismus, über den eine Änderung alle Seiten benachrichtigt. Die Gestaltung der Mock-ups aus der Spezifikation wäre damit deutlich aufwendiger geworden. PyQt6 entspricht technisch PySide6, steht aber unter der GPL, die bei einer Weitergabe den gesamten Quellcode unter dieselbe Lizenz stellen würde. Eine Weboberfläche mit Electron hätte eine zweite Sprache, einen eingebetteten Browser und eine deutlich größere Auslieferung bedeutet. Für eine Offline-Anwendung mit einer Person als Nutzer bringt das keinen Vorteil.
 
 Auch für die Diagramme wurden Bibliotheken geprüft. QtCharts und matplotlib zeichnen Balken- und Liniendiagramme, wären aber eine zusätzliche Abhängigkeit und hätten die ausgelieferte Anwendung vergrößert. Die beiden benötigten Diagramme (Soll-Ist-Balken und Verlauf der Scores) sind einfach genug, um sie mit \texttt{QPainter} selbst zu zeichnen. So bestimmt BalanceOS Farben, Beschriftung und die gestrichelte Darstellung des programmeigenen Gesamt-Scores selbst.
 

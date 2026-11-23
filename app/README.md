@@ -66,7 +66,7 @@ app/
 └── pyproject.toml       Abhängigkeiten, pytest- und ruff-Konfiguration
 ```
 
-Die Schichten hängen nur in eine Richtung voneinander ab: Präsentation → Anwendung → Domäne ← Persistenz. Ein Architekturtest prüft, dass die Domäne weder Qt noch SQLite importiert.
+Die Schichten hängen nur in eine Richtung voneinander ab: Präsentation → Anwendung → Persistenz → Domäne, und die Anwendung nutzt zusätzlich die Domäne direkt. Ein Architekturtest prüft, dass die Domäne weder Qt noch SQLite importiert.
 
 ## Hinweis
 

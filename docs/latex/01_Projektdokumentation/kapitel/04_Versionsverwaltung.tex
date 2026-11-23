@@ -11,12 +11,12 @@ Der Quellcode der Anwendung, alle Dokumente sowie sämtliche zur Ausführung not
 
 \url{\GitHubURL}
 
-Das Repository ist öffentlich. Tutor:innen können es daher ohne Einladung und ohne eigenes Konto lesen, klonen oder als ZIP-Datei herunterladen. Die Aufgabenstellung der IU ist urheberrechtlich geschützt und liegt deshalb nicht im Repository.
+Das Repository ist öffentlich. Tutor:innen können es daher ohne Einladung und ohne eigenes Konto lesen, klonen oder als ZIP-Datei herunterladen. Die Aufgabenstellung der IU ist urheberrechtlich geschützt und liegt deshalb nicht im Repository. Zusätzlich enthält Anhang~\ref{anh:quellcode} den Quellcode der Anwendung in kopierfähiger Form.
 
 \subsection{Struktur des Repositorys}
 Das Repository ist in vier Hauptordner gegliedert:
 \begin{itemize}
-  \item \texttt{app/}: die Anwendung mit Quellcode (\texttt{src/balanceos}), Tests (\texttt{tests}), Projektkonfiguration (\texttt{pyproject.toml}) und der PyInstaller-Konfiguration für die \texttt{.exe}. Die Datei \texttt{app/README.md} beschreibt Installation, Start und Tests.
+  \item \texttt{app/}: die Anwendung mit Quellcode (\texttt{src/balanceos}), Tests (\texttt{tests}), Projektkonfiguration (\texttt{pyproject.toml}) und der Konfiguration für PyInstaller \parencite{pyinstaller}, das daraus die \texttt{.exe} baut. Die Datei \texttt{app/README.md} beschreibt Installation, Start und Tests.
   \item \texttt{docs/}: die \LaTeX-Quellen aller Dokumente, die TikZ-Quellen der Diagramme mit ihren PDF-Exporten und die gebauten Dokumente in \texttt{docs/pdf}.
   \item \texttt{abgabe/}: die eingereichten Abgabe-PDFs und Kurzzusammenfassungen je Phase.
   \item \texttt{tools/}: das Skript \texttt{build\_docs.py}, das Diagramme und Dokumente baut und die Abgabe-PDF einer Phase zusammenstellt.

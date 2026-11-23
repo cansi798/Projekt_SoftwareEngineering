@@ -104,13 +104,32 @@ class AktivitaetService:
         fehler = pruefe_aktivitaet(a, self._bereiche.nach_id(a.lebensbereich_id), self._heute())
         if fehler:
             raise ValidierungsFehler(fehler)
-        if a.id is not None and a.serie_id is not None:
-            a.einzeln_bearbeitet = True
-        return self._aktivitaeten.speichern(a)
+        alt = self._aktivitaeten.nach_id(a.id) if a.id is not None and a.serie_id else None
+        with self._db.transaktion():
+            if alt is not None:
+                a.einzeln_bearbeitet = True
+                if alt.datum != a.datum:
+                    self._ausnahme_eintragen(alt.serie_id, alt.datum)
+            return self._aktivitaeten.speichern(a)
 
     def loeschen(self, aktivitaet_id: int) -> None:
-        """Löscht eine Aktivität."""
-        self._aktivitaeten.loeschen(aktivitaet_id)
+        """Löscht eine Aktivität.
+
+        Bei einem Serientermin wird sein Datum als Ausnahme eingetragen (GR18),
+        damit eine spätere Änderung der Serie den Termin nicht neu erzeugt.
+        """
+        a = self._aktivitaeten.nach_id(aktivitaet_id)
+        with self._db.transaktion():
+            if a is not None and a.serie_id is not None:
+                self._ausnahme_eintragen(a.serie_id, a.datum)
+            self._aktivitaeten.loeschen(aktivitaet_id)
+
+    def _ausnahme_eintragen(self, serie_id: int, tag: date) -> None:
+        """Trägt ``tag`` als Ausnahme ein, wenn dort laut Serie ein Termin liegt."""
+        serie = self._serien.nach_id(serie_id)
+        if serie is not None and ist_termindatum(serie, tag):
+            serie.ausnahmen.add(tag)
+            self._serien.speichern(serie)
 
     # --- Serien ----------------------------------------------------------------------------
 
@@ -214,12 +233,9 @@ class AktivitaetService:
         """
         a = self._aktivitaeten.nach_id(aktivitaet_id)
         serie = self._serien.nach_id(a.serie_id) if a and a.serie_id else None
-        if a is None or serie is None or not ist_termindatum(serie, a.datum):
+        if a is None or serie is None:
             raise RegelVerletzung(M_KEINE_SERIE)
-        with self._db.transaktion():
-            serie.ausnahmen.add(a.datum)
-            self._serien.speichern(serie)
-            self._aktivitaeten.loeschen(a.id)
+        self.loeschen(a.id)
 
     def horizont_fortschreiben(self) -> int:
         """Erzeugt fehlende Termine aller Serien bis 52 Wochen im Voraus (GP02).

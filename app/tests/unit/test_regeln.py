@@ -192,6 +192,12 @@ def test_r05_drei_tage_kein_hinweis():
     assert keiner(hinweise_fuer(_belastete_tage(3)), "R05")
 
 
+def test_r05_ignoriert_deaktivierten_bereich():
+    """GR14: Aktivitäten deaktivierter Bereiche zählen auch für R05 nicht."""
+    bereiche = [replace(b, aktiv=False) if b.id == ID[S.ARBEIT] else b for b in BEREICHE]
+    assert keiner(hinweise_fuer(_belastete_tage(5), bereiche=bereiche), "R05")
+
+
 def test_r05_tag_ohne_erholungswert_zaehlt_nicht():
     daten = fuellen(KW46) + [akt(S.ARBEIT, KW46, t, 480, belastung=5) for t in range(5)]
     assert keiner(hinweise_fuer(daten), "R05")
@@ -238,6 +244,12 @@ def test_r07_loest_aus():
 
 def test_r07_geringe_belastung_kein_hinweis():
     assert keiner(hinweise_fuer(_arbeit(3)), "R07")
+
+
+def test_r07_ohne_soll_kein_hinweis():
+    """GR22: Soll 0 heißt „kein Soll festgelegt“, also gibt es kein „über dem Soll“."""
+    bereiche = [replace(b, soll_stunden=0) if b.id == ID[S.ARBEIT] else b for b in BEREICHE]
+    assert keiner(hinweise_fuer(_arbeit(5), bereiche=bereiche), "R07")
 
 
 # --- R08, R09: positive Hinweise ------------------------------------------------------------

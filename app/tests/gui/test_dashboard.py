@@ -121,6 +121,7 @@ def test_begruendungsdialog_zeigt_neun_zeilen(qtbot, kontext, zustand):
         "Grenzen",
     ]
     assert d.deaktivieren_knopf.text() == "Regel R01 deaktivieren"
+    assert "Einstellungen im Reiter „Regeln“" in d.deaktivieren_knopf.toolTip()
     with qtbot.waitSignal(zustand.daten_geaendert):
         d.deaktivieren_knopf.click()
     assert not next(r for r in kontext.auswertung.regeln() if r.kennung == "R01").aktiv

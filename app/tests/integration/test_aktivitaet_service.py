@@ -185,6 +185,43 @@ def test_serie_aendern_schont_bearbeitete_termine(kontext):
     assert len({t.datum for t in neu}) == len(neu)  # keine doppelten Termine
 
 
+def _termin_am(kontext, serie, tag):
+    return next(t for t in kontext.repos.aktivitaeten.termine_der_serie(serie.id) if t.datum == tag)
+
+
+def _serie_neu_beschriften(kontext, serie):
+    s = kontext.repos.serien.nach_id(serie.id)
+    s.titel = "Laufen"
+    kontext.aktivitaeten.serie_aendern(s)
+    return kontext.repos.aktivitaeten.termine_der_serie(serie.id)
+
+
+def test_serie_aendern_erzeugt_verschobenen_termin_nicht_neu(kontext):
+    """GR19: Ein auf Mittwoch verschobener Dienstagstermin taucht nicht doppelt auf."""
+    serie = _serie_anlegen(kontext)
+    termin = _termin_am(kontext, serie, date(2026, 12, 1))
+    kontext.aktivitaeten.speichern(replace(termin, datum=date(2026, 12, 2)))
+    tage = [t.datum for t in _serie_neu_beschriften(kontext, serie)]
+    assert date(2026, 12, 2) in tage and date(2026, 12, 1) not in tage
+
+
+def test_serie_aendern_erzeugt_geloeschten_termin_nicht_neu(kontext):
+    serie = _serie_anlegen(kontext)
+    kontext.aktivitaeten.loeschen(_termin_am(kontext, serie, date(2026, 11, 26)).id)
+    tage = [t.datum for t in _serie_neu_beschriften(kontext, serie)]
+    assert date(2026, 11, 26) not in tage and date(2026, 12, 1) in tage
+
+
+def test_verschobenen_termin_ueberspringen(kontext):
+    serie = _serie_anlegen(kontext)
+    termin = _termin_am(kontext, serie, date(2026, 12, 1))
+    verschoben = kontext.aktivitaeten.speichern(replace(termin, datum=date(2026, 12, 2)))
+    kontext.aktivitaeten.termin_ueberspringen(verschoben.id)
+    assert kontext.repos.aktivitaeten.nach_id(verschoben.id) is None
+    tage = [t.datum for t in _serie_neu_beschriften(kontext, serie)]
+    assert date(2026, 12, 1) not in tage and date(2026, 12, 2) not in tage
+
+
 def test_serie_loeschen_behaelt_vergangene_und_durchgefuehrte(kontext):
     serie = _serie_anlegen(kontext)
     termine = kontext.repos.aktivitaeten.termine_der_serie(serie.id)

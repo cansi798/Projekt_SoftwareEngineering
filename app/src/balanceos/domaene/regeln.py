@@ -99,12 +99,15 @@ def _standard(k: RegelKontext, schluessel: StandardSchluessel) -> Lebensbereich 
 
 
 def _durchgefuehrt(k: RegelKontext, kw: KW, bereich_id: int | None = None) -> list[Aktivitaet]:
+    """Durchgeführte Aktivitäten der Woche in aktiven Bereichen (GR14)."""
     montag, sonntag = kw.montag(), kw.sonntag()
+    aktive = {b.id for b in k.bereiche if b.aktiv}
     return [
         a
         for a in k.aktivitaeten
         if a.status is Aktivitaetsstatus.DURCHGEFUEHRT
         and montag <= a.datum <= sonntag
+        and a.lebensbereich_id in aktive
         and (bereich_id is None or a.lebensbereich_id == bereich_id)
     ]
 
@@ -341,7 +344,7 @@ def _r07(k: RegelKontext) -> list[Hinweis]:
     """Arbeit in mindestens 2 von 3 Wochen über Soll bei hoher Belastung."""
     arbeit = _standard(k, StandardSchluessel.ARBEIT)
     wochen = _wochen(k, 3)
-    if arbeit is None or not _alle_ausreichend(k, wochen):
+    if arbeit is None or arbeit.soll_stunden <= 0 or not _alle_ausreichend(k, wochen):
         return []
     ueber = sum(
         1 for w in wochen if k.bewertungen[w].bereich(arbeit.id).ist_stunden > arbeit.soll_stunden
