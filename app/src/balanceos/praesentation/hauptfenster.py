@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 
 from balanceos.anwendung.kontext import AppKontext
 from balanceos.domaene.kalender import KW
+from balanceos.praesentation.dialoge.aktivitaet import aktivitaet_bearbeiten
 from balanceos.praesentation.seiten.aktivitaeten import AktivitaetenSeite
 from balanceos.praesentation.seiten.basis import Seite
 from balanceos.praesentation.seiten.dashboard import DashboardSeite
@@ -151,4 +152,8 @@ class Hauptfenster(QMainWindow):
         self.titel_label.setText(self.seiten[index].titel)
 
     def neue_aktivitaet(self) -> None:
-        """Öffnet den Dialog „Aktivität erfassen“ (ab Inkrement I2)."""
+        """Öffnet „Aktivität erfassen“ für heute oder den Montag der gewählten Woche."""
+        heute = self.kontext.heute()
+        kw = self.zustand.kw
+        datum = heute if kw.montag() <= heute <= kw.sonntag() else kw.montag()
+        aktivitaet_bearbeiten(self.kontext, self.zustand, datum=datum, parent=self)
