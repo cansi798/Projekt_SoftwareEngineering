@@ -4,24 +4,63 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import Any
 
+from balanceos.anwendung.stammdaten_service import StammdatenService
 from balanceos.persistenz.datenbank import Datenbank
+from balanceos.persistenz.repo_aktivitaeten import AktivitaetRepository, SerieRepository
+from balanceos.persistenz.repo_bereiche import EinstellungenRepository, LebensbereichRepository
+from balanceos.persistenz.repo_wissen import (
+    AusblendungRepository,
+    KompassRepository,
+    ReflexionRepository,
+    RegelRepository,
+    Who5Repository,
+)
 from balanceos.persistenz.stammdaten import initialisiere
 
 
 @dataclass
+class Repositories:
+    """Alle Repositories einer Datenbank."""
+
+    bereiche: LebensbereichRepository
+    einstellungen: EinstellungenRepository
+    aktivitaeten: AktivitaetRepository
+    serien: SerieRepository
+    regeln: RegelRepository
+    kompass: KompassRepository
+    ausblendungen: AusblendungRepository
+    who5: Who5Repository
+    reflexionen: ReflexionRepository
+
+    @classmethod
+    def fuer(cls, db: Datenbank) -> "Repositories":
+        """Erzeugt alle Repositories für eine Datenbank."""
+        return cls(
+            LebensbereichRepository(db),
+            EinstellungenRepository(db),
+            AktivitaetRepository(db),
+            SerieRepository(db),
+            RegelRepository(db),
+            KompassRepository(db),
+            AusblendungRepository(db),
+            Who5Repository(db),
+            ReflexionRepository(db),
+        )
+
+
+@dataclass
 class AppKontext:
-    """Bündelt alle Services; die Oberfläche greift nur über diesen Kontext zu."""
+    """Bündelt Datenbank, Repositories und Services.
+
+    Die Oberfläche verwendet ausschließlich die Services; die Repositories sind
+    für Tests und für die Verdrahtung zugänglich.
+    """
 
     db: Datenbank
     heute: Callable[[], date]
-    stammdaten: Any = None
-    aktivitaeten: Any = None
-    auswertung: Any = None
-    export: Any = None
-    daten: Any = None
-    reflexion: Any = None
+    repos: Repositories
+    stammdaten: StammdatenService
 
     @classmethod
     def erstellen(cls, pfad: Path | str, heute: Callable[[], date] = date.today) -> "AppKontext":
@@ -33,4 +72,10 @@ class AppKontext:
         """
         db = Datenbank(pfad)
         initialisiere(db)
-        return cls(db=db, heute=heute)
+        r = Repositories.fuer(db)
+        return cls(
+            db=db,
+            heute=heute,
+            repos=r,
+            stammdaten=StammdatenService(r.bereiche, r.einstellungen),
+        )
