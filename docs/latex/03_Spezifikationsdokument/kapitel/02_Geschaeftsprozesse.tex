@@ -41,7 +41,7 @@ Tabelle~\ref{tab:prozesse} ordnet die Geschäftsprozesse den User Stories des An
 
 \textbf{GP01 Aktivität erfassen.} Nutzer:innen wählen einen aktiven Lebensbereich, geben Titel und Datum ein und erfassen entweder Beginn und Ende oder direkt die Dauer. Aus Beginn und Ende berechnet BalanceOS die Dauer. Liegt das Ende vor dem Beginn, verläuft die Aktivität über Mitternacht und wird dem Datum des Beginns zugeordnet (Beispiel Schlaf von 23:00 bis 06:30: 450~min). Der Status ist für heutige und vergangene Tage mit DURCHGEFUEHRT, für zukünftige Tage mit GEPLANT vorbelegt. Selbsteinschätzungen sind freiwillig. Fehlende Werte führen nicht zu einer schlechteren Bewertung.
 
-\textbf{GP02 Wiederholungsserie auflösen.} Aus einer Serie erzeugt BalanceOS Termine im Status GEPLANT. Ein Termin entsteht für jedes Datum zwischen Startdatum und Enddatum, dessen Wochentag gewählt ist. Er übernimmt Titel, Lebensbereich, Beginn und Dauer der Serie. Termine entstehen höchstens 52~Wochen im Voraus, und bei jedem Programmstart wird dieser Horizont fortgeschrieben. Daten mit Ausnahme werden übersprungen. Überspringen Nutzer:innen einen Termin (US08), legt BalanceOS eine Ausnahme an und entfernt den Termin.
+\textbf{GP02 Wiederholungsserie auflösen.} Aus einer Serie erzeugt BalanceOS Termine im Status GEPLANT. Ein Termin entsteht für jedes Datum ab dem Startdatum, dessen Wochentag gewählt ist. Hat die Serie ein Enddatum, entstehen danach keine Termine mehr. Er übernimmt Titel, Lebensbereich, Beginn und Dauer der Serie. Termine entstehen höchstens 52~Wochen im Voraus, und bei jedem Programmstart wird dieser Horizont fortgeschrieben. Daten mit Ausnahme werden übersprungen. Überspringen Nutzer:innen einen Termin (US08), legt BalanceOS eine Ausnahme an und entfernt den Termin.
 
 \textbf{GP06 WHO-5 auswerten.} Der WHO-5-Fragebogen gilt als kurzes, valides Instrument zur Erfassung des Wohlbefindens und eignet sich als Screening \parencite[S.~167]{topp2015}. Sind alle fünf Fragen beantwortet (je 0--5), berechnet BalanceOS den Rohwert als Summe der Antworten (0--25) und den Prozentwert als Rohwert $\cdot$ 4 (0--100). Bei einem Prozentwert von höchstens 50 erscheint ein Hinweistext mit der Empfehlung, bei anhaltender Niedergeschlagenheit ärztliche oder psychotherapeutische Hilfe zu suchen. Das Ergebnis erscheint getrennt von den Scores. Es ist als validiertes Instrument gekennzeichnet und wird ausdrücklich nicht als Diagnose bezeichnet.
 
@@ -149,9 +149,9 @@ Je Regel und Kalenderwoche entsteht höchstens ein Hinweis, bei bereichsbezogene
   R01 & \enquote{Ausdauerbewegung in KW~46: 90 von 150~Minuten -- unter dem WHO-Richtwert.} & Empfehlung \\
   R02 & \enquote{Muskelkräftigende Aktivität in KW~46 an 0 von 2 empfohlenen Tagen.} & Empfehlung \\
   R03 & \enquote{Durchschnittliche Schlafdauer in KW~46: 6,5~h an 6 Tagen mit Eintrag -- unter der Empfehlung von mindestens 7~h.} & Empfehlung \\
-  R04 & \enquote{Soziale Kontakte liegen seit 3 Wochen unter der Hälfte des eigenen Wunsches (zuletzt 1,5 von 4~h).} & Theorie; Soll als persönliche Regel \\
+  R04 & \enquote{Im Bereich Soziale Kontakte liegt die Zeit seit 3 Wochen unter der Hälfte des eigenen Wunsches (zuletzt 1,5 von 4~h).} & Theorie; Soll als persönliche Regel \\
   R05 & \enquote{An 5 von 7 Tagen hohe Belastung bei geringer Erholung.} & Theorie; Skalen programmeigen, theoriegeleitet \\
-  R06 & \enquote{Wochenende ohne Erholung bei 7,5~h Arbeit und Verpflichtungen.} & Theorie; Regel programmeigen, theoriegeleitet \\
+  R06 & \enquote{Wochenende ohne Erholung bei 7,5~h für Arbeit und Alltägliche Verpflichtungen.} & Theorie; Regel programmeigen, theoriegeleitet \\
   R07 & \enquote{Arbeit in 2 der letzten 3 Wochen über dem Soll bei hoher Belastung (Ø 4,2) -- Anforderungen und Ressourcen prüfen.} & Theorie; Skala programmeigen, theoriegeleitet \\
   R08 & \enquote{Wunsch im Bereich Familie in KW~46 erreicht: 12 von 10~h.} & Theorie; Soll als persönliche Regel \\
   R09 & \enquote{Zufriedenheit im Bereich Hobbys gegenüber KW~45 gestiegen (von 3,0 auf 4,5).} & Theorie; Skala programmeigen, theoriegeleitet \\

@@ -44,7 +44,7 @@
   \klein Datenklassen und Aufzählungen (\texttt{modell}, \texttt{typen}), \texttt{validierung}
   (GR01--GR30), \texttt{bewertung} (Score), \texttt{regeln} (R01--R10), \texttt{serien},
   \texttt{kalender} (ISO-Woche), \texttt{who5}\\[2pt]
-  \klein\itshape nur Python-Standardbibliothek, ohne Qt und SQLite};
+  \klein\itshape nur Python-Standardbibliothek, ohne Qt und \mbox{SQLite}};
 
 \node[schicht=6.3cm] (pe) at (8.3,-5.15) {%
   {\kopf «layer» Persistenz \hfill\normalfont\ttfamily persistenz/}\\[2pt]
@@ -53,7 +53,7 @@
   \klein\itshape nutzt \texttt{sqlite3} (Standardbibliothek)};
 
 \node[artefakt, anchor=north] (db) at ([yshift=-0.9cm]pe.south) {«file»\\\texttt{balanceos.db}\\im Benutzerprofil (\%APPDATA\%)};
-\node[artefakt, anchor=west] (ex) at ([xshift=1.5cm]an.east) {«file»\\CSV- und JSON-Export\\(vom Nutzer gewählter Ordner)};
+\node[artefakt, anchor=west] (ex) at ([xshift=1.5cm]an.east) {«file»\\CSV- und JSON-Export\\(von der Nutzer:in gewählter Ordner)};
 
 % Abhängigkeiten (gestrichelt, Pfeil zur genutzten Schicht)
 \draw[abh] ([xshift=3cm]pr.south west) -- node[klein, right] {nutzt Services} ([xshift=3cm]an.north west);

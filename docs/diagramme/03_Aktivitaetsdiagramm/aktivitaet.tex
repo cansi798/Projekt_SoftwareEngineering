@@ -100,7 +100,7 @@
 % ---------------------------------------------------------------------
 %  Pfad „zu wenig Daten“ (v < 4)
 % ---------------------------------------------------------------------
-\node[aks, anchor=north] (f1) at (\xf,0 |- l1.north) {Wochenbewertung ohne Scores anlegen (ausreichendeDaten = false; je Bereich nur \m{\Ist_b}, \m{\Soll_b}, \m{z_b})};
+\node[aks, anchor=north] (f1) at (\xf,0 |- l1.north) {Wochenbewertung ohne Scores anlegen (ausreichendeDaten = falsch; je Bereich nur \m{\Ist_b}, \m{\Soll_b}, \m{z_b})};
 \node[aks, below=0.45cm of f1] (f2) {Regel R10 prüfen und Systemhinweis „zu wenig Daten“ erzeugen};
 \draw[fluss] (d1.west) -| (f1.north);
 \node[w, above] at ([xshift=-2.4cm]d1.west) {[\m{v < 4}]};

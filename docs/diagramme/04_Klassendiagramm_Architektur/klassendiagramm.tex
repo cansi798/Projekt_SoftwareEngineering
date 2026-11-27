@@ -20,6 +20,10 @@
               rectangle split part align={center,left}},
   paket/.style={draw, inner sep=0.2cm},
   rolle/.style={font=\fontsize{6.8pt}{7.5pt}\selectfont, inner sep=1.2pt},
+  % Rollenname (oben) und Multiplizität (unten) am Zielende einer waagerechten
+  % Assoziation, um die Länge der Pfeilspitze vom Ende abgerückt
+  endeL/.style={rolle, pos=1, xshift=-2.6mm},  % Ziel liegt rechts
+  endeR/.style={rolle, pos=1, xshift=2.6mm},   % Ziel liegt links
   abh/.style={dashed, -{Straight Barb[length=2mm]}},
   ass/.style={-{Straight Barb[length=2mm]}},
   komp/.style={{Diamond[length=2.6mm,width=2mm]}-{Straight Barb[length=2mm]}},
@@ -33,7 +37,9 @@
 
 \begin{document}
 \begin{tikzpicture}
-\def\xa{0}\def\xb{4.9}\def\xc{9.8}\def\xd{14.7}
+% Spaltenabstand 5,5 cm (rechts 5,8 cm für „_zustand“): zwischen zwei
+% Klassen bleibt Platz für Rollenname und Multiplizität am Assoziationsende
+\def\xa{0}\def\xb{5.5}\def\xc{11.0}\def\xd{16.8}
 
 % =====================================================================
 %  praesentation
@@ -146,13 +152,13 @@
 % praesentation
 \path (se.text split) ++(0,0.12) coordinate (h1);
 \draw[komp] (hf.east |- h1) -- (se.west |- h1)
-  node[rolle, above, pos=0.72] {seiten} node[rolle, below, pos=0.85] {7};
+  node[endeL, anchor=south east] {seiten} node[endeL, anchor=north east] {7};
 \path (se.text split) ++(0,-0.12) coordinate (h2);
 \draw[ass] (se.east |- h2) -- (zu.west |- h2)
-  node[rolle, above, pos=0.7] {zustand} node[rolle, below, pos=0.85] {1};
+  node[endeL, anchor=south east] {zustand} node[endeL, anchor=north east] {1};
 \path (zu.three split) ++(0,-0.28) coordinate (h3);
 \draw[ass] (ad.west |- h3) -- (zu.east |- h3)
-  node[rolle, above, pos=0.7] {\_zustand} node[rolle, below, pos=0.85] {1};
+  node[endeR, anchor=south west] {\_zustand} node[endeR, anchor=north west] {1};
 \draw[gen] (ds.north) -- (se.south);
 % praesentation -> anwendung
 \draw[ass] ([xshift=1.0cm]ad.south west) -- ([xshift=1.0cm]as.north west)
@@ -169,7 +175,7 @@
 \draw[abh] (mr.south) -- (hi.north) node[rolle, right, pos=0.45] {«create»};
 \path (wb.text split) ++(0,0.12) coordinate (h5);
 \draw[ass] (wb.west |- h5) -- (kw.east |- h5)
-  node[rolle, above, pos=0.7] {kw} node[rolle, below, pos=0.85] {1};
+  node[endeR, anchor=south west] {kw} node[endeR, anchor=north west] {1};
 % anwendung -> persistenz (Spuren am rechten Rand)
 \path (as.text split) ++(0,0.12) coordinate (h6);
 \draw[ass] (as.east |- h6) -- ++(0.45,0) coordinate (l1) -- (l1 |- ra.text split)
@@ -181,7 +187,7 @@
 % Repositories -> Datenbank
 \path (db.text split) ++(0,0.12) coordinate (h7);
 \draw[ass] (rl.west |- h7) -- (db.east |- h7)
-  node[rolle, above, pos=0.7] {\_db} node[rolle, below, pos=0.85] {1};
+  node[endeR, anchor=south west] {\_db} node[endeR, anchor=north west] {1};
 \path (db.south) ++(0,-0.3) coordinate (t1) ++(0,-0.3) coordinate (t2);
 \draw[ass] (rr.south) -- (rr.south |- t1) -| ([xshift=2.8cm]db.south west)
   node[rolle, right, pos=0.93] {1};

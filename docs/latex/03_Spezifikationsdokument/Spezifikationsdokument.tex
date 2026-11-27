@@ -12,6 +12,20 @@
 \usepackage{amsmath}   % Formeln im Kernprozess (cases, \dfrac, \text)
 % Tabellensatz (10 pt, einzeilig) regelt die Klasse iu-pse.cls einheitlich.
 
+% Platzprüfung vor jeder longtable. Die Klasse reserviert den Platz mit
+% \needspace; dessen Umbruchstelle greift aber erst, wenn longtable die
+% Seitenausgabe schon übernommen hat. Dann steht am Seitenende ein leerer
+% Tabellenfuß und oben auf der Folgeseite ein doppelter Tabellenkopf.
+% \tabellenplatz entscheidet sofort, also vor dem Beginn der Tabelle.
+\makeatletter
+\newcommand{\tabellenplatz}[1]{\par\penalty\z@
+  \begingroup\dimen@\pagegoal\advance\dimen@-\pagetotal
+  \ifdim\pagegoal<\maxdimen\ifdim\dimen@<#1\relax\newpage\fi\fi\endgroup}
+\let\tabellenplatz@needspace\needspace
+\BeforeBeginEnvironment{longtable}{\tabellenplatz{6\baselineskip}\let\needspace\@gobble}
+\AfterEndEnvironment{longtable}{\let\needspace\tabellenplatz@needspace}
+\makeatother
+
 \dokumenttitel{Spezifikationsdokument}
 \dokumentuntertitel{\Projektname}
 

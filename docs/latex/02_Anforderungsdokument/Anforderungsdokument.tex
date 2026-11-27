@@ -16,6 +16,20 @@
 \setlist[akz]{label=--, leftmargin=1.0em, labelsep=0.4em, nosep,
   before=\vspace{-\baselineskip}\vspace{4.5pt}, after={}}
 
+% Platzprüfung vor jeder longtable. Die Klasse reserviert den Platz mit
+% \needspace; dessen Umbruchstelle greift aber erst, wenn longtable die
+% Seitenausgabe schon übernommen hat. Dann steht am Seitenende ein leerer
+% Tabellenfuß und oben auf der Folgeseite ein doppelter Tabellenkopf.
+% \tabellenplatz entscheidet sofort, also vor dem Beginn der Tabelle.
+\makeatletter
+\newcommand{\tabellenplatz}[1]{\par\penalty\z@
+  \begingroup\dimen@\pagegoal\advance\dimen@-\pagetotal
+  \ifdim\pagegoal<\maxdimen\ifdim\dimen@<#1\relax\newpage\fi\fi\endgroup}
+\let\tabellenplatz@needspace\needspace
+\BeforeBeginEnvironment{longtable}{\tabellenplatz{6\baselineskip}\let\needspace\@gobble}
+\AfterEndEnvironment{longtable}{\let\needspace\tabellenplatz@needspace}
+\makeatother
+
 \dokumenttitel{Anforderungsdokument}
 \dokumentuntertitel{\Projektname}
 
@@ -40,7 +54,7 @@
   \acro{UC}{Use Case}
   \acro{UML}{Unified Modeling Language}
   \acro{US}{User Story}
-  \acro{UTF-8}{8-Bit Universal Coded Character Set Transformation Format}
+  \acro{UTF-8}{8-Bit Unicode Transformation Format}
   \acro{WHO}{World Health Organization}
 \end{abkuerzungen}
 

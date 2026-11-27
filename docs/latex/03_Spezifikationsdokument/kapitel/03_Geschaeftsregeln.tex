@@ -40,8 +40,8 @@ Geschäftsregeln sind fachliche Bedingungen, die BalanceOS unabhängig vom Weg d
   GR15 & Eine Bewegungsart kann nur bei Aktivitäten im Standardbereich Bewegung angegeben werden. R01 und R02 berücksichtigen nur Aktivitäten mit Bewegungsart. & Aktivitaet, GP04 & US05, US12 \\
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Wiederholungsserien}} \\*
-  GR16 & Eine Serie hat mindestens einen Wochentag, eine Dauer von 1--1.440~min und ein Enddatum, das nicht vor dem Startdatum liegt. & Wiederholungs\-serie & US07 \\
-  GR17 & Termine entstehen nur an den gewählten Wochentagen zwischen Start- und Enddatum und höchstens 52~Wochen im Voraus. & Wiederholungs\-serie, GP02 & US07 \\
+  GR16 & Eine Serie hat mindestens einen Wochentag und eine Dauer von 1--1.440~min. Das Enddatum ist optional; ist es angegeben, liegt es nicht vor dem Startdatum. & Wiederholungs\-serie & US07 \\
+  GR17 & Termine entstehen nur an den gewählten Wochentagen ab dem Startdatum, höchstens bis zum Enddatum und höchstens 52~Wochen im Voraus. & Wiederholungs\-serie, GP02 & US07 \\
   GR18 & Eine Ausnahme ist nur für ein Termindatum der Serie zulässig (Datum im Gültigkeitszeitraum und an einem gewählten Wochentag), je Datum höchstens einmal. Für ein Datum mit Ausnahme entsteht kein Termin. Auch das Löschen oder Verschieben eines einzelnen Termins legt für sein ursprüngliches Datum eine Ausnahme an. & Ausnahme, GP02 & US08 \\
   GR19 & Das Bearbeiten eines einzelnen Termins ändert nur diesen Termin. Änderungen an der Serie wirken nur auf zukünftige, nicht einzeln bearbeitete Termine im Status GEPLANT. & Wiederholungs\-serie, Aktivitaet & US06, US07 \\
   GR20 & Beim Löschen einer Serie werden ihre zukünftigen, nicht einzeln bearbeiteten Termine im Status GEPLANT und alle Ausnahmen entfernt; übrige Termine bleiben als einzelne Aktivitäten erhalten. & Wiederholungs\-serie, Ausnahme & US06, US07 \\

@@ -12,24 +12,7 @@ Funktionale Anforderungen beschreiben, welche Funktionen BalanceOS den Nutzer:in
 \subsection{User Stories}\label{sec:userstories}
 Eine User Story beschreibt eine Anforderung aus Sicht einer Rolle in der Form \anf{Als \textless Rolle\textgreater{} möchte ich \textless Fähigkeit\textgreater, damit \textless Nutzen\textgreater} \parencite[S.~1-12]{swebok2026}. Das Format verbindet die gewünschte Funktion mit ihrem Nutzen und macht so sichtbar, warum eine Anforderung besteht. In allen User Stories ist die Rolle die Nutzer:in, die auch die Tutor:innen beim Test der Anwendung einnehmen. Jede User Story hat zwei bis vier Akzeptanzkriterien. Sie machen die Story eindeutig überprüfbar und sind die Grundlage der Systemtests.
 
-Ausgangspunkt der Erfassung sind die zehn Standard-Lebensbereiche aus der Ideenskizze (Tabelle~\ref{tab:lebensbereiche}). Jeder Bereich hat einen Bereichstyp: Bei einem \emph{Mindestziel} ist mehr Zeit bis zum Soll besser, bei einer \emph{Obergrenze} ist eine Überschreitung des Solls ungünstig. Die Standard-Soll-Werte in Stunden pro Woche sind Vorschläge und werden im Wunschprofil persönlich angepasst.
-
-\begin{table}[!htb]
-  \caption{Standard-Lebensbereiche mit Bereichstyp und Standard-Soll}\label{tab:lebensbereiche}
-  \tabsatz
-  \begin{tabular}{@{}L{0.5cm}L{3.0cm}L{1.95cm}L{0.8cm}@{\hspace{0.6cm}}L{0.5cm}L{3.0cm}L{1.95cm}L{0.8cm}@{}}
-    \toprule
-    \textbf{Nr.} & \textbf{Lebensbereich} & \textbf{Typ} & \textbf{Soll} & \textbf{Nr.} & \textbf{Lebensbereich} & \textbf{Typ} & \textbf{Soll} \\
-    \midrule
-    1 & Arbeit   & Obergrenze  & 40~h & 6  & Soziale Kontakte            & Mindestziel & 4~h \\
-    2 & Schlaf   & Mindestziel & 56~h & 7  & Freizeit                    & Mindestziel & 6~h \\
-    3 & Bewegung & Mindestziel & 3~h  & 8  & Erholung                    & Mindestziel & 5~h \\
-    4 & Familie  & Mindestziel & 10~h & 9  & Persönliche Entwicklung     & Mindestziel & 3~h \\
-    5 & Hobbys   & Mindestziel & 4~h  & 10 & Alltägliche Verpflichtungen & Obergrenze  & 12~h \\
-    \bottomrule
-  \end{tabular}
-  \quelle{Eigene Darstellung.}
-\end{table}
+Ausgangspunkt der Erfassung sind die zehn Standard-Lebensbereiche aus der Ideenskizze: Arbeit, Schlaf, Bewegung, Familie, Hobbys, Soziale Kontakte, Freizeit, Erholung, Persönliche Entwicklung und Alltägliche Verpflichtungen. Jeder Bereich hat einen Bereichstyp: Bei einem \emph{Mindestziel} ist mehr Zeit bis zum Soll besser, bei einer \emph{Obergrenze} ist eine Überschreitung des Solls ungünstig. Arbeit und Alltägliche Verpflichtungen sind Obergrenzen, alle übrigen Bereiche Mindestziele. Typ und Standard-Soll jedes Bereichs legt das Spezifikationsdokument fest (Abschnitt~1.1, Tabelle~2). Die Standard-Soll-Werte in Stunden pro Woche sind Vorschläge und werden im Wunschprofil persönlich angepasst.
 
 Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktionsbereichen. US01--US18 haben die Priorität Must und bilden den Kern der Anwendung. US19--US22 haben die Priorität Should und werden nach den Must-Anforderungen umgesetzt.
 
@@ -51,7 +34,7 @@ Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktio
   \multicolumn{4}{@{}l}{\textbf{Lebensbereiche und Wunschprofil}} \\*
   US01 & Als Nutzer:in möchte ich beim ersten Start zehn vorbereitete Lebensbereiche vorfinden, damit ich ohne Einrichtungsaufwand mit der Erfassung beginnen kann. & Must &
   \begin{akz}
-    \item Beim ersten Start sind die zehn Bereiche aus Tabelle~\ref{tab:lebensbereiche} mit Bereichstyp, Farbe und Standard-Soll angelegt.
+    \item Beim ersten Start sind die zehn Standardbereiche (Spezifikationsdokument, Tabelle~2) mit Bereichstyp, Farbe und Standard-Soll angelegt.
     \item Alle Standardbereiche sind aktiv und als Standardbereich gekennzeichnet.
     \item Ohne erfasste Aktivitäten bietet das Dashboard \anf{Demodaten laden} an.
   \end{akz} \\
@@ -144,7 +127,7 @@ Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktio
   \midrule
   US13 & Als Nutzer:in möchte ich zu jedem Hinweis über \anf{Warum sehe ich das?} eine Begründung abrufen, damit ich nachvollziehen kann, worauf der Hinweis beruht. & Must &
   \begin{akz}
-    \item Jeder Hinweis bietet die Schaltfläche \anf{Warum sehe ich das?}.
+    \item Jeder Hinweis bietet die Schaltfläche \anf{Warum?}, die den Dialog \anf{Warum sehe ich das?} öffnet.
     \item Die Begründung nennt Regel, Datenbasis, Zeitraum, Schwelle, Quelle und Evidenzart.
     \item Hinweise auf Basis der eigenen Skalen sind als \anf{programmeigen, theoriegeleitet} gekennzeichnet.
   \end{akz} \\
@@ -224,7 +207,7 @@ Tabelle~\ref{tab:userstories} enthält alle User Stories, gruppiert nach Funktio
 \subsection{Abgrenzung des Funktionsumfangs}\label{sec:abgrenzung}
 Die MoSCoW-Priorisierung grenzt den Funktionsumfang bewusst ein, damit alle Must- und Should-Anforderungen im Bearbeitungszeitraum vollständig umgesetzt werden können. Could-Funktionen werden nur umgesetzt, wenn nach Abschluss der Must- und Should-Anforderungen noch Zeit bleibt. Deshalb sind sie nicht als User Stories formuliert. Dazu zählen persönliche Ziele je Lebensbereich, eine Ersteinrichtung mit Lebensprofil-Vorlagen, eine Tages- und Monatsansicht, Windows-Benachrichtigungen, ein Hell- und Dunkelmodus, ein Passwortschutz, ein Wochenbericht als \ac{PDF} sowie eine Datensicherung mit Wiederherstellung.
 
-Als Won't-Funktionen sind in dieser Version ausdrücklich ausgeschlossen: jede Form von \ac{KI}, Cloud-Synchronisation, Benutzerkonten und Mehrbenutzerbetrieb sowie der Fragebogen COPSOQ (die deutsche Fassung ist lizenzpflichtig). Ebenso ausgeschlossen sind eine Datenbankverschlüsselung, ein frei per Drag-and-Drop anordenbares Dashboard, eine Jahresansicht, komplexe Wiederholungsmuster (z.\,B. monatliche Wiederholungen oder Urlaubsausnahmen), die Zuordnung einer Aktivität zu mehreren Lebensbereichen sowie eine mobile App. Diese Punkte sind ein Ausblick auf mögliche Weiterentwicklungen. Der Verzicht auf \ac{KI}, Cloud und Benutzerkonten hat dabei keine Zeitgründe. Er gehört zum Produktversprechen: Alle Auswertungen sind deterministisch nachvollziehbar, und die Daten verlassen den Rechner nicht.
+Als Won't-Funktionen sind in dieser Version ausdrücklich ausgeschlossen: jede Form künstlicher Intelligenz (\acs{KI})\acused{KI}, Cloud-Synchronisation, Benutzerkonten und Mehrbenutzerbetrieb sowie der Fragebogen COPSOQ (die deutsche Fassung ist lizenzpflichtig). Ebenso ausgeschlossen sind eine Datenbankverschlüsselung, ein frei per Drag-and-Drop anordenbares Dashboard, eine Jahresansicht, komplexe Wiederholungsmuster (z.\,B. monatliche Wiederholungen oder Urlaubsausnahmen), die Zuordnung einer Aktivität zu mehreren Lebensbereichen sowie eine mobile App. Diese Punkte sind ein Ausblick auf mögliche Weiterentwicklungen. Der Verzicht auf \ac{KI}, Cloud und Benutzerkonten hat dabei keine Zeitgründe. Er gehört zum Produktversprechen: Alle Auswertungen sind deterministisch nachvollziehbar, und die Daten verlassen den Rechner nicht.
 
 \subsection{Use-Case-Diagramm}\label{sec:usecase}
 Ein Use Case beschreibt eine Funktion, die ein beobachtbares Ergebnis mit Wert für einen oder mehrere Akteure liefert \parencite[S.~639]{omg2017uml}. Abbildung~\ref{abb:usecase} fasst die funktionalen Anforderungen als \ac{UML}-Use-Case-Diagramm zusammen. Use Cases werden als Ellipsen innerhalb eines Rechtecks dargestellt, das die Systemgrenze bildet und oben den Namen des Systems trägt; Akteure stehen außerhalb der Systemgrenze und sind über Assoziationen mit den Use Cases verbunden \parencite[S.~641]{omg2017uml}.

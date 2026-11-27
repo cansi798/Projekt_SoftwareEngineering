@@ -6,10 +6,10 @@
 %  Mock-ups in docs/diagramme/06_Mockups/, Export nach docs/diagramme/export/.
 % =====================================================================
 \section{Benutzerschnittstellen}\label{sec:benutzerschnittstellen}
-Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\ac{GUI}) von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes: Sie legen Inhalt, Anordnung und Verhalten fest, nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
+Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\acs{GUI})\acused{GUI} von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes: Sie legen Inhalt, Anordnung und Verhalten fest, nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
 
 \subsection{Gestaltungsgrundsätze}\label{sec:gestaltungsgrundsaetze}
-Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlangt Erlernbarkeit (alle Seiten und Eingabefelder deutsch beschriftet, Erfassungsdialog von jeder Seite mit einem Klick erreichbar). NFA02 verlangt Fehlertoleranz (ungültige Eingaben werden vor dem Speichern abgefangen und am Feld erklärt). Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}. Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
+Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. Die Prüfkriterien dafür legen NFA01 (Erlernbarkeit) und NFA02 (Fehlertoleranz) im Anforderungsdokument fest. Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}. Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
 
 \begin{longtable}{@{}L{3.6cm}L{12.0cm}@{}}
   \caption{Umsetzung der Interaktionsprinzipien in BalanceOS}\label{tab:interaktionsprinzipien}\\
@@ -76,7 +76,7 @@ Der Dialog zeigt nur Felder, die im jeweiligen Zusammenhang sinnvoll sind:
   \item Das Datum ist heute bzw. der angeklickte Tag. Der Status ist für heutige und vergangene Tage \enquote{Durchgeführt}, sonst \enquote{Geplant}.
   \item Ein Optionsfeld wählt \enquote{Beginn und Ende} oder \enquote{Dauer}. Im ersten Fall wird die Dauer berechnet. Liegt das Ende vor dem Beginn, erscheint \enquote{endet am Folgetag}.
   \item Die Bewertungsskalen (1--5) sind nur bei \enquote{Durchgeführt} aktiv, die Bewegungsart nur beim Bereich Bewegung.
-  \item \enquote{Wöchentlich wiederholen} aktiviert Wochentage (Wochentag des Datums vorausgewählt) und das Enddatum.
+  \item \enquote{Wöchentlich wiederholen} aktiviert Wochentage (Wochentag des Datums vorausgewählt) und das optionale Enddatum. Ohne Enddatum entstehen die Termine 52~Wochen im Voraus.
   \item Beim Bearbeiten lautet der Titel \enquote{Aktivität bearbeiten}; hinzu kommen \enquote{Löschen} mit Rückfrage und bei Serienterminen \enquote{Termin überspringen} (US08).
 \end{itemize}
 Im Beispiel liegt das Enddatum vor dem Datum: Das Feld ist rot umrandet, die Meldung steht darunter, und \enquote{Speichern} bleibt gesperrt.
@@ -116,13 +116,16 @@ Tabelle~\ref{tab:weitere-dialoge} beschreibt die übrigen Dialoge; ihre Feldrege
   \endhead
   \bottomrule
   \endfoot
+  % Quelle als Tabellenabschluss (bleibt bei der letzten Zeile)
+  \bottomrule
+  \multicolumn{3}{@{}l@{}}{\rule{0pt}{14pt}\fontsize{10pt}{12pt}\selectfont Quelle: Eigene Darstellung.} \\
+  \endlastfoot
   Lebensbereich bearbeiten & Name, Typ (Mindestziel oder Obergrenze mit Erklärung), Farbe aus einer Palette, aktiv, Soll-Stunden und Gewicht; Anzeige \enquote{140 von 168~h verplant}. Standardbereiche sind nicht löschbar, genutzte eigene Bereiche nur deaktivierbar. & US02--US04 \\
-  WHO-5-Frage\-bogen & Datum und fünf Aussagen zum Wohlbefinden der letzten zwei Wochen, je Skala 0 (\enquote{zu keinem Zeitpunkt}) bis 5 (\enquote{die ganze Zeit}); kurzes, valides Instrument \parencite[S.~167]{topp2015}. \enquote{Auswerten} zeigt Rohwert (0--25) und Prozentwert (× 4); bis 50~\% folgt die Empfehlung, bei anhaltender Niedergeschlagenheit ärztliche oder psychotherapeutische Hilfe zu suchen. & US20 \\
+  WHO-5-Frage\-bogen & Datum und fünf Aussagen zum Wohlbefinden der letzten zwei Wochen, je Skala 0 (\enquote{zu keinem Zeitpunkt}) bis 5 (\enquote{die ganze Zeit}). \enquote{Auswerten} zeigt Rohwert, Prozentwert und gegebenenfalls den Hinweistext nach GP06 (Abschnitt~\ref{sec:prozessuebersicht}). & US20 \\
   Export & Format \ac{CSV} oder \ac{JSON}, bei CSV Zeitraum von--bis; Speicherort über den Speichern-Dialog von Windows, Dateiname nach Abschnitt~\ref{sec:csv} bzw.~\ref{sec:json}. Meldet nach Erfolg Datei und Ordner. & US16 \\
   Lösch\-bestätigung & Warnung, betroffene Daten, Hinweis auf erhaltene Exportdateien, Eingabefeld für LÖSCHEN; \enquote{Endgültig löschen} erst bei exakter Eingabe aktiv, Fokus auf \enquote{Abbrechen}. Danach leeres Dashboard. & US17 \\
-  Demodaten & Optionsfelder \enquote{Laden} und \enquote{Entfernen}, nur die mögliche Option ist aktiv; Entfernen löscht nur Demo-Aktivitäten. & US18 \\
+  Demodaten & Optionsfelder \enquote{Demodaten laden} und \enquote{Demodaten entfernen}, nur die mögliche Option ist aktiv; Entfernen löscht nur Demo-Aktivitäten. & US18 \\
 \end{longtable}
-\quelle{Eigene Darstellung.}
 
 \subsection{Dialogfluss}\label{sec:dialogfluss}
 Abbildung~\ref{abb:dialogfluss} zeigt den Dialogfluss als \ac{UML}-Zustandsdiagramm \parencite[S.~319]{omg2017uml}. Seiten und Dialoge sind Zustände, Übergänge sind mit \enquote{Ereignis [Wächterbedingung] / Effekt} beschriftet. Die sieben Seiten sind Unterzustände des Zustands \enquote{Hauptfenster}, dessen Anfangszustand zum Dashboard führt. Die Navigation ist ein einziger Übergang vom Rand des Oberzustands zu einem Auswahlpseudozustand: Er gilt auf jeder Seite, und die Wächter wählen das Ziel. So entfallen 42 Einzelübergänge. Das Dashboard enthält die interne Transition \enquote{Demodaten laden}.
@@ -153,7 +156,7 @@ Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:g
   \endfoot
   % Anmerkungen und Quelle als Tabellenabschluss (bleiben bei der letzten Zeile)
   \bottomrule
-  \multicolumn{4}{@{}p{15.2cm}@{}}{\rule{0pt}{14pt}\fontsize{10pt}{12pt}\selectfont \textsuperscript{a} je nach gewählter Zeitangabe; \textsuperscript{b} Pflicht bei aktiver Wiederholung; \textsuperscript{c} Pflicht beim CSV-Export.} \\
+  \multicolumn{4}{@{}p{15.2cm}@{}}{\rule{0pt}{14pt}\fontsize{10pt}{12pt}\selectfont \textsuperscript{a} je nach gewählter Zeitangabe; \textsuperscript{b} nur bei aktiver Wiederholung; \textsuperscript{c} Pflicht beim CSV-Export.} \\
   \multicolumn{4}{@{}l@{}}{\fontsize{10pt}{12pt}\selectfont Quelle: Eigene Darstellung.} \\
   \endlastfoot
   \multicolumn{4}{@{}l}{\textbf{Aktivität erfassen/bearbeiten}} \\
@@ -166,8 +169,8 @@ Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:g
   Zufriedenheit, Belastung, Erholung & Skala, optional & 1--5, nur bei DURCHGEFUEHRT (GR13) & keine (Skala sonst gesperrt) \\
   Bewegungsart & Liste, optional & nur im Bereich Bewegung (GR15) & keine (Feld sonst ausgeblendet) \\
   Notiz & Text, optional & höchstens 500 Zeichen (GR09) & \enquote{Höchstens 500 Zeichen.} \\
-  Wochentage & Auswahl\textsuperscript{b} & mindestens ein Wochentag (GR16) & \enquote{Bitte mindestens einen Wochentag wählen.} \\
-  Enddatum & Datum\textsuperscript{b} & nicht vor dem Datum (GR16, GR17) & \enquote{Enddatum darf nicht vor dem Datum liegen.} \\
+  Wochentage & Auswahl, Pflicht\textsuperscript{b} & mindestens ein Wochentag (GR16) & \enquote{Bitte mindestens einen Wochentag wählen.} \\
+  Enddatum & Datum, optional\textsuperscript{b} & über das Ankreuzfeld \enquote{Enddatum} zuschaltbar; nicht vor dem Datum (GR16, GR17) & \enquote{Enddatum darf nicht vor dem Datum liegen.} \\
   \multicolumn{4}{@{}l}{\textbf{Lebensbereich bearbeiten, Reiter \enquote{Wunschprofil}}} \\
   Name & Text, Pflicht & 1--40 Zeichen, eindeutig ohne Beachtung der Groß- und Kleinschreibung (GR01) & \enquote{Bitte 1 bis 40 Zeichen eingeben.} bzw. \enquote{Name existiert bereits.} \\
   Typ, Farbe & Auswahl, Pflicht & Mindestziel oder Obergrenze; Farbe aus der Palette & keine (stets gültig) \\
@@ -184,6 +187,6 @@ Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:g
   Format & Optionsfeld & CSV oder JSON & keine (stets gültig) \\
   Zeitraum & Datum\textsuperscript{c} & \enquote{bis} nicht vor \enquote{von} & \enquote{Ende vor Beginn des Zeitraums.} \\
   Speicherort & Dateiauswahl & Ordner beschreibbar & \enquote{Hier kann nicht gespeichert werden.} \\
-  Demodaten & Optionsfeld & Laden nur ohne, Entfernen nur mit Demodaten (GR28) & keine (Option gesperrt) \\
+  Demodaten & Optionsfeld & \enquote{Demodaten laden} nur ohne, \enquote{Demodaten entfernen} nur mit Demodaten (GR28) & keine (Option gesperrt) \\
   Bestätigung & Text, Pflicht & exakt \enquote{LÖSCHEN} (GR29) & \enquote{Bitte LÖSCHEN eingeben.} \\
 \end{longtable}

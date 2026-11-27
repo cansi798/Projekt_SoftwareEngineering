@@ -5,7 +5,7 @@
 %  Fachliches Modell (Geschäftsobjekte), KEINE technischen Klassen.
 % =====================================================================
 \section{Datenmodell}
-Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Als fachliches Modell legt es fest, welche Informationen BalanceOS erfasst, anzeigt, auswertet und exportiert. Wie diese Informationen technisch gespeichert oder in Klassen umgesetzt werden, entscheidet das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
+Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Als fachliches Modell legt es fest, welche Informationen BalanceOS erfasst, anzeigt, auswertet und exportiert. Wie diese Informationen technisch gespeichert oder in Klassen umgesetzt werden, entscheidet das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} erscheinen (Kapitel~\ref{sec:systemschnittstellen}).
 
 \subsection{Geschäftsobjekte}\label{sec:geschaeftsobjekte}
 Die Geschäftsobjekte lassen sich vier fachlichen Gruppen zuordnen:
@@ -18,7 +18,7 @@ Die Geschäftsobjekte lassen sich vier fachlichen Gruppen zuordnen:
 
 Die Attribute verwenden die fachlichen Datentypen \emph{String} (Text), \emph{Ganzzahl}, \emph{Dezimal} (Dezimalzahl), \emph{Boolean} (wahr/falsch), \emph{Datum} (Kalendertag), \emph{Uhrzeit} (Stunde und Minute) und \emph{Farbe} (Farbwert im Format \texttt{\#RRGGBB}). Die Angabe [0..1] kennzeichnet optionale Attribute, [1..7] bzw. [5] die zulässige Anzahl von Werten. Tabelle~\ref{tab:attribute} beschreibt alle Attribute mit Typ, Verbindlichkeit und Wertebereich. Zeitangaben werden fachlich in Minuten erfasst und für Auswertungen in Stunden umgerechnet.
 
-\begin{longtable}{@{}L{3.4cm}L{2.8cm}L{1.5cm}L{7.5cm}@{}}
+\begin{longtable}{@{}>{\hyphenpenalty=10000\exhyphenpenalty=10000}L{3.8cm}L{2.8cm}L{1.5cm}L{7.1cm}@{}}
   \caption{Attribute der Geschäftsobjekte}\label{tab:attribute}\\
   \toprule
   \textbf{Attribut} & \textbf{Typ} & \textbf{Pflicht} & \textbf{Wertebereich und Bedeutung} \\
@@ -103,7 +103,7 @@ Die Attribute verwenden die fachlichen Datentypen \emph{String} (Text), \emph{Ga
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Einstellungen}} \\*
   alpha & Dezimal & ja & 0--1, Standard 0,6; Anteil der Zielerfüllung \\
-  gesamtScore\-Anzeigen & Boolean & ja & Standard \enquote{falsch} \\
+  gesamtScoreAnzeigen & Boolean & ja & Standard \enquote{falsch} \\
   \midrule
   \multicolumn{4}{@{}l}{\textbf{Who5Erhebung} (Should)} \\*
   datum & Datum & ja & Tag der Erhebung, nicht in der Zukunft \\
@@ -165,8 +165,8 @@ Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen W
   \midrule
   Evidenzart & THEORIE & wissenschaftliche Theorie oder wissenschaftliches Modell \\
    & EMPFEHLUNG & evidenzbasierte Empfehlung einer Fachgesellschaft oder der \ac{WHO} \\
-   & VALIDIERTES\_\-INSTRUMENT & validierter Fragebogen (WHO-5) \\
-   & PERSOENLICHE\_\-REGEL & von Nutzer:innen selbst gesetzter Maßstab (Wunschprofil) \\
+   & VALIDIERTES\_\allowbreak INSTRUMENT & validierter Fragebogen (WHO-5) \\
+   & PERSOENLICHE\_\allowbreak REGEL & von Nutzer:innen selbst gesetzter Maßstab (Wunschprofil) \\
    & PROGRAMMEIGEN & von BalanceOS festgelegte, nicht validierte Berechnung oder Regel \\
   \midrule
   Hinweisart & WARNUNG & Hinweis auf eine ungünstige Abweichung \\
@@ -178,7 +178,7 @@ Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen W
 \quelle{Eigene Darstellung.}
 
 \subsection{Beziehungen und Klassendiagramm}\label{sec:klassendiagramm}
-Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als \ac{UML}-Klassendiagramm. Assoziationen erscheinen als durchgezogene Linien mit Multiplizitäten an beiden Enden; ein gefülltes Dreieck neben dem Assoziationsnamen gibt die Leserichtung an \parencite[S.~201]{omg2017uml}. Weil das Modell fachlich ist, enthält das Diagramm keine Operationen und keine Navigationsrichtungen. Die Beziehungen haben folgende Bedeutung:
+Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als Klassendiagramm in der \ac{UML}. Assoziationen erscheinen als durchgezogene Linien mit Multiplizitäten an beiden Enden; ein gefülltes Dreieck neben dem Assoziationsnamen gibt die Leserichtung an \parencite[S.~201]{omg2017uml}. Weil das Modell fachlich ist, enthält das Diagramm keine Operationen und keine Navigationsrichtungen. Die Beziehungen haben folgende Bedeutung:
 \begin{itemize}
   \item Ein Lebensbereich umfasst beliebig viele Aktivitäten (0..*); jede Aktivität gehört zu genau einem Lebensbereich. Eine Mehrfachzuordnung ist ausgeschlossen.
   \item Jede Wiederholungsserie gehört zu genau einem Lebensbereich. Sie erzeugt beliebig viele Termine, also Aktivitäten mit der Rolle \enquote{termine}. Eine Aktivität stammt aus höchstens einer Serie (0..1); einzeln erfasste Aktivitäten haben keine Serie.

@@ -22,12 +22,25 @@
   rahmen/.style={draw, inner sep=0pt},
   waechter/.style={font=\fontsize{7pt}{8pt}\selectfont, inner sep=1.5pt},
 }
-% Lebenslinien: x-Positionen
-\def\xN{0}\def\xD{1.95}\def\xS{3.95}\def\xV{5.85}\def\xR{7.75}\def\xB{9.55}
-\def\xZ{11.3}\def\xH{13.05}\def\xA{14.85}\def\xW{16.6}\def\xG{18.3}
-% Nachricht von x#1 nach x#2 auf Höhe #3 mit Beschriftung #4 (Stil #5)
+% Lebenslinien: x-Positionen. Repository und Datenbank stehen rechts von
+% Zustand, Dashboard und AuswertungService, damit lange Nachrichten keine
+% aktiven Ausführungsbalken kreuzen.
+\def\xN{0}\def\xD{1.95}\def\xS{3.95}\def\xV{5.85}\def\xZ{7.75}\def\xH{9.55}
+\def\xA{11.3}\def\xR{13.05}\def\xB{14.85}\def\xW{16.6}\def\xG{18.3}
+% Nachricht von x#1 nach x#2 auf Höhe #3 mit Beschriftung #4 (Stil #5),
+% Beschriftung mittig über dem Pfeil
 \newcommand{\nachricht}[5][sync]{%
   \draw[#1] (#2,#4) -- (#3,#4) node[lab, above, midway] {#5};}
+% Aufruf von links nach rechts: Beschriftung über dem Pfeil, beginnend am
+% Balken des Senders (der Balken des Empfängers beginnt erst auf Höhe des Pfeils)
+\newcommand{\aufrufR}[5][sync]{%
+  \draw[#1] (#2,#4) -- (#3,#4);
+  \node[lab, anchor=south west] at (#2+0.04,#4) {#5};}
+% Rückgabe: Beschriftung unter dem Pfeil, beginnend hinter der Pfeilspitze am
+% Balken des Empfängers (der Balken des Senders endet auf Höhe des Pfeils)
+\newcommand{\rueckgabeL}[4]{%
+  \draw[antwort] (#1,#3) -- (#2,#3);
+  \node[lab, anchor=north west] at (#2+0.25,#3-0.04) {#4};}
 % Nachricht an sich selbst bei x#1, Höhe #2, Beschriftung #3
 \newcommand{\selbst}[3]{%
   \draw[sync] (#1+0.09,#2) -- ++(0.45,0) -- ++(0,-0.32) -- ++(-0.36,0);
@@ -60,17 +73,17 @@
 % ---------------------------------------------------------------------
 \aktiv{\xD}{-0.55}{-16.1}
 \aktiv{\xS}{-1.65}{-5.45}
-\aktiv{\xV}{-2.05}{-2.45}
+\aktiv{\xV}{-1.95}{-2.3}
 \aktiv{\xR}{-3.4}{-4.95}
 \aktiv{\xB}{-3.95}{-4.45}
 \aktiv{\xZ}{-6.0}{-13.3}
 \aktiv{\xH}{-6.55}{-13.15}
 \aktiv{\xA}{-7.75}{-10.35}
 \aktiv{\xR}{-8.3}{-8.8}
-\aktiv{\xW}{-9.35}{-9.85}
-\aktiv{\xA}{-10.9}{-12.45}
+\aktiv{\xW}{-9.5}{-10.0}
+\aktiv{\xA}{-11.1}{-12.45}
 \aktiv{\xG}{-11.45}{-11.95}
-\aktiv{\xS}{-14.45}{-14.75}
+\aktiv{\xS}{-14.35}{-14.6}
 
 % ---------------------------------------------------------------------
 %  Nachrichten
@@ -78,8 +91,8 @@
 \nachricht[async]{\xN}{\xD-0.09}{-0.55}{Speichern}
 \selbst{\xD}{-0.8}{\_pruefen() : keine Fehler}
 \nachricht{\xD+0.09}{\xS-0.09}{-1.65}{speichern(a)}
-\nachricht{\xS+0.09}{\xV-0.09}{-2.05}{pruefe\_aktivitaet(a, \dots)}
-\nachricht[antwort]{\xV-0.09}{\xS+0.09}{-2.45}{fehler : list[Fehler]}
+\aufrufR{\xS+0.09}{\xV-0.09}{-1.95}{pruefe\_aktivitaet(a, \dots)}
+\rueckgabeL{\xV-0.09}{\xS+0.09}{-2.3}{fehler : list[Fehler]}
 
 % alt-Fragment
 \draw[rahmen] (\xD-0.5,-2.75) rectangle (\xG+0.75,-16.25);
@@ -91,22 +104,22 @@
 
 \nachricht{\xS+0.09}{\xR-0.09}{-3.4}{speichern(a)}
 \nachricht{\xR+0.09}{\xB-0.09}{-3.95}{transaktion()}
-\nachricht[antwort]{\xB-0.09}{\xR+0.09}{-4.45}{INSERT bzw. UPDATE, Commit}
+\rueckgabeL{\xB-0.09}{\xR+0.09}{-4.45}{INSERT bzw. UPDATE, Commit}
 \nachricht[antwort]{\xR-0.09}{\xS+0.09}{-4.95}{a (mit id)}
 \nachricht[antwort]{\xS-0.09}{\xD+0.09}{-5.45}{a}
 \nachricht{\xD+0.09}{\xZ-0.09}{-6.0}{daten\_geaendert.emit()}
 \nachricht{\xZ+0.09}{\xH-0.09}{-6.55}{\_geaendert()}
 \selbst{\xH}{-6.85}{[sichtbar] aktualisieren()}
-\nachricht{\xH+0.09}{\xA-0.09}{-7.75}{wochenbewertung(kw)}
-\nachricht{\xA-0.09}{\xR+0.09}{-8.3}{im\_zeitraum(montag, sonntag)}
-\nachricht[antwort]{\xR+0.09}{\xA-0.09}{-8.8}{aktivitaeten : list[Aktivitaet]}
-\nachricht{\xA+0.09}{\xW-0.09}{-9.35}{bewerte\_woche(\dots)}
-\nachricht[antwort]{\xW-0.09}{\xA+0.09}{-9.85}{Wochenbewertung}
-\nachricht[antwort]{\xA-0.09}{\xH+0.09}{-10.35}{Wochenbewertung}
-\nachricht{\xH+0.09}{\xA-0.09}{-10.9}{hinweise(kw)}
-\nachricht{\xA+0.09}{\xG-0.09}{-11.45}{pruefe\_regeln(k)}
+\aufrufR{\xH+0.09}{\xA-0.09}{-7.75}{wochenbewertung(kw)}
+\aufrufR{\xA+0.09}{\xR-0.09}{-8.3}{im\_zeitraum(montag, sonntag)}
+\rueckgabeL{\xR-0.09}{\xA+0.09}{-8.8}{aktivitaeten : list[Aktivitaet]}
+\aufrufR{\xA+0.09}{\xW-0.09}{-9.5}{bewerte\_woche(\dots)}
+\rueckgabeL{\xW-0.09}{\xA+0.09}{-10.0}{Wochenbewertung}
+\rueckgabeL{\xA-0.09}{\xH+0.09}{-10.35}{Wochenbewertung}
+\nachricht{\xH+0.09}{\xA-0.09}{-11.1}{hinweise(kw)}
+\aufrufR{\xA+0.09}{\xG-0.09}{-11.45}{pruefe\_regeln(k)}
 \node[notiz, anchor=north west, text width=3.1cm, execute at begin node=\hyphenpenalty 10000\relax, font=\fontsize{6.8pt}{7.8pt}\selectfont]
-  at (\xR-0.6,-10.75) {hinweise() lädt zuvor ebenfalls Aktivitäten (drei Wochen) und bewertet sie;
+  at (\xS-0.2,-10.75) {hinweise() lädt zuvor ebenfalls Aktivitäten (drei Wochen) und bewertet sie;
   diese Aufrufe sind hier weggelassen.};
 \nachricht[antwort]{\xG-0.09}{\xA+0.09}{-11.95}{list[Hinweis]}
 \nachricht[antwort]{\xA-0.09}{\xH+0.09}{-12.45}{list[Hinweis]}
@@ -114,7 +127,7 @@
 \selbst{\xD}{-13.42}{accept()}
 
 % sonst: Eingaben ungültig
-\nachricht[antwort]{\xS-0.09}{\xD+0.09}{-14.6}{raise ValidierungsFehler}
+\rueckgabeL{\xS-0.09}{\xD+0.09}{-14.6}{raise ValidierungsFehler}
 \selbst{\xD}{-15.0}{\_fehler\_anzeigen(e.fehler)}
 \nachricht[antwort]{\xD-0.09}{\xN}{-15.75}{Meldung am Feld}
 

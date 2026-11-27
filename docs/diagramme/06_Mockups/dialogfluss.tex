@@ -67,45 +67,50 @@
 \draw[pf] (1.3,0.6) -- node[lbl, right=2pt, fill=none] {Fenster schließen} (ende);
 
 % =================== Modale Dialoge ====================================
-\node[dialog, minimum height=2.55cm] (dAkt) at (14.4,11.15) {Aktivität\\erfassen/bearbeiten};
-\node[dialog] (dBeg)  at (14.4,8.75) {Begründung\\(„Warum sehe ich das?“)};
-\node[dialog] (dWho)  at (14.4,5.6)  {WHO-5-Fragebogen};
-\node[dialog] (dDemo) at (14.4,4.4)  {Demodaten laden/entfernen};
-\node[dialog] (dBer)  at (14.4,3.3)  {Lebensbereich bearbeiten};
-\node[dialog] (dExp)  at (14.4,2.2)  {Export};
-\node[dialog] (dLoe)  at (14.4,1.1)  {Löschbestätigung};
+% Die Dialoge stehen so weit rechts, dass alle Übergangsbeschriftungen
+% zwischen dem Rand des Oberzustands (x = 8.6) und den Dialogen (x = 12.9)
+% Platz finden; Mitte der Beschriftungen: x = 10.75.
+\node[dialog, minimum height=2.55cm] (dAkt) at (14.9,11.15) {Aktivität\\erfassen/bearbeiten};
+\node[dialog] (dBeg)  at (14.9,8.75) {Begründung\\(„Warum sehe ich das?“)};
+\node[dialog] (dWho)  at (14.9,5.6)  {WHO-5-Fragebogen};
+\node[dialog] (dDemo) at (14.9,4.4)  {Demodaten laden/entfernen};
+\node[dialog] (dBer)  at (14.9,3.3)  {Lebensbereich bearbeiten};
+\node[dialog] (dExp)  at (14.9,2.2)  {Export};
+\node[dialog] (dLoe)  at (14.9,1.1)  {Löschbestätigung};
 
 % ---------- Aktivität erfassen/bearbeiten -------------------------------
-\draw[pf] (dAkt.west |- 0,12.25) -- node[lbl, above=1pt, pos=0.45] {Speichern [Eingaben gültig]} (hist);
+\draw[pf] (dAkt.west |- 0,12.25) -- (hist);
+\node[lbl, anchor=south] at (10.75,12.27) {Speichern [Eingaben gültig]};
 \draw[pf] (8.6,11.75) -- node[lbl, above=1pt] {+ Aktivität} (dAkt.west |- 0,11.75);
-\draw[pf] (woche.east) -- node[lbl, above=1pt, pos=0.62] {Doppelklick im Kalender} (dAkt.west |- woche.east);
-\draw[pf] (akt.east) -- node[lbl, above=1pt, pos=0.62] {Bearbeiten} (dAkt.west |- akt.east);
+\draw[pf] (woche.east) -- (dAkt.west |- woche.east);
+\node[lbl, anchor=south] at (10.75,11.32) {Doppelklick im Kalender};
+\draw[pf] (akt.east) -- (dAkt.west |- akt.east);
+\node[lbl, anchor=south] at (10.75,10.22) {Bearbeiten};
 
-% ---------- Begründung --------------------------------------------------
-\draw[pf] (6.85,8.87) -- node[lbl, above=1pt, pos=0.62] {Warum? gewählt} (dBeg.west |- 0,8.87);
-\draw[pf] (dBeg.west |- 0,8.63) -- node[lbl, below=1pt, pos=0.38] {Schließen, Regel deaktivieren} (6.85,8.63);
+% ---------- Hin- und Rückübergang zwischen Seite und Dialog --------------
+% #1 Dialog, #2 Höhe der Mitte, #3 Beschriftung hin, #4 Beschriftung zurück
+\newcommand{\hinrueck}[4]{%
+  \draw[pf] (6.85,#2+0.12) -- (#1.west |- 0,#2+0.12);
+  \node[lbl, anchor=south] at (10.75,#2+0.14) {#3};
+  \draw[pf] (#1.west |- 0,#2-0.12) -- (6.85,#2-0.12);
+  \node[lbl, anchor=north] at (10.75,#2-0.14) {#4};}
 
-% ---------- WHO-5 -------------------------------------------------------
-\draw[pf] (6.85,5.72) -- node[lbl, above=1pt, pos=0.62] {WHO-5 ausfüllen} (dWho.west |- 0,5.72);
-\draw[pf] (dWho.west |- 0,5.48) -- node[lbl, below=1pt, pos=0.4] {Auswerten [alle 5 beantwortet]} (6.85,5.48);
+% ---------- Begründung und WHO-5 -----------------------------------------
+\hinrueck{dBeg}{8.75}{Warum? gewählt}{Schließen, Regel deaktivieren}
+\hinrueck{dWho}{5.6}{WHO-5 ausfüllen}{Auswerten [alle 5 beantwortet]}
 
 % ---------- Dialoge der Einstellungen -----------------------------------
-\foreach \ziel/\y/\hin/\rueck in {
-    dDemo/4.4/{Demodaten verwalten}/{Bestätigen, Abbrechen},
-    dBer/3.3/{Neu, Bearbeiten}/{Speichern [Eingaben gültig]},
-    dExp/2.2/{Exportieren}/{Exportieren [Ordner beschreibbar]}}{
-  \draw[pf] (6.85,\y+0.12) -- node[lbl, above=1pt, pos=0.62] {\hin} (\ziel.west |- 0,\y+0.12);
-  \draw[pf] (\ziel.west |- 0,\y-0.12) -- node[lbl, below=1pt, pos=0.4] {\rueck} (6.85,\y-0.12);
-}
-\draw[pf] (6.85,1.22) -- node[lbl, above=1pt, pos=0.62] {Alle Daten löschen} (dLoe.west |- 0,1.22);
-\draw[pf] (dLoe.west |- 0,0.98) -- node[lbl, below=1pt, pos=0.4] {Abbrechen} (6.85,0.98);
+\hinrueck{dDemo}{4.4}{Demodaten verwalten}{Bestätigen, Abbrechen}
+\hinrueck{dBer}{3.3}{Neu, Bearbeiten}{Speichern [Eingaben gültig]}
+\hinrueck{dExp}{2.2}{Exportieren}{Exportieren [Ordner beschreibbar]}
+\hinrueck{dLoe}{1.1}{Alle Daten löschen}{Abbrechen}
 \draw[pf] (dLoe.south) |- (7.6,0.1) -- (7.6,0.6);
-\node[lbl, anchor=north, fill=none] at (11.2,0.05) {Löschen [Eingabe = „LÖSCHEN“] / alle Daten löschen};
+\node[lbl, anchor=north, fill=none] at (11.5,0.05) {Löschen [Eingabe = „LÖSCHEN“] / alle Daten löschen};
 
 % =================== Kommentar ===========================================
 \begin{scope}
-  \draw[fill=white] (8.5,12.95) -- (16.4,12.95) -- (16.4,14.2) -- (16.1,14.5) -- (8.5,14.5) -- cycle;
-  \draw (16.1,14.5) -- (16.1,14.2) -- (16.4,14.2);
+  \draw[fill=white] (8.5,12.95) -- (16.9,12.95) -- (16.9,14.2) -- (16.6,14.5) -- (8.5,14.5) -- cycle;
+  \draw (16.6,14.5) -- (16.6,14.2) -- (16.9,14.2);
   \node[anchor=north west, font=\sz{7.5}, align=left, inner sep=0pt] at (8.64,14.38)
     {Abbrechen, Esc und × schließen jeden Dialog ohne Änderung\\
      und führen zur aufrufenden Seite zurück; eingezeichnet sind\\

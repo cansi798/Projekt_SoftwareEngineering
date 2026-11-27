@@ -21,43 +21,45 @@
 
   % ---------------- Spalte A: Basis-Use-Cases ----------------------
   \def\xa{3.75}
+  % Abstand innerhalb einer Gruppe 1,3 (die Ellipsen sind gut 1,1 hoch),
+  % zwischen den Gruppen 1,55
   % Stammdaten
   \node[uc] (uc01) at (\xa,  0.00) {UC01\\Lebensbereiche verwalten};
-  \node[uc] (uc02) at (\xa, -1.20) {UC02\\Wunschprofil festlegen};
+  \node[uc] (uc02) at (\xa, -1.30) {UC02\\Wunschprofil festlegen};
   % Erfassung
-  \node[uc] (uc03) at (\xa, -2.75) {UC03\\Aktivität erfassen};
-  \node[uc] (uc04) at (\xa, -3.95) {UC04\\Aktivität bearbeiten};
-  \node[uc] (uc07) at (\xa, -5.15) {UC07\\Wochenansicht anzeigen};
+  \node[uc] (uc03) at (\xa, -2.85) {UC03\\Aktivität erfassen};
+  \node[uc] (uc04) at (\xa, -4.15) {UC04\\Aktivität bearbeiten};
+  \node[uc] (uc07) at (\xa, -5.45) {UC07\\Wochenansicht anzeigen};
   % Auswertung
-  \node[uc] (uc08) at (\xa, -6.70) {UC08\\Dashboard anzeigen};
+  \node[uc] (uc08) at (\xa, -7.00) {UC08\\Dashboard anzeigen};
   % Kompass
-  \node[uc] (uc12) at (\xa, -8.25) {UC12\\Regeln konfigurieren};
-  \node[uc] (uc13) at (\xa, -9.45) {UC13\\Balance-Kompass ansehen};
+  \node[uc] (uc12) at (\xa, -8.55) {UC12\\Regeln konfigurieren};
+  \node[uc] (uc13) at (\xa, -9.85) {UC13\\Balance-Kompass ansehen};
   % Daten
-  \node[uc] (uc14) at (\xa, -11.00) {UC14\\Daten exportieren};
-  \node[uc] (uc15) at (\xa, -12.20) {UC15\\Alle Daten löschen};
-  \node[uc] (uc16) at (\xa, -13.40) {UC16\\Demodaten verwalten};
+  \node[uc] (uc14) at (\xa, -11.40) {UC14\\Daten exportieren};
+  \node[uc] (uc15) at (\xa, -12.70) {UC15\\Alle Daten löschen};
+  \node[uc] (uc16) at (\xa, -14.00) {UC16\\Demodaten verwalten};
   % Should
-  \node[ucshould] (uc17) at (\xa, -14.95) {UC17 (Should)\\WHO-5 ausfüllen};
-  \node[ucshould] (uc18) at (\xa, -16.15) {UC18 (Should)\\Statistik ansehen};
-  \node[ucshould] (uc19) at (\xa, -17.35) {UC19 (Should)\\Wochenreflexion erfassen};
+  \node[ucshould] (uc17) at (\xa, -15.55) {UC17 (Should)\\WHO-5 ausfüllen};
+  \node[ucshould] (uc18) at (\xa, -16.85) {UC18 (Should)\\Statistik ansehen};
+  \node[ucshould] (uc19) at (\xa, -18.15) {UC19 (Should)\\Wochenreflexion erfassen};
 
   % ---------------- Spalte B/C: inkludierte und erweiternde UCs -----
   \def\xb{9.4}
-  \def\xc{13.55}
-  \node[uc] (uc05) at (\xb, -2.75) {UC05\\Wiederholung festlegen};
-  \node[uc] (uc06) at (\xb, -3.95) {UC06\\Termin überspringen};
-  \node[uc] (uc10) at (\xb, -6.70) {UC10\\Hinweise anzeigen};
-  \node[uc] (uc11) at (\xb, -8.40) {UC11\\Begründung anzeigen};
-  \node[uc] (uc09) at (\xb, -12.00) {UC09\\Wochenbewertung berechnen};
+  \node[uc] (uc05) at (\xb, -2.85) {UC05\\Wiederholung festlegen};
+  \node[uc] (uc06) at (\xb, -4.15) {UC06\\Termin überspringen};
+  \node[uc] (uc10) at (\xb, -7.00) {UC10\\Hinweise anzeigen};
+  \node[uc] (uc11) at (\xb, -8.70) {UC11\\Begründung anzeigen};
+  \node[uc] (uc09) at (\xb, -12.40) {UC09\\Wochenbewertung berechnen};
 
-  % Kommentar (UML-Notiz) zu UC09: optionaler Gesamt-Score (US19, Should)
-  \node[notiz, draw=none, inner xsep=4pt] (n09) at (\xc, -12.00)
+  % Kommentar (UML-Notiz) zu UC09: optionaler Gesamt-Score (US19, Should),
+  % unter UC09, damit die Verbindungslinie keinen Text kreuzt
+  \node[notiz, draw=none, inner xsep=4pt, anchor=north west] (n09) at (\xb-0.3, -13.55)
     {Enthält den optionalen\\Gesamt-Score mit eigener\\Gewichtung (US19, Should)};
   \draw (n09.north west) -- ([xshift=-6pt]n09.north east) -- ([yshift=-6pt]n09.north east)
         -- (n09.south east) -- (n09.south west) -- cycle;
   \draw ([xshift=-6pt]n09.north east) |- ([yshift=-6pt]n09.north east);
-  \draw[dashed] (n09.west) -- (uc09.east);
+  \draw[dashed] (uc09.south) -- (uc09.south |- n09.north);
 
   % ---------------- Systemgrenze ------------------------------------
   \begin{scope}[on background layer]
@@ -68,7 +70,7 @@
     at ([yshift=-4pt]sys.north) {BalanceOS};
 
   % ---------------- Akteur und Assoziationen -------------------------
-  \akteur{nutzer}{-0.55,-8.6}{Nutzer:in}
+  \akteur{nutzer}{-0.55,-9.1}{Nutzer:in}
   \coordinate (a) at ([xshift=0.38cm]nutzer);
   \foreach \u in {uc01,uc02,uc03,uc04,uc07,uc08,uc12,uc13,uc14,uc15,uc16,uc17,uc18,uc19}{
     \draw[assoziation] (a) -- (\u.west);

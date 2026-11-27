@@ -27,7 +27,7 @@ Die Beziehungen lesen sich wie folgt:
   \item \textbf{Komposition:} Das Hauptfenster erzeugt und besitzt seine sieben Seiten. Ohne das Hauptfenster existieren sie nicht.
   \item \textbf{Generalisierung:} \texttt{DashboardSeite} und die übrigen Seiten erben von \texttt{Seite}.
   \item \textbf{Gerichtete Assoziationen} mit Rollenname und Multiplizität \parencite[S.~201]{omg2017uml}: Jede Seite und der Dialog kennen genau einen \texttt{Zustand}, der Dialog genau einen \texttt{AktivitaetService}. Beide Services kennen das \texttt{AktivitaetRepository}. Die Repositories kennen genau eine \texttt{Datenbank}, und jede \texttt{Wochenbewertung} gehört zu genau einer \texttt{KW}.
-  \item \textbf{Abhängigkeiten} (gestrichelte Pfeile) \parencite[S.~39]{omg2017uml}: Die Services nutzen die Module der Domäne (\guillemotleft use\guillemotright). Das Modul \texttt{bewertung} erzeugt \texttt{Wochenbewertung}-Objekte und \texttt{regeln} erzeugt \texttt{Hinweis}-Objekte (\guillemotleft create\guillemotright).
+  \item \textbf{Abhängigkeiten} als gestrichelte Pfeile \parencite[S.~39]{omg2017uml}: Die Services nutzen die Module der Domäne (\guillemotleft use\guillemotright). Das Modul \texttt{bewertung} erzeugt \texttt{Wochenbewertung}-Objekte und \texttt{regeln} erzeugt \texttt{Hinweis}-Objekte (\guillemotleft create\guillemotright).
 \end{itemize}
 Keine Linie führt von der Domäne zu einer anderen Schicht. Das entspricht der Abhängigkeitsrichtung aus Abbildung~\ref{abb:architektur}.
 

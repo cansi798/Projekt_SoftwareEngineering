@@ -17,12 +17,12 @@ Zur Laufzeit braucht BalanceOS nur eine Bibliothek außerhalb der Standardbiblio
 
 \begin{table}[H]
   \caption{Verwendete Bibliotheken und Frameworks}\label{tab:bibliotheken}
-  \begin{tabular}{@{}L{2.6cm}L{1.5cm}L{2.4cm}L{3.3cm}L{5.4cm}@{}}
+  \begin{tabular}{@{}L{2.6cm}L{1.5cm}L{2.4cm}L{2.6cm}L{6.1cm}@{}}
   \toprule
   \textbf{Name} & \textbf{Version} & \textbf{Lizenz} & \textbf{Zweck} & \textbf{Begründung} \\
   \midrule
-  PySide6 (Qt for Python) & 6.12.0 & LGPL-3.0 & Grafische Oberfläche (\ac{GUI}) & Offizielle Qt-Bindung der Qt Company. Die LGPL erlaubt die Weitergabe, ohne dass der eigene Code offengelegt werden muss, solange Qt austauschbar bleibt (der Ordner-Build erfüllt das). Enthält alle benötigten Widgets. Mit \texttt{QPainter} lassen sich eigene Diagramme zeichnen. \\
-  \texttt{sqlite3} & Python~3.12 & PSF (SQLite: gemeinfrei) & Datenhaltung & Teil der Standardbibliothek, daher ohne zusätzliche Installation nutzbar. Transaktionen mit Rollback sichern bestätigte Änderungen (NFA04). Die Daten liegen in einer einzigen Datei im Benutzerprofil. \\
+  PySide6 (Qt for Python) & 6.12.0 & LGPL-3.0 & Grafische Oberfläche (\acs{GUI})\acused{GUI} & Offizielle Qt-Bindung der Qt Company. Die LGPL verlangt bei der Weitergabe, dass sich Qt gegen eine andere Fassung austauschen lässt. Nach eigener Einschätzung ist das erfüllt: Quellcode und Build-Konfiguration (\texttt{balanceos.spec}) liegen offen im Repository, die exe lässt sich mit einer anderen Qt- bzw. PySide6-Version neu bauen, und Qt wird unverändert eingebunden und dynamisch geladen (die exe entpackt die Bibliotheken beim Start). Enthält alle benötigten Widgets. Mit \texttt{QPainter} lassen sich eigene Diagramme zeichnen. \\
+  \texttt{sqlite3} & Python 3.12 & PSF (SQLite: gemeinfrei) & Datenhaltung & Teil der Standardbibliothek, daher ohne zusätzliche Installation nutzbar. Transaktionen mit Rollback sichern bestätigte Änderungen (NFA04). Die Daten liegen in einer einzigen Datei im Benutzerprofil. \\
   pytest & 9.0.3 & MIT & Testausführung & Verbreitetes Testwerkzeug für Python mit Fixtures, die jedem Test eine frische Datenbank geben. Lasttests lassen sich über eine Markierung vom normalen Lauf trennen. \\
   pytest-cov & 7.1.0 & MIT & Zeilenabdeckung & Misst die Abdeckung für NFA07 direkt im Testlauf. \\
   pytest-qt & 4.5.0 & MIT & Oberflächentests & Steuert Seiten und Dialoge ohne sichtbares Fenster (Qt-Plattform \texttt{offscreen}) und wartet auf Qt-Signale. \\
@@ -38,6 +38,6 @@ Für die Oberfläche kamen drei weitere Wege in Frage. Tkinter gehört zur Stand
 Auch für die Diagramme wurden Bibliotheken geprüft. QtCharts und matplotlib zeichnen Balken- und Liniendiagramme, wären aber eine zusätzliche Abhängigkeit und hätten die ausgelieferte Anwendung vergrößert. Die beiden benötigten Diagramme (Soll-Ist-Balken und Verlauf der Scores) sind einfach genug, um sie mit \texttt{QPainter} selbst zu zeichnen. So legt BalanceOS Farben, Beschriftung und die gestrichelte Darstellung des programmeigenen Gesamt-Scores selbst fest.
 
 \subsection{Entwicklungswerkzeuge}
-Programmiert wurde in Visual Studio Code mit der Python-Erweiterung, weil der Editor Tests, Git und LaTeX in einer Umgebung verbindet. Die Versionsverwaltung läuft über Git mit einem öffentlichen Repository auf GitHub. Zweige, Tags und Commit-Regeln beschreibt die Projektdokumentation in Kapitel~4 (Versionsverwaltung und Repository). Alle Dokumente sind in \LaTeX{} gesetzt. Die \ac{UML}-Diagramme entstehen mit TikZ und folgen einem gemeinsamen Stil. So liegen Text und Diagramme als Quelltext im Repository, und jede Änderung ist im Verlauf nachvollziehbar. Ein Python-Skript im Ordner \texttt{tools/} baut Diagramme und Dokumente in einem Schritt.
+Programmiert wurde in Visual Studio Code mit der Python-Erweiterung, weil der Editor Tests, Git und LaTeX in einer Umgebung verbindet. Die Versionsverwaltung läuft über Git mit einem öffentlichen Repository auf GitHub. Zweige, Tags und Commit-Regeln beschreibt die Projektdokumentation in Kapitel~4 (Versionsverwaltung und Repository). Alle Dokumente sind in \LaTeX{} gesetzt. Die Diagramme in der \ac{UML} entstehen mit TikZ und folgen einem gemeinsamen Stil. So liegen Text und Diagramme als Quelltext im Repository, und jede Änderung ist im Verlauf nachvollziehbar. Ein Python-Skript im Ordner \texttt{tools/} baut Diagramme und Dokumente in einem Schritt.
 
 Als KI-Werkzeug wurde Claude Code (Anthropic) für Quellcode und Tests, für TikZ-Diagramme und für Textentwürfe eingesetzt. Umfang und Regeln dieses Einsatzes stehen in der Projektdokumentation in Abschnitt~1.5.2 (Werkzeuge und Einsatz von KI).
