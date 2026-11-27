@@ -5,7 +5,7 @@
 %  Fachliches Modell (Geschäftsobjekte), KEINE technischen Klassen.
 % =====================================================================
 \section{Datenmodell}
-Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Es ist ein fachliches Modell aus Sicht der Anwendung. Es legt fest, welche Informationen BalanceOS erfasst, anzeigt, auswertet und exportiert. Wie diese Informationen technisch gespeichert oder in Klassen umgesetzt werden, entscheidet das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
+Das Datenmodell beschreibt die Geschäftsobjekte, mit denen Nutzer:innen in BalanceOS arbeiten, ihre Attribute und ihre Beziehungen zueinander. Als fachliches Modell legt es fest, welche Informationen BalanceOS erfasst, anzeigt, auswertet und exportiert. Wie diese Informationen technisch gespeichert oder in Klassen umgesetzt werden, entscheidet das Architekturdokument. Die Bezeichner der Objekte und Attribute werden ohne Umlaute geschrieben, weil sie unverändert in den Exportformaten \ac{CSV} und \ac{JSON} (Kapitel~\ref{sec:systemschnittstellen}) erscheinen.
 
 \subsection{Geschäftsobjekte}\label{sec:geschaeftsobjekte}
 Die Geschäftsobjekte lassen sich vier fachlichen Gruppen zuordnen:
@@ -138,7 +138,7 @@ Beim ersten Start legt BalanceOS die zehn Standard-Lebensbereiche aus Tabelle~\r
   \quelle{Eigene Darstellung.}
 \end{table}
 
-Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen Werte einzelner Attribute abschließend fest. Besonders wichtig ist die Evidenzart. BalanceOS zeigt sie an jedem Kompass-Modell, jedem Hinweis und jedem Score an. So ist sichtbar, ob ein Wert auf einer Theorie, einer Empfehlung, einem validierten Instrument, einem persönlichen Maßstab oder einer programmeigenen Festlegung beruht.
+Die Aufzählungstypen in Tabelle~\ref{tab:aufzaehlungen} legen die zulässigen Werte einzelner Attribute abschließend fest. Besonders wichtig ist die Evidenzart, die BalanceOS an jedem Kompass-Modell, jedem Hinweis und jedem Score anzeigt. So ist sichtbar, ob ein Wert auf einer Theorie, einer Empfehlung, einem validierten Instrument, einem persönlichen Maßstab oder einer programmeigenen Festlegung beruht.
 
 \begin{longtable}{@{}L{3.1cm}L{4.4cm}L{7.7cm}@{}}
   \caption{Aufzählungstypen}\label{tab:aufzaehlungen}\\
@@ -185,7 +185,7 @@ Abbildung~\ref{abb:datenmodell} zeigt das Datenmodell als \ac{UML}-Klassendiagra
   \item Eine Wiederholungsserie hat beliebig viele Ausnahmen (Komposition): Eine Ausnahme existiert nur zusammen mit ihrer Serie und wird mit ihr gelöscht.
   \item Ein Kompass-Modell enthält mindestens eine Regel (1..*), jede Regel gehört zu genau einem Kompass-Modell. Die Systemregel R10 gehört zum Modell \enquote{BalanceOS-Systemregeln} mit der Evidenzart PROGRAMMEIGEN. Insgesamt stellt BalanceOS sechs Kompass-Modelle bereit: Lifestyle Balance Model (R04, R08, R09), Effort-Recovery-Modell (R05, R06), Job-Demands-Resources-Theorie (R07), WHO-Bewegungsleitlinie (R01, R02), Schlafempfehlung (R03) und BalanceOS-Systemregeln (R10).
   \item Eine Regel erzeugt beliebig viele Hinweise; jeder Hinweis stammt von genau einer Regel und bezieht sich auf höchstens einen Lebensbereich. Bereichsunabhängige Hinweise, etwa zu R05 oder R10, haben keinen Lebensbereich.
-  \item Eine Wochenbewertung besteht aus mindestens einer Bereichsbewertung (Komposition); jede Bereichsbewertung bewertet genau einen Lebensbereich. Die Wochenbewertung ist ein abgeleitetes Objekt. Sie wird bei jeder Anzeige aus den aktuellen Aktivitäten und Einstellungen neu berechnet und ist deshalb stets aktuell.
+  \item Eine Wochenbewertung besteht aus mindestens einer Bereichsbewertung (Komposition); jede Bereichsbewertung bewertet genau einen Lebensbereich. Die Wochenbewertung ist ein abgeleitetes Objekt, das bei jeder Anzeige aus den aktuellen Aktivitäten und Einstellungen neu berechnet wird und deshalb stets aktuell ist.
   \item Einstellungen, Who5Erhebung und Wochenreflexion haben keine Assoziationen. Die Einstellungen existieren genau einmal; Erhebungen und Reflexionen sind über Datum bzw. Kalenderwoche zeitlich zugeordnet.
 \end{itemize}
 

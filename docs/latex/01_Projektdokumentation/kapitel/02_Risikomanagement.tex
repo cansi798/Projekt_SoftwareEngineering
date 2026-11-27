@@ -4,7 +4,7 @@
 %  Eintrittswahrscheinlichkeit und Schwere der potenziellen Auswirkungen“)
 % =====================================================================
 \section{Risikomanagement}\label{sec:risikomanagement}
-Ein Einzelprojekt mit festen Abgabeterminen und begrenzter Wochenarbeitszeit ist anfällig für Verzögerungen und Qualitätsmängel. Dieses Kapitel beschreibt daher zuerst die Methodik der Risikobewertung. Danach stellt es alle identifizierten Risiken mit ihren Gegenmaßnahmen dar und ordnet sie in einer Risikomatrix ein.
+Ein Einzelprojekt mit festen Abgabeterminen und begrenzter Wochenarbeitszeit ist anfällig für Verzögerungen und Qualitätsmängel. Dieses Kapitel beschreibt zuerst die Methodik der Risikobewertung. Danach stellt es alle identifizierten Risiken mit ihren Gegenmaßnahmen dar und ordnet sie in einer Risikomatrix ein.
 
 \subsection{Methodik der Risikobewertung}
 Das Risikomanagement folgt dem Vorgehen, das \textcite[S.~9-9]{swebok2026} beschreibt. Danach werden Risikofaktoren identifiziert, nach Eintrittswahrscheinlichkeit und möglicher Auswirkung analysiert und priorisiert. Für die bedeutsamen Risiken werden Gegenmaßnahmen entwickelt und in einem Risikoregister festgehalten. Da sich Risiken im Projektverlauf verändern, wird diese Analyse regelmäßig wiederholt \parencite[S.~9-9]{swebok2026}.
@@ -35,10 +35,10 @@ Der Risikowert bestimmt den Handlungsbedarf:
   \item \textbf{mittel} (8\,≤\,R\,≤\,14): Eine Gegenmaßnahme ist geplant und wird im Projektverlauf umgesetzt. Das Risiko wird wöchentlich geprüft.
   \item \textbf{niedrig} (R\,≤\,7): Das Risiko wird beobachtet. Kostengünstige Vorsorge wird trotzdem getroffen.
 \end{itemize}
-Die Risikoliste in Tabelle~\ref{tab:risiken} ist das Risikoregister. Sie wird jeden Montag und an jedem Meilenstein überprüft. Dabei werden Bewertungen angepasst, neue Risiken aufgenommen und eingetretene Risiken mit ihren Folgen vermerkt. Das Projekt bearbeitet eine einzelne Person. Deshalb liegt die Verantwortung für alle Risiken bei der Entwickler:in. Die Erfahrungen fließen in die Reflexion im Abstract (Phase~3) ein.
+Die Risikoliste in Tabelle~\ref{tab:risiken} ist das Risikoregister. Sie wird jeden Montag und an jedem Meilenstein überprüft. Dabei werden Bewertungen angepasst, neue Risiken aufgenommen und eingetretene Risiken mit ihren Folgen vermerkt. Weil eine einzelne Person das Projekt bearbeitet, liegt die Verantwortung für alle Risiken bei der Entwickler:in. Die Erfahrungen fließen in die Reflexion im Abstract (Phase~3) ein.
 
 \subsection{Risikoliste und Gegenmaßnahmen}
-Tabelle~\ref{tab:risiken} enthält alle zwölf identifizierten Risiken mit Bewertung. Für jedes Risiko ist eine vorbeugende Gegenmaßnahme festgelegt, die Eintrittswahrscheinlichkeit oder Auswirkung senkt. Hinzu kommt eine Notfallmaßnahme für den Fall, dass das Risiko dennoch eintritt.
+Tabelle~\ref{tab:risiken} enthält alle zwölf identifizierten Risiken mit Bewertung. Für jedes Risiko ist eine vorbeugende Gegenmaßnahme festgelegt, die Eintrittswahrscheinlichkeit oder Auswirkung senkt. Hinzu kommt eine Notfallmaßnahme für den Fall, dass das Risiko trotzdem eintritt.
 
 \begingroup
 \setstretch{1.0}
@@ -106,4 +106,4 @@ Abbildung~\ref{abb:risikomatrix} ordnet die Risiken in einer 5\,×\,5-Matrix nac
   \quelle{Eigene Darstellung.}
 \end{figure}
 
-Die Auswertung zeigt ein hohes Risiko (RI01), neun mittlere und zwei niedrige Risiken (RI11, RI12). Auffällig ist die Häufung in der Spalte S\,=\,4. Sieben der zwölf Risiken würden einen Meilenstein oder Must-Anforderungen gefährden. Die Gegenmaßnahmen setzen deshalb auch bei der Eintrittswahrscheinlichkeit an, vor allem aber begrenzen sie die Auswirkung. Dazu dienen besonders die \ac{MoSCoW}-Priorisierung mit I5 als Puffer, die Zeitreserve und die frühzeitige Prüfung der ausführbaren Datei. Das einzige hohe Risiko ist der wachsende Umfang (RI01). Er wird von Projektbeginn an aktiv begrenzt, weil das Anforderungsdokument den Umfang verbindlich festlegt. Ein Frühwarnindikator ist eine Stundenabweichung von mehr als 10~\% gegenüber dem Plan eines Arbeitspakets (RI01, RI02). Ein zweiter sind fehlschlagende automatisierte Tests der Bewertungslogik (RI06). Die geplanten Maßnahmen sollen die mittleren Risiken im Projektverlauf in den niedrigen Bereich senken. Die wöchentliche Überprüfung macht diese Entwicklung sichtbar.
+Die Auswertung zeigt ein hohes Risiko (RI01), neun mittlere und zwei niedrige Risiken (RI11, RI12). Auffällig ist die Häufung in der Spalte S\,=\,4: Sieben der zwölf Risiken würden einen Meilenstein oder Must-Anforderungen gefährden. Die Gegenmaßnahmen senken deshalb auch die Eintrittswahrscheinlichkeit, vor allem aber begrenzen sie die Auswirkung. Dazu dienen besonders die \ac{MoSCoW}-Priorisierung mit I5 als Puffer, die Zeitreserve und die frühzeitige Prüfung der ausführbaren Datei. Das hohe Risiko RI01 (wachsender Umfang) wird von Projektbeginn an begrenzt, weil das Anforderungsdokument den Umfang verbindlich festlegt. Ein Frühwarnindikator ist eine Stundenabweichung von mehr als 10~\% gegenüber dem Plan eines Arbeitspakets (RI01, RI02). Ein zweiter sind fehlschlagende automatisierte Tests der Bewertungslogik (RI06). Die geplanten Maßnahmen sollen die mittleren Risiken im Projektverlauf in den niedrigen Bereich senken. Die wöchentliche Überprüfung macht diese Entwicklung sichtbar.

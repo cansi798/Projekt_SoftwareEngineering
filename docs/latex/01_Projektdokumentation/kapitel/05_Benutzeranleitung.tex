@@ -6,10 +6,69 @@
 %  benötigten Komponenten explizit beschreiben und mitliefern.
 % =====================================================================
 \section{Benutzeranleitung}
-\TODO{Kurze Hinführung}
+Diese Anleitung beschreibt, wie Nutzer:innen BalanceOS unter Windows installieren, starten und wieder entfernen. Für die Installation gibt es zwei Wege: die fertige Programmdatei oder den Start aus dem Quellcode. Danach führt ein kurzer Rundgang mit den mitgelieferten Demodaten durch die wichtigsten Funktionen.
 
 \subsection{Systemvoraussetzungen und Installation}
-\TODO{Windows 10/11; Python-Version; benötigte Bibliotheken und wie sie mitgeliefert werden; Installation Schritt für Schritt}
+BalanceOS läuft unter Windows~10 und Windows~11 in der 64-Bit-Version. Eine Internetverbindung braucht die Anwendung nicht, auch keinen Datenbankserver und keine weitere Software. Die Daten speichert sie in einer lokalen SQLite-Datei.
+
+\subsubsection{Variante A: Programmdatei (empfohlen)}
+Die Anwendung liegt als einzelne Datei \texttt{BalanceOS.exe} im Ordner \texttt{app/release} des Repositorys (\url{\GitHubURL}) und der abgegebenen ZIP-Datei. Die Datei wurde mit PyInstaller erstellt \parencite{pyinstaller} und enthält bereits alles, was zur Ausführung nötig ist: den Python-Interpreter, die Oberflächenbibliothek PySide6 \parencite{pyside6} mit den benötigten Qt-Bestandteilen und die SQLite-Anbindung aus der Python-Standardbibliothek. Python muss deshalb nicht installiert sein, und ein Installationsprogramm gibt es nicht.
+\begin{enumerate}
+  \item \texttt{BalanceOS.exe} aus dem Repository herunterladen oder aus der ZIP-Datei entpacken und in einem beliebigen Ordner ablegen, z.\,B. auf dem Desktop.
+  \item Die Datei per Doppelklick starten. Nach kurzer Zeit erscheint das Hauptfenster.
+\end{enumerate}
+Die Programmdatei ist nicht digital signiert. Beim ersten Start kann deshalb Windows SmartScreen mit der Meldung \enquote{Der Computer wurde durch Windows geschützt} warnen. Nutzer:innen klicken dann auf \enquote{Weitere Informationen} und anschließend auf \enquote{Trotzdem ausführen}. Verhindert Windows den Start dennoch, etwa durch Unternehmensrichtlinien oder die intelligente App-Steuerung (Smart App Control), wird BalanceOS nach Variante~B mit Python gestartet.
+
+\subsubsection{Variante B: Start aus dem Quellcode}
+Für diesen Weg wird Python~3.12 oder neuer benötigt (getestet mit 3.12.10). Den Installer gibt es kostenlos unter \url{https://www.python.org}. Bei der Installation sollte die Option \enquote{Add python.exe to PATH} gewählt werden. Die einzige weitere Bibliothek ist PySide6 ab Version~6.8. Sie wird im folgenden Schritt automatisch aus dem Python Package Index geladen. Nur dafür ist einmalig eine Internetverbindung nötig. In der Eingabeaufforderung werden im Ordner \texttt{app} des Repositorys diese Befehle ausgeführt:
+\begin{lstlisting}
+python -m venv .venv
+.venv\Scripts\activate
+pip install -e .
+python -m balanceos
+\end{lstlisting}
+Die ersten beiden Befehle legen eine virtuelle Umgebung an und aktivieren sie. Der dritte installiert BalanceOS mit PySide6 in diese Umgebung, der vierte startet die Anwendung. Bei jedem späteren Start genügen die Befehle zwei und vier. Wer zusätzlich die automatisierten Tests ausführen möchte, installiert mit \texttt{pip install -e ".[dev]"} auch die Entwicklungswerkzeuge. Die Datei \texttt{app/README.md} beschreibt diese Werkzeuge.
+
+\subsubsection{Speicherort der Daten und Deinstallation}
+Beim ersten Start legt BalanceOS die Datenbank \texttt{balanceos.db} im Ordner \texttt{\%APPDATA\%\textbackslash BalanceOS} an, also in der Regel unter \texttt{C:\textbackslash Users\textbackslash <Name>\textbackslash AppData\textbackslash Roaming\textbackslash BalanceOS}. Den genauen Pfad zeigt die Anwendung unter \enquote{Einstellungen} im Reiter \enquote{Daten}. Alle Einträge bleiben auf dem Rechner; BalanceOS überträgt nichts ins Internet. Zur Deinstallation werden die Datei \texttt{BalanceOS.exe} und der Ordner \texttt{\%APPDATA\%\textbackslash BalanceOS} gelöscht, bei Variante~B zusätzlich der Projektordner mit der virtuellen Umgebung \texttt{.venv}. Exportierte Dateien liegen an dem Ort, den Nutzer:innen beim Export gewählt haben, und werden dabei nicht entfernt.
 
 \subsection{Start und erste Schritte}
-\TODO{Start der Anwendung (z. B. .exe oder python -m …); mitgelieferte Testdaten; typischer Ablauf mit Screenshots}
+Das Hauptfenster hat links eine Seitenleiste mit den sieben Seiten \enquote{Dashboard}, \enquote{Woche}, \enquote{Aktivitäten}, \enquote{Statistik}, \enquote{Reflexion}, \enquote{Kompass} und \enquote{Einstellungen}. Die Kopfzeile zeigt die gewählte Kalenderwoche. Mit den beiden Pfeilschaltflächen (oder \texttt{Alt+Links} und \texttt{Alt+Rechts}) blättern Nutzer:innen eine Woche zurück oder vor, \enquote{Heute} springt zur aktuellen Woche. Die gewählte Woche gilt für alle Seiten. Beim ersten Start sind die zehn Standard-Lebensbereiche mit einem Wunschprofil angelegt, Aktivitäten gibt es noch nicht. Das Dashboard begrüßt deshalb mit drei Schritten zur ersten Wochenauswertung und bietet die Schaltflächen \enquote{Erste Aktivität erfassen} und \enquote{Demodaten laden} an (Abbildung~\ref{abb:anleitung-start}).
+
+\begin{figure}[H]
+  \caption{Dashboard beim ersten Start}\label{abb:anleitung-start}
+  \centering
+  \grafik[0.75\linewidth]{benutzeranleitung_start_leer}
+  \quelle{Eigene Darstellung.}
+\end{figure}
+
+Für einen ersten Eindruck eignen sich die Demodaten. Sie enthalten acht Wochen aus dem Alltag der Persona Sarah Keller und sind so gewählt, dass jede Regel R01 bis R10 mindestens einmal einen Hinweis erzeugt. Der Rundgang umfasst folgende Schritte:
+\begin{enumerate}
+  \item \textbf{Demodaten laden.} Ein Klick auf \enquote{Demodaten laden} lädt die Beispielwochen. Eine Meldung bestätigt das und nennt den Weg zum Entfernen. Hat die aktuelle Woche noch zu wenige Einträge, zeigt das Dashboard die Vorwoche. Es enthält dann die Datenvollständigkeit, je Lebensbereich einen Soll-Ist-Balken mit Score und darunter die Hinweise der Woche (Abbildung~\ref{abb:anleitung-dashboard}).
+  \item \textbf{Aktivität erfassen.} \enquote{+ Aktivität} in der Kopfzeile oder \texttt{Strg+N} öffnet den Dialog \enquote{Aktivität erfassen} (Abbildung~\ref{abb:anleitung-aktivitaet}). Pflichtfelder sind Titel, Lebensbereich und Datum. Die Zeit wird entweder mit \enquote{Beginn und Ende} oder als \enquote{Dauer} angegeben. Zufriedenheit, Belastung und Erholung (1 bis 5), Bewegungsart und Notiz sind freiwillig. \enquote{Speichern} ist erst aktiv, wenn alle Eingaben gültig sind; sonst steht die Fehlermeldung direkt am Feld. Auf der Seite \enquote{Woche} öffnet auch ein Doppelklick auf eine freie Stelle des Kalenders den Dialog, ein Doppelklick auf einen Eintrag öffnet ihn zum Bearbeiten.
+  \item \textbf{Hinweis nachvollziehen.} Jeder Hinweis auf dem Dashboard hat die Schaltflächen \enquote{Warum?} und \enquote{Ausblenden}. \enquote{Warum?} öffnet den Dialog \enquote{Warum sehe ich das?} (Abbildung~\ref{abb:anleitung-begruendung}). Er nennt Regel, Modell, Datenbasis, Zeitraum, Schwelle, den eigenen Wert, Quelle, Evidenzart und Grenzen. Mit \enquote{Regel R01 deaktivieren} (je nach Hinweis mit der passenden Kennung) erzeugt die Regel keine Hinweise mehr. Unter \enquote{Einstellungen} im Reiter \enquote{Regeln} lässt sie sich wieder einschalten. \enquote{Ausblenden} entfernt einen Hinweis nur für die gewählte Woche.
+  \item \textbf{Wochen vergleichen.} Mit den Pfeilschaltflächen in der Kopfzeile wechseln Nutzer:innen zwischen den Demowochen. Die Seite \enquote{Statistik} zeigt die Scores der letzten acht Wochen als Verlauf.
+  \item \textbf{Daten exportieren.} Unter \enquote{Einstellungen} im Reiter \enquote{Daten} öffnet \enquote{Exportieren~…} den Dialog \enquote{Daten exportieren}. Zur Wahl stehen \enquote{CSV: Aktivitäten eines Zeitraums (für Excel)} mit der gewählten Woche als vorbelegtem Zeitraum und \enquote{JSON: vollständige Kopie aller Nutzdaten}. Nach \enquote{Exportieren~…} wird der Speicherort gewählt; vorgeschlagen ist der Ordner \enquote{Dokumente}.
+  \item \textbf{Demodaten entfernen oder neu beginnen.} Im selben Reiter öffnet \enquote{Demodaten~…} einen Dialog mit der Option \enquote{Demodaten entfernen}. Nach \enquote{Ausführen} sind alle Demo-Einträge gelöscht, eigene Einträge bleiben erhalten. \enquote{Alle Daten löschen~…} entfernt dagegen sämtliche Nutzdaten. Zur Bestätigung wird \texttt{LÖSCHEN} eingegeben und \enquote{Endgültig löschen} gewählt. Danach startet BalanceOS wie beim ersten Mal.
+\end{enumerate}
+
+\begin{figure}[H]
+  \caption{Dashboard mit Demodaten (\ac{KW}~46/2026)}\label{abb:anleitung-dashboard}
+  \centering
+  \grafik[0.8\linewidth]{benutzeranleitung_dashboard_demo}
+  \quelle{Eigene Darstellung.}
+\end{figure}
+
+\begin{figure}[H]
+  \caption{Dialog \enquote{Aktivität erfassen} mit ausgefüllten Feldern}\label{abb:anleitung-aktivitaet}
+  \centering
+  \grafik[0.72\linewidth]{benutzeranleitung_aktivitaet_erfassen}
+  \quelle{Eigene Darstellung.}
+\end{figure}
+
+\begin{figure}[H]
+  \caption{Dialog \enquote{Warum sehe ich das?} zum Hinweis der Regel R01}\label{abb:anleitung-begruendung}
+  \centering
+  \grafik[0.7\linewidth]{benutzeranleitung_begruendung}
+  \quelle{Eigene Darstellung.}
+\end{figure}

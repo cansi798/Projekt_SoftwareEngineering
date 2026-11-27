@@ -33,6 +33,7 @@ qt_api = "pyside6"
 markers = [
     "leistung: Lasttests für NFA03 und NFA12",
     "gui: Oberflächentests",
+    "system: Systemtests (End-to-End über die Oberfläche)",
 ]
 addopts = "-m 'not leistung'"
 

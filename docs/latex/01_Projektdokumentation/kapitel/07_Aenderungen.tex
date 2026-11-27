@@ -2,14 +2,17 @@
 %  7 Änderungen gegenüber Portfolioteil 1  (ab Phase 2)
 %  Feedback der Tutor:in zu Phase 1 und Änderungen aus der Erarbeitung.
 % =====================================================================
-\section{Änderungen gegenüber Portfolioteil 1}\label{sec:aenderungen}
-Tabelle~\ref{tab:aenderungen} listet, was sich seit der Abgabe von Portfolioteil~1 in den Dokumenten geändert hat. Die ersten sechs Zeilen gehen auf das Feedback der Tutor:in zurück. Die übrigen beruhen auf Erkenntnissen aus der Erarbeitungsphase.
+\section{Änderungen gegenüber den früheren Portfolioteilen}\label{sec:aenderungen}
+Dieses Kapitel hält fest, was sich nach den Abgaben der ersten beiden Portfolioteile geändert hat und warum. Die meisten Änderungen gehen auf das Feedback der Tutor:in zurück, die übrigen auf Erkenntnisse aus Implementierung, Review und Tests.
+
+\subsection{Änderungen nach Portfolioteil 1}
+Tabelle~\ref{tab:aenderungen} listet die Änderungen seit der Abgabe von Portfolioteil~1. Die ersten sechs Zeilen gehen auf das Feedback zu Phase~1 zurück, die übrigen auf Erkenntnisse aus der Erarbeitungsphase.
 
 \begingroup
 \setstretch{1.0}
 \fontsize{10pt}{12pt}\selectfont
 \begin{longtable}{@{}L{4.0cm}L{7.4cm}L{4.6cm}@{}}
-  \caption{Änderungen gegenüber Portfolioteil 1}\label{tab:aenderungen}\\
+  \caption{Änderungen nach Portfolioteil 1}\label{tab:aenderungen}\\
   \toprule
   \textbf{Feedbackpunkt bzw. Anlass} & \textbf{Änderung} & \textbf{Dokument und Abschnitt} \\
   \midrule
@@ -36,4 +39,34 @@ Tabelle~\ref{tab:aenderungen} listet, was sich seit der Abgabe von Portfolioteil
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Limitationen, eine kritische Bewertung des Projekts und das Fazit folgen in Phase~3 im Abstract.
+\abPhase{3}{%
+\subsection{Änderungen nach Portfolioteil 2}
+Das Feedback zu Phase~2 bewertete Struktur, Methodik und Formalien positiv und nannte vier Punkte für die Finalisierung. Tabelle~\ref{tab:aenderungen-p2} zeigt, wie sie umgesetzt wurden, und ergänzt die Änderungen aus der Testphase.
+
+\begingroup
+\setstretch{1.0}
+\fontsize{10pt}{12pt}\selectfont
+\begin{longtable}{@{}L{4.0cm}L{7.4cm}L{4.6cm}@{}}
+  \caption{Änderungen nach Portfolioteil 2}\label{tab:aenderungen-p2}\\
+  \toprule
+  \textbf{Feedbackpunkt bzw. Anlass} & \textbf{Änderung} & \textbf{Dokument und Abschnitt} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Feedbackpunkt bzw. Anlass} & \textbf{Änderung} & \textbf{Dokument und Abschnitt} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  Feedback: Limitationen, kritische Bewertung und Fazit fehlen & neues Kapitel mit Beantwortung der Projektfrage, Limitationen a posteriori, kritischer Bewertung des Vorgehens sowie Fazit und Ausblick & Projektdokumentation, Kritische Bewertung und Fazit \\
+  Feedback: nichtfunktionale Anforderungen stärker operationalisieren & jedes Prüfkriterium nennt Messgröße, Grenzwert und Prüfverfahren mit Testfall; NFA01 prüft statt Testpersonen automatisiert messbare Merkmale der Oberfläche & Anforderungsdokument, Nichtfunktionale Anforderungen; Spezifikationsdokument, Benutzerschnittstellen \\
+  Feedback: Wiederholungen zwischen den Dokumenten & Gesundheitsrichtwerte, Persona, Could- und Won't-Listen und doppelte Definitionen durch Verweise auf die Stelle ersetzt, an der sie ausführlich stehen & Projektdokumentation, Projektübersicht; Spezifikationsdokument, Geschäftsprozesse; Architekturdokument \\
+  Feedback: Prägnanz einzelner Formulierungen & lange Sätze geteilt, Füllwörter gestrichen, Verweise präzisiert & alle Dokumente \\
+  Erkenntnis aus den Systemtests & Eingabefelder ohne verknüpfte Beschriftung ergänzt; Rückfragen zeigen deutsche Knöpfe statt \enquote{Yes} und \enquote{No} & Anwendung; Testdokument, Testergebnisse \\
+  Auslieferung & ausführbare Datei als einzelne Datei ohne ungenutzte Qt-Module in \texttt{app/release} & Projektdokumentation, Benutzeranleitung \\
+  Fortschritt der Phase~3 & Testdokument, Benutzeranleitung, Anforderungserfüllung und Soll-Ist-Vergleich des Zeitplans ergänzt & Testdokument; Projektdokumentation, Kapitel 3, 5 und 6 \\
+\end{longtable}
+\endgroup
+\quelle{Eigene Darstellung.}
+}
+

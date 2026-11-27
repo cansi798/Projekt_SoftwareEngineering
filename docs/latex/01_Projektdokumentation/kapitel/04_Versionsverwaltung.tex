@@ -3,7 +3,7 @@
 %  Aufgabenstellung 1.2: „Der Link zum GitHub-Repository ist an geeigneter
 %  Stelle in der Projektdokumentation zu ergänzen.“
 % =====================================================================
-\section{Versionsverwaltung und Repository}
+\section{Versionsverwaltung und Repository}\label{sec:versionsverwaltung}
 Quellcode, Dokumente und Diagrammquellen liegen gemeinsam in einem Git-Repository auf GitHub. Dieses Kapitel nennt den Zugang, die Ordnerstruktur und die Regeln für Zweige, Tags und Commits.
 
 \subsection{GitHub-Repository}
@@ -16,11 +16,11 @@ Das Repository ist öffentlich. Tutor:innen können es daher ohne Einladung und 
 \subsection{Struktur des Repositorys}
 Das Repository ist in vier Hauptordner gegliedert:
 \begin{itemize}
-  \item \texttt{app/}: die Anwendung mit Quellcode (\texttt{src/balanceos}), Tests (\texttt{tests}), Projektkonfiguration (\texttt{pyproject.toml}) und der Konfiguration für PyInstaller \parencite{pyinstaller}, das daraus die \texttt{.exe} baut. Die Datei \texttt{app/README.md} beschreibt Installation, Start und Tests.
+  \item \texttt{app/}: die Anwendung mit Quellcode (\texttt{src/balanceos}), Tests (\texttt{tests}), Projektkonfiguration (\texttt{pyproject.toml}) und der Konfiguration für PyInstaller \parencite{pyinstaller}, das daraus die \texttt{.exe} baut. Die ausführbare Datei liegt in \texttt{app/release/BalanceOS.exe}. Die Datei \texttt{app/README.md} beschreibt Installation, Start und Tests.
   \item \texttt{docs/}: die \LaTeX-Quellen aller Dokumente, die TikZ-Quellen der Diagramme mit ihren PDF-Exporten und die gebauten Dokumente in \texttt{docs/pdf}.
   \item \texttt{abgabe/}: die eingereichten Abgabe-PDFs und Kurzzusammenfassungen je Phase.
   \item \texttt{tools/}: das Skript \texttt{build\_docs.py}, das Diagramme und Dokumente baut und die Abgabe-PDF einer Phase zusammenstellt.
 \end{itemize}
 
 \subsection{Konventionen}
-Jede Phase wird auf einem eigenen Zweig bearbeitet, in Phase~2 auf \texttt{phase2}. Nach der Abgabe wird dieser Zweig in \texttt{main} zusammengeführt, und ein Tag markiert den eingereichten Stand (\texttt{phase1-abgabe}, \texttt{phase2-abgabe}). So lässt sich jede Abgabe später genau wiederherstellen. Commit-Nachrichten sind auf Deutsch verfasst. In der Implementierung beginnen sie mit dem Inkrement, etwa \enquote{I3: Regelwerk R01--R10 mit Begründung und Evidenzkennzeichnung}. Jedes Inkrement endet mit erfolgreich durchlaufenen Tests und wird auf GitHub hochgeladen. Commits, an denen das \ac{KI}-Werkzeug Claude Code beteiligt war, tragen eine \texttt{Co-Authored-By}-Zeile (siehe Abschnitt~\ref{sec:vorgehen}).
+Jede Phase wird auf einem eigenen Zweig bearbeitet, etwa in Phase~3 auf \texttt{phase3}. Nach der Abgabe wird dieser Zweig in \texttt{main} zusammengeführt, und ein Tag markiert den eingereichten Stand (\texttt{phase1-abgabe}, \texttt{phase2-abgabe}, \texttt{phase3-abgabe}). So lässt sich jede Abgabe später genau wiederherstellen. Commit-Nachrichten sind auf Deutsch verfasst. In der Implementierung beginnen sie mit dem Inkrement, etwa \enquote{I3: Regelwerk R01--R10 mit Begründung und Evidenzkennzeichnung}. Jedes Inkrement endet mit erfolgreich durchlaufenen Tests und wird auf GitHub hochgeladen. Commits, an denen das \ac{KI}-Werkzeug Claude Code beteiligt war, tragen eine \texttt{Co-Authored-By}-Zeile (siehe Abschnitt~\ref{sec:vorgehen}).

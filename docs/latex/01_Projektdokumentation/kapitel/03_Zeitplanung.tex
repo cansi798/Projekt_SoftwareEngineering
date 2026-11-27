@@ -79,7 +79,31 @@ Abbildung~\ref{abb:zeitplan} zeigt die Arbeitspakete und Meilensteine als Gantt-
 
 Der kritische Pfad verläuft über AP1, AP2 und AP3 zu M1 und weiter über AP4 und AP6 zu M2. Danach führt er über AP7 zu M3 und schließlich über AP8, AP9 und AP10 zu M4. Jede Verzögerung auf diesem Pfad verschiebt die folgenden Meilensteine. Besonders kritisch ist die Implementierung (AP6). Sie bindet mit 45~h 37,5~\% des Gesamtaufwands, und das Testen (AP7) kann erst nach ihrem Abschluss vollständig beginnen. Um dieses Risiko zu begrenzen, ist AP6 in Inkremente gegliedert. Das letzte Inkrement I5 enthält nur Should-Funktionen. Bei Verzug lässt es sich kürzen, ohne den Kern zu gefährden (vgl. RI01 und RI02 in Tabelle~\ref{tab:risiken}).
 
-AP4 startet direkt nach M1 und hängt nicht vom Feedback ab, weil die Architektur auf der abgegebenen Spezifikation aufbaut. Sobald die Grobarchitektur steht, beginnt AP6 bereits am 16.11.2026 mit dem Grundgerüst (I1). Spätere Änderungen an den Anforderungen betreffen dieses Grundgerüst kaum. AP5 liegt parallel zur Implementierung und hat damit Puffer. Trifft das Feedback später ein, verschiebt sich die Einarbeitung innerhalb von AP6, ohne M2 zu gefährden. In Phase~3 ist es ähnlich. Testen und Benutzeranleitung hängen weitgehend nicht vom Feedback ab, sodass nur AP8 vom Eingang des Feedbacks zu Phase~2 abhängt. Der Fortschritt wird wöchentlich mit dem Plan verglichen. Abweichungen werden dokumentiert und im Abstract reflektiert.
+AP4 startet direkt nach M1 und hängt nicht vom Feedback ab, weil die Architektur auf der abgegebenen Spezifikation aufbaut. Sobald die Grobarchitektur steht, beginnt AP6 bereits am 16.11.2026 mit dem Grundgerüst (I1). Spätere Änderungen an den Anforderungen betreffen dieses Grundgerüst kaum. AP5 liegt parallel zur Implementierung und hat damit Puffer. Trifft das Feedback später ein, verschiebt sich die Einarbeitung innerhalb von AP6, ohne M2 zu gefährden. In Phase~3 ist es ähnlich. Testen und Benutzeranleitung hängen weitgehend nicht vom Feedback ab, sodass nur AP8 vom Eingang des Feedbacks zu Phase~2 abhängt. Der Fortschritt wird wöchentlich mit dem Plan verglichen. Abweichungen werden in Abschnitt~\ref{sec:fortschritt} dokumentiert und in Kapitel~\ref{sec:fazit} bewertet.
 
-\subsection{Fortschrittskontrolle zu M2}
-Geplant war, AP4 am 13.11.2026 und AP6 am 16.11.2026 zu beginnen. Tatsächlich begann die Arbeit an Phase~2 erst am 23.11.2026, nachdem das Feedback zu Phase~1 eingegangen war. Damit trat RI02 ein. Laut Notfallplan wurden deshalb Architektur, Feedback-Einarbeitung und Implementierung (AP4 bis AP6) verdichtet, und die Reserve wurde genutzt. Alle fünf Inkremente I1 bis I5 wurden am 23.11.2026 umgesetzt. Der Umfang von I5 musste nicht gekürzt werden. Der Stand für M2 wurde am 23.11.2026 eingereicht, eine Woche vor dem geplanten Termin am 30.11.2026. Das Abstract in Phase~3 reflektiert, wie diese Abweichung zu bewerten ist.
+\subsection{Fortschrittskontrolle}\label{sec:fortschritt}
+Tabelle~\ref{tab:soll-ist} stellt die geplanten Termine der Arbeitspakete und Meilensteine den tatsächlichen gegenüber. Die Ist-Termine lassen sich in der Commit-Historie des Repositorys nachvollziehen (Kapitel~\ref{sec:versionsverwaltung}).
+
+\begin{table}[H]
+  \caption{Soll-Ist-Vergleich der Termine}\label{tab:soll-ist}
+  \setstretch{1.0}
+  \fontsize{10pt}{12pt}\selectfont
+  \begin{tabular}{@{}L{3.6cm}L{3.0cm}L{3.0cm}L{5.9cm}@{}}
+    \toprule
+    \textbf{Arbeitspaket bzw. Meilenstein} & \textbf{Soll} & \textbf{Ist} & \textbf{Bemerkung} \\
+    \midrule
+    AP1--AP3, M1 & 09.11.--12.11.2026 & 12.11.2026 & eingehalten \\
+    Feedback zu Phase~1 & bis 19.11.2026 & 23.11.2026 & vier Tage später (RI02) \\
+    AP4--AP6, M2 & 13.11.--30.11.2026 & 23.11.2026 & verdichtet, eine Woche vor dem Termin \\
+    Feedback zu Phase~2 & bis 07.12.2026 & 27.11.2026 & zehn Tage früher \\
+    AP7, M3 & 30.11.--06.12.2026 & 27.11.2026 & Tests vorgezogen \\
+    AP8, AP9 & 07.12.--09.12.2026 & 27.11.2026 & vorgezogen \\
+    AP10, M4 & 09.12.--11.12.2026 & 27.11.--04.12.2026 & eine Woche vor dem Termin \\
+    \bottomrule
+  \end{tabular}
+  \quelle{Eigene Darstellung.}
+\end{table}
+
+Bis M1 hielt das Projekt den Plan ein. Danach trat RI02 ein: Das Feedback zu Phase~1 kam erst am 23.11.2026, und die Arbeit an Phase~2 begann deshalb nicht wie geplant am 13.11.2026. Laut Notfallplan wurden Architektur, Feedback-Einarbeitung und Implementierung (AP4 bis AP6) verdichtet. Alle fünf Inkremente I1 bis I5 entstanden am 23.11.2026, ohne dass der Umfang von I5 gekürzt werden musste. Möglich war diese Verdichtung vor allem durch den Einsatz von Claude Code (Abschnitt~\ref{sec:vorgehen}). Der geplante Aufwand von 45~h für AP6 war für eine KI-gestützte Implementierung zu hoch angesetzt. Der Aufwand verlagerte sich vom Schreiben des Codes auf das Prüfen von Code, Tests und Dokumenten.
+
+Das Feedback zu Phase~2 kam am 27.11.2026 und damit zehn Tage früher als erwartet. Testen, Benutzeranleitung und Auslieferung (AP7 bis AP9) begannen deshalb am selben Tag. Die Zeit bis zur Abgabe am 04.12.2026 ist für eigene Tests der Anwendung und die abschließende Durchsicht vorgesehen. Der kritische Pfad blieb unverändert, nur seine Termine verschoben sich. Die Reserve von rund 16~h wurde nicht ausgeschöpft. Kapitel~\ref{sec:fazit} bewertet die Abweichungen.

@@ -1,0 +1,39 @@
+% =====================================================================
+%  8 Kritische Bewertung und Fazit  (Phase 3)
+%  Feedback zu Portfolioteil 2: A-posteriori-Limitationen, abschließende
+%  kritische Bewertung und eigenständige Fazit-Sektion ergänzen.
+% =====================================================================
+\section{Kritische Bewertung und Fazit}\label{sec:fazit}
+Dieses Kapitel prüft, ob \Projektname{} die Projektfrage aus Abschnitt~\ref{sec:projektfrage} beantwortet. Danach nennt es die Grenzen des Ergebnisses, die erst nach Umsetzung und Test sichtbar wurden, und bewertet das Vorgehen kritisch. Ein Fazit mit Ausblick schließt die Projektdokumentation ab.
+
+\subsection{Beantwortung der Projektfrage}
+Die Projektfrage hat drei Teile: Die Auswertung soll modellbasiert sein, sie soll transparent sein, und fehlende Einträge dürfen nicht als schlechte Balance zählen. Für jeden Teil gibt es eine Umsetzung und einen Test, der sie prüft.
+
+Modellbasiert ist die Auswertung, weil sie auf dem Lifestyle Balance Model aufbaut. Balance bedeutet dort, dass die eigene Zeitverteilung zu den eigenen Wünschen passt \parencite[S.~11]{matuska2008}. \Projektname{} vergleicht deshalb die erfasste Zeit je Lebensbereich mit dem Wunschprofil der Nutzer:in und nicht mit einer allgemeinen Norm. Die Regeln R01 bis R10 ergänzen diesen Vergleich um Richtwerte aus der Literatur, etwa die Bewegungsempfehlung der \ac{WHO} \parencite[S.~1451]{bull2020}. Alle Rechenbeispiele der Spezifikation sind als Unit-Tests umgesetzt und bestehen (NFA06, Testdokument).
+
+Transparent ist die Auswertung, weil jeder Hinweis seine Begründung mitliefert. Der Dialog \enquote{Warum?} nennt Regel, Modell, Datenbasis, Zeitraum, Schwelle, ermittelten Wert, Quelle, Evidenzart und Grenzen der Aussage. Ein Test prüft für alle zehn Regeln, dass diese neun Angaben vollständig sind (NFA11). Die Evidenzart macht außerdem sichtbar, welche Aussage auf einer Studie beruht und welche eine eigene Festlegung des Projekts ist.
+
+Fehlende Einträge zählen nicht als schlechte Balance, weil \Projektname{} für eine Woche mit weniger als vier erfassten Tagen keine Scores berechnet. Stattdessen erscheint der Hinweis der Regel R10, der die Datenlücke benennt. Unit-Tests der Bewertung und der Regel R10 belegen dieses Verhalten. Damit beantwortet die Anwendung die Projektfrage für den Rahmen, den das Anforderungsdokument absteckt.
+
+\subsection{Limitationen}
+Die wichtigste Grenze betrifft die Bewertung selbst. Der Wochenscore und die Schwellen der Regeln sind Festlegungen dieses Projekts. Die zugrunde liegenden Modelle und Richtwerte stammen aus der Literatur, ihre Verbindung zu einem Score von 0 bis 100 ist aber nicht empirisch geprüft. Die Anwendung kennzeichnet den Score deshalb als programmeigen und nicht validiert. Ob die Hinweise das Verhalten der Nutzer:innen tatsächlich in Richtung Balance verändern, lässt sich mit diesem Projekt nicht beantworten. Dazu wäre eine Studie über mehrere Wochen mit echten Nutzer:innen nötig.
+
+Auch die Anforderungen beruhen nicht auf einer Befragung der Zielgruppe. Grundlage waren die eigene Ideenskizze, die Persona Sarah Keller und die Rückmeldungen der Tutor:in. Ein Usability-Test mit Testpersonen fand nicht statt. NFA01 wurde deshalb auf prüfbare Merkmale der Oberfläche umgestellt: deutsche Beschriftung, beschriftete Eingabefelder und ein Erfassungsdialog, der von jeder Seite mit einem Klick erreichbar ist. Diese Merkmale sind Voraussetzungen für eine selbsterklärende Oberfläche. Ob Nutzer:innen ohne Anleitung zurechtkommen, belegen sie nicht.
+
+Die Daten selbst haben ebenfalls Grenzen. Alle Aktivitäten werden von Hand erfasst, und Zufriedenheit sowie WHO-5 sind Selbstauskünfte. Der WHO-5 ist ein valides Instrument zur Erfassung des Wohlbefindens \parencite[S.~167]{topp2015}, aber kein Diagnoseinstrument. Regel R10 schützt vor Wochen mit zu wenigen Einträgen. Ungenaue oder geschönte Einträge erkennt sie nicht.
+
+Technisch ist \Projektname{} eine Einzelplatzanwendung für Windows. Es gibt keine Synchronisation zwischen Geräten und keine Sicherung außer dem manuellen Export. Getestet wurde auf einem Rechner mit Windows~11. Die ausführbare Datei ist nicht digital signiert, sodass Windows beim ersten Start warnen kann. Die automatisierten Oberflächentests laufen ohne sichtbaren Bildschirm. Darstellungsfehler bei anderen Bildschirmgrößen oder Skalierungen würden sie nicht finden.
+
+\subsection{Kritische Bewertung des Vorgehens}
+Das iterativ-inkrementelle Vorgehen hat sich bewährt. Jedes der fünf Inkremente endete mit einer lauffähigen Anwendung und grünen Tests. Als das Feedback zu Phase~1 später kam als geplant (RI02), ließ sich die Arbeit deshalb verdichten, ohne den Umfang zu kürzen. Die Priorisierung nach MoSCoW half dabei. Das letzte Inkrement enthielt nur Should-Funktionen und wäre bei Verzug kürzbar gewesen.
+
+Gut funktioniert hat auch die enge Bindung zwischen Spezifikation und Tests. Die Rechenbeispiele der Spezifikation wurden direkt zu Unit-Tests, die Prüfkriterien der nichtfunktionalen Anforderungen zu Systemtests. Dadurch fanden Tests und Reviews mehrere echte Fehler, bevor die Anwendung ausgeliefert wurde: Serientermine, die nach einer Änderung der Serie wieder auftauchten, Regeln, die deaktivierte Lebensbereiche mitzählten, und Eingabefelder ohne verknüpfte Beschriftung. Das Testdokument beschreibt diese Fehler und ihre Behebung.
+
+Kritisch zu sehen ist die Aufwandsschätzung. Der Zeitplan rechnete für die Implementierung mit 45~h. Mit dem KI-Werkzeug Claude Code entstand der Code deutlich schneller. Der Aufwand verlagerte sich dafür auf das Prüfen von Code, Tests und Dokumenten, für das der Plan kein eigenes Arbeitspaket vorsah. Ein Zeitplan für KI-gestützte Entwicklung sollte deshalb eigene Arbeitspakete für Review und Abnahme vorsehen. Außerdem wurden einige Prüfkriterien erst in Phase~3 so formuliert, dass sie sich automatisiert prüfen lassen. Messbare Kriterien von Beginn an hätten Nacharbeit erspart, wie das Feedback zu beiden Phasen zeigt.
+
+Schließlich lag die gesamte Verantwortung bei einer Person. Es gab kein zweites Augenpaar außer dem Feedback der Tutor:in und den Reviews durch das KI-Werkzeug. Ein Review durch eine andere Person hätte vermutlich weitere Unstimmigkeiten zwischen Spezifikation und Umsetzung früher aufgedeckt.
+
+\subsection{Fazit und Ausblick}
+\Projektname{} erfüllt das Ziel des Projekts. Die Anwendung wertet die Wochenbalance über zehn Lebensbereiche aus, begründet jeden Hinweis nachvollziehbar und behandelt fehlende Einträge als Datenlücke statt als schlechte Balance. Alle 22 User Stories und alle zwölf nichtfunktionalen Anforderungen sind umgesetzt. Kapitel~\ref{sec:anforderungserfuellung} zeigt für jede Anforderung den Testfall, der sie prüft. Die Anwendung läuft als einzelne ausführbare Datei ohne Installation.
+
+Die größte offene Frage ist die nach der Wirkung. \Projektname{} zeigt, wie eine transparente, modellbasierte Auswertung technisch aussehen kann. Ob sie Menschen hilft, ihre Woche ausgewogener zu gestalten, ist offen. Für eine Weiterentwicklung bieten sich drei Schritte an: ein Usability-Test mit Personen aus der Zielgruppe, eine Studie zur Validierung des Scores und eine signierte Installationsdatei mit automatischer Sicherung (TD01, TD03, TD05 in Tabelle~\ref{tab:schulden}).

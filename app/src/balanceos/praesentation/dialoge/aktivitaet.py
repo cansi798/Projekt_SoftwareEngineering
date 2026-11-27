@@ -327,6 +327,7 @@ class AktivitaetDialog(QDialog):
         self.enddatum_feld.setDisplayFormat("dd.MM.yyyy")
         self.enddatum_feld.setCalendarPopup(True)
         self.enddatum_feld.setEnabled(False)
+        self.enddatum_feld.setAccessibleName("Enddatum")
         ende = QHBoxLayout()
         ende.addWidget(self.enddatum_aktiv)
         ende.addWidget(self.enddatum_feld)
