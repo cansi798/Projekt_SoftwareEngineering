@@ -78,10 +78,10 @@ def test_gesamtscore_karte_nur_wenn_eingeschaltet(qtbot, kontext, zustand):
     assert seite.gesamt_label.text().isdigit()
 
 
-def test_unzureichende_daten_zeigen_striche(qtbot, kontext, zustand):
+def test_unzureichende_daten_zeigen_zu_wenig_daten(qtbot, kontext, zustand):
     bid = anlegen(kontext, S.BEWEGUNG, 0, 60)
     seite = _dashboard(qtbot, kontext, zustand)
-    assert seite.score_labels[bid].text() == "–"
+    assert seite.score_labels[bid].text() == "zu wenig Daten"
     assert seite.vollstaendigkeit_label.text() == "1/7"
 
 

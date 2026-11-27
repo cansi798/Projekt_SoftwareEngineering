@@ -6,6 +6,7 @@ Jede Regel ist eine eigene Funktion; ``pruefe_regeln`` ruft die aktiven
 Regeln auf und sortiert die Hinweise.
 """
 
+import math
 from collections import defaultdict
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -87,6 +88,18 @@ def _h(stunden: float) -> str:
     """Stunden mit höchstens einer Nachkommastelle, ohne „,0“ (z. B. „12“, „1,5“)."""
     text = zahl_text(stunden)
     return text[:-2] if text.endswith(",0") else text
+
+
+def _h_unter(stunden: float, schwelle: float) -> str:
+    """Wie ``_h``, aber ein Wert unter der Schwelle erscheint nie als Schwelle oder darüber.
+
+    Kaufmännisches Runden machte aus 6,98 h „7 h“, obwohl der Hinweis gerade das
+    Unterschreiten von 7 h meldet. In diesem Fall wird auf eine Nachkommastelle
+    abgerundet (6,9 h); alle anderen Werte werden wie bisher gerundet.
+    """
+    if stunden < schwelle and float(zahl_text(stunden).replace(",", ".")) >= schwelle:
+        stunden = math.floor(stunden * 10) / 10
+    return _h(stunden)
 
 
 def _schwelle(k: RegelKontext, kennung: str) -> float:
@@ -236,12 +249,13 @@ def _r03(k: RegelKontext) -> list[Hinweis]:
             k,
             "R03",
             Hinweisart.WARNUNG,
-            f"Durchschnittliche Schlafdauer in KW {k.kw.woche}: {_h(mittel)} h an {len(je_tag)}"
+            f"Durchschnittliche Schlafdauer in KW {k.kw.woche}: {_h_unter(mittel, schwelle)} h"
+            f" an {len(je_tag)}"
             f" Tagen mit Eintrag – unter der Empfehlung von mindestens {_h(schwelle)} h.",
             datenbasis=f"durchgeführte Aktivitäten im Bereich {schlaf.name}, Summe je Tag,"
             f" gemittelt über die Tage mit Eintrag (mindestens {MIN_SCHLAFTAGE})",
             schwelle=f"{_h(schwelle)} h pro Tag",
-            wert=f"{_h(mittel)} h an {len(je_tag)} Tagen",
+            wert=f"{_h_unter(mittel, schwelle)} h an {len(je_tag)} Tagen",
         )
     ]
 
@@ -257,20 +271,23 @@ def _r04(k: RegelKontext) -> list[Hinweis]:
         if not b.aktiv or b.typ is not Bereichstyp.MINDESTZIEL or b.soll_stunden <= 0:
             continue
         ist = [k.bewertungen[w].bereich(b.id).ist_stunden for w in wochen]
-        if all(i < anteil * b.soll_stunden for i in ist):
+        grenze = anteil * b.soll_stunden
+        if all(i < grenze for i in ist):
             hinweise.append(
                 _hinweis(
                     k,
                     "R04",
                     Hinweisart.WARNUNG,
                     f"Im Bereich {b.name} liegt die Zeit seit 3 Wochen unter der Hälfte des"
-                    f" eigenen Wunsches (zuletzt {_h(ist[-1])} von {_h(b.soll_stunden)} h).",
+                    f" eigenen Wunsches (zuletzt {_h_unter(ist[-1], grenze)} von"
+                    f" {_h(b.soll_stunden)} h).",
                     datenbasis=f"durchgeführte Aktivitäten im Bereich {b.name} und dessen Soll",
                     zeitraum=zeitraum_mehrerer_wochen(wochen[0], wochen[-1]),
                     schwelle=f"weniger als {zahl_text(anteil * 100, 0)} % des Solls"
-                    f" ({_h(anteil * b.soll_stunden)} h) in 3 Wochen in Folge",
+                    f" ({_h(grenze)} h) in 3 Wochen in Folge",
                     wert=" · ".join(
-                        f"{w.label()}: {_h(i)} h" for w, i in zip(wochen, ist, strict=True)
+                        f"{w.label()}: {_h_unter(i, grenze)} h"
+                        for w, i in zip(wochen, ist, strict=True)
                     ),
                     bereich_id=b.id,
                 )

@@ -1,5 +1,7 @@
 """Anzeigetexte für Aufzählungswerte in der Oberfläche."""
 
+from html import escape
+
 from balanceos.domaene.typen import Aktivitaetsstatus, Bewegungsart, Evidenzart, Wochentag
 
 STATUS_TEXT: dict[Aktivitaetsstatus, str] = {
@@ -32,3 +34,12 @@ EVIDENZART_TEXT = {
     Evidenzart.PROGRAMMEIGEN: "programmeigen",
 }
 """Anzeigetexte der Evidenzarten (Balance-Kompass, Begründungsdialog)."""
+
+
+def als_html(text: str) -> str:
+    """Setzt Klartext als HTML-Absatz, damit Qt Zeichen wie „<“ wörtlich anzeigt.
+
+    Rückfragen und Tooltips erkennen HTML automatisch. Ein Titel wie „<b>X</b>“
+    würde sonst fett dargestellt. Zeilenumbrüche bleiben als ``<br>`` erhalten.
+    """
+    return "<p>" + escape(text).replace("\n", "<br>") + "</p>"

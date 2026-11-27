@@ -196,22 +196,30 @@ class LebensbereichDialog(QDialog):
         return fehler
 
     def _anzeigen(self, fehler: list[Fehler]) -> None:
+        """Zeigt die Meldungen an ihren Labels und umrandet die betroffenen Felder rot.
+
+        Soll und Summe gehören beide zum Soll-Feld; es bleibt rot, solange eine der
+        beiden Meldungen besteht.
+        """
         nach_feld = {f.feld: f.meldung for f in fehler}
         felder = {
             "name": self.name_feld,
+            "aktiv": self.aktiv_feld,
             "soll": self.soll_feld,
-            "gewicht": self.gewicht_feld,
             "summe": self.soll_feld,
+            "gewicht": self.gewicht_feld,
         }
+        rot: dict[QWidget, bool] = {}
         for schluessel, label in self.fehlerlabels.items():
             meldung = nach_feld.get(schluessel)
             if schluessel == "name" and not self._name_beruehrt:
                 meldung = None
-            if schluessel in ("name", "gewicht"):
-                markiere(felder[schluessel], label, meldung)
-            else:
-                label.setText(meldung or "")
-                label.setVisible(bool(meldung))
+            markiere(felder[schluessel], label, meldung)
+            rot[felder[schluessel]] = rot.get(felder[schluessel], False) or bool(meldung)
+        for feld, fehlerhaft in rot.items():
+            feld.setProperty("fehler", "true" if fehlerhaft else "false")
+            feld.style().unpolish(feld)
+            feld.style().polish(feld)
         self.speichern_knopf.setEnabled(not fehler)
 
     def _speichern(self) -> None:

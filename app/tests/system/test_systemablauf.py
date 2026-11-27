@@ -491,7 +491,7 @@ def test_ts02_aktivitaet_erfassen_und_auswerten(qtbot, fenster, bediener, kontex
     # Wochenansicht zeigt einen Block für die Aktivität.
     woche = seite_waehlen(qtbot, fenster, 1)
     assert [i for i, _ in woche.kalender.bloecke()] == [a.id]
-    assert woche.summe_label.text().startswith("1 Aktivitäten")
+    assert woche.summe_label.text().startswith("1 Aktivität ·")
 
 
 def test_ts03_ungueltige_eingabe_wird_abgewiesen(qtbot, fenster, bediener, db_pfad):

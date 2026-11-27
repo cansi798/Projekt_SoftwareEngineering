@@ -1,5 +1,7 @@
 """Seite „Dashboard“: Wochenbewertung mit Soll-Ist-Balken und Hinweisen (US10–US13, US19)."""
 
+from html import escape
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog,
@@ -14,10 +16,11 @@ from PySide6.QtWidgets import (
 )
 
 from balanceos.domaene.bewertung import MIN_TAGE
-from balanceos.domaene.modell import Hinweis
+from balanceos.domaene.modell import Bereichsbewertung, Hinweis
 from balanceos.domaene.typen import Bereichstyp
 from balanceos.praesentation.dialoge.aktivitaet import aktivitaet_bearbeiten
 from balanceos.praesentation.dialoge.begruendung import BegruendungDialog
+from balanceos.praesentation.dialoge.lebensbereich import stunden
 from balanceos.praesentation.seiten.basis import Seite, karte, leeren, scrollbar
 from balanceos.praesentation.stil import FARBE_HINWEISART, SYMBOL_HINWEISART
 from balanceos.praesentation.widgets.soll_ist_balken import SollIstBalken
@@ -46,9 +49,11 @@ class HinweisZeile(QFrame):
         )
         layout.addWidget(symbol)
         text = QLabel(hinweis.text)
+        text.setTextFormat(Qt.TextFormat.PlainText)
         text.setWordWrap(True)
         layout.addWidget(text, 1)
         kennung = QLabel(hinweis.regel)
+        kennung.setTextFormat(Qt.TextFormat.PlainText)
         kennung.setObjectName("leise")
         layout.addWidget(kennung)
         self.warum_knopf = QPushButton("Warum?")
@@ -72,6 +77,7 @@ class DashboardSeite(Seite):
         """Baut leere Ansicht und Inhaltsansicht auf."""
         super().__init__(kontext, zustand)
         self.score_labels: dict[int, QLabel] = {}
+        self.abweichung_labels: dict[int, QLabel] = {}
         self.hinweis_zeilen: list[HinweisZeile] = []
         self._hinweise: list[Hinweis] = []
         haupt = QVBoxLayout(self)
@@ -240,8 +246,9 @@ class DashboardSeite(Seite):
     def _bereiche_fuellen(self, bewertung) -> None:
         leeren(self._raster)
         self.score_labels = {}
+        self.abweichung_labels = {}
         for spalte, titel in enumerate(
-            ["Lebensbereich", "Typ", "Soll-Ist-Balken", "Ist / Soll", "Score"]
+            ["Lebensbereich", "Typ", "Soll-Ist-Balken", "Ist / Soll", "Ist − Soll", "Score"]
         ):
             kopf = QLabel(titel)
             kopf.setObjectName("leise")
@@ -249,7 +256,8 @@ class DashboardSeite(Seite):
         bereiche = {b.id: b for b in self.kontext.stammdaten.alle_bereiche()}
         for zeile, bw in enumerate(bewertung.bereiche, start=1):
             b = bereiche[bw.lebensbereich_id]
-            name = QLabel(f'<span style="color:{b.farbe}">●</span> {b.name}')
+            name = QLabel(f'<span style="color:{b.farbe}">●</span> {escape(b.name)}')
+            name.setTextFormat(Qt.TextFormat.RichText)
             self._raster.addWidget(name, zeile, 0)
             typ = QLabel(TYP_TEXT[b.typ])
             typ.setObjectName("leise")
@@ -258,17 +266,23 @@ class DashboardSeite(Seite):
             balken.setze(bw, b.typ, b.farbe)
             self._raster.addWidget(balken, zeile, 2)
             self._raster.addWidget(QLabel(balken.text()), zeile, 3)
+            abweichung = QLabel(abweichung_text(bw))
+            abweichung.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self.abweichung_labels[b.id] = abweichung
+            self._raster.addWidget(abweichung, zeile, 4)
             if bw.zielerfuellung is None:
                 score = QLabel("kein Soll festgelegt")
                 score.setObjectName("leise")
+            elif bw.score is None:
+                score = QLabel("zu wenig Daten")
+                score.setObjectName("leise")
+                score.setToolTip(f"Scores erscheinen ab {MIN_TAGE} Tagen mit Einträgen")
             else:
-                score = QLabel("–" if bw.score is None else str(bw.score))
+                score = QLabel(str(bw.score))
                 score.setStyleSheet("font-weight: 600;")
-                if bw.score is None:
-                    score.setToolTip("Zu wenig Daten für einen Score")
             score.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.score_labels[b.id] = score
-            self._raster.addWidget(score, zeile, 4)
+            self._raster.addWidget(score, zeile, 5)
         self._raster.setColumnStretch(2, 1)
 
     def _hinweise_fuellen(self) -> None:
@@ -323,6 +337,19 @@ class DashboardSeite(Seite):
         from balanceos.praesentation.dialoge.demodaten import demodaten_laden
 
         demodaten_laden(self.kontext, self.zustand, self)
+
+
+def abweichung_text(bewertung: Bereichsbewertung) -> str:
+    """Abweichung Ist − Soll mit Vorzeichen, z. B. „+6 h“ oder „−1,5 h“ (US10).
+
+    Ohne Soll gibt es keine Abweichung; dann erscheint „–“.
+    """
+    if bewertung.zielerfuellung is None:
+        return "–"
+    wert = bewertung.abweichung
+    if stunden(abs(wert)) == "0":
+        return "0 h"
+    return f"{'+' if wert > 0 else '−'}{stunden(abs(wert))} h"
 
 
 class HinweisLeer(QLabel):

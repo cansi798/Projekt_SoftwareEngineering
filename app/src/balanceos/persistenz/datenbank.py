@@ -142,17 +142,31 @@ class Datenbank:
     def __init__(self, pfad: Path | str) -> None:
         """Öffnet die Datenbank und legt bei Bedarf das Schema an.
 
+        Scheitert das Öffnen (z. B. beschädigte oder gesperrte Datei), wird die
+        Verbindung wieder geschlossen, bevor der Fehler weitergegeben wird.
+
         Args:
             pfad: Dateipfad oder ``":memory:"`` für eine flüchtige Datenbank (Tests).
+
+        Raises:
+            sqlite3.Error: wenn die Datei keine gültige Datenbank ist oder gesperrt bleibt.
         """
         self.pfad = str(pfad)
+        self._tiefe = 0
         self.verbindung = sqlite3.connect(self.pfad, isolation_level=None)
+        try:
+            self._einrichten()
+        except BaseException:
+            self.verbindung.close()
+            raise
+
+    def _einrichten(self) -> None:
+        """Setzt die Verbindungsoptionen und legt das Schema an."""
         self.verbindung.row_factory = sqlite3.Row
         self.verbindung.execute("PRAGMA foreign_keys = ON")
         if self.pfad != ":memory:":
             self.verbindung.execute("PRAGMA journal_mode = WAL")
         self.verbindung.execute("PRAGMA synchronous = FULL")
-        self._tiefe = 0
         # Bewusst kein executescript(): es würde eine laufende Transaktion committen.
         with self.transaktion() as con:
             for anweisung in SCHEMA.split(";"):
@@ -207,3 +221,5 @@ def alle_nutzdaten_loeschen(db: Datenbank) -> None:
         initialisiere(db)
     if db.pfad != ":memory:":
         db.verbindung.execute("VACUUM")
+        # Gelöschte Inhalte stünden sonst bis Programmende noch in balanceos.db-wal.
+        db.verbindung.execute("PRAGMA wal_checkpoint(TRUNCATE)")

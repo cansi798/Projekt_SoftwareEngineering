@@ -1,6 +1,7 @@
 """Seite „Einstellungen“: Lebensbereiche, Wunschprofil, Regeln, Daten (US01–US04, US14, US16–19)."""
 
 from dataclasses import replace
+from html import escape
 from pathlib import Path
 
 from PySide6.QtCore import Qt
@@ -50,6 +51,7 @@ class EinstellungenSeite(Seite):
         self._profil_ids: list[int] = []
         self.soll_felder: dict[int, QDoubleSpinBox] = {}
         self.gewicht_felder: dict[int, QSpinBox] = {}
+        self._profil_abgelehnt = False
         self.regel_schalter: dict[str, QCheckBox] = {}
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -138,8 +140,11 @@ class EinstellungenSeite(Seite):
             return
         try:
             self.kontext.stammdaten.loeschen_pruefen(b.id)
+            # Als HTML gesetzt, damit ein Name wie „<b>X</b>“ wörtlich erscheint.
             antwort = QMessageBox.question(
-                self, "Lebensbereich löschen", f"Lebensbereich „{b.name}“ wirklich löschen?"
+                self,
+                "Lebensbereich löschen",
+                f"<p>Lebensbereich „{escape(b.name)}“ wirklich löschen?</p>",
             )
             if antwort != QMessageBox.StandardButton.Yes:
                 return
@@ -206,9 +211,9 @@ class EinstellungenSeite(Seite):
             kopf.setObjectName("leise")
             self.profil_raster.addWidget(kopf, 0, spalte)
         for zeile, b in enumerate(aktive, start=1):
-            self.profil_raster.addWidget(
-                QLabel(f'<span style="color:{b.farbe}">●</span> {b.name}'), zeile, 0
-            )
+            name = QLabel(f'<span style="color:{b.farbe}">●</span> {escape(b.name)}')
+            name.setTextFormat(Qt.TextFormat.RichText)
+            self.profil_raster.addWidget(name, zeile, 0)
             self.profil_raster.addWidget(QLabel(TYP_TEXT[b.typ]), zeile, 1)
             soll = QDoubleSpinBox()
             soll.setRange(0, MAX_WOCHENSTUNDEN)
@@ -245,6 +250,7 @@ class EinstellungenSeite(Seite):
             f"{stunden(self.kontext.stammdaten.verplante_stunden())} von"
             f" {MAX_WOCHENSTUNDEN} h verplant"
         )
+        self._profil_abgelehnt = False
 
     def _profil_speichern(self, bereich_id: int) -> None:
         b = self.kontext.stammdaten.bereich(bereich_id)
@@ -259,8 +265,10 @@ class EinstellungenSeite(Seite):
         except ValidierungsFehler as e:
             feld = self.gewicht_felder[bereich_id] if e.fehler[0].feld == "gewicht" else soll_feld
             markiere(feld, self.wunsch_fehler, e.fehler[0].meldung)
+            self._profil_abgelehnt = True
             return
         markiere(soll_feld, self.wunsch_fehler, None)
+        self._profil_abgelehnt = False
         self.zustand.daten_geaendert.emit()
 
     def _einstellungen_speichern(self) -> None:
@@ -347,7 +355,7 @@ class EinstellungenSeite(Seite):
         pfad = self.kontext.daten.datenbankpfad
         ordner = str(Path(pfad).parent) if pfad != ":memory:" else "(nur im Arbeitsspeicher)"
         self.ordner_label = QLabel(
-            f"Datenordner: {ordner}<br>Alle Daten bleiben auf diesem Rechner; BalanceOS"
+            f"Datenordner: {escape(ordner)}<br>Alle Daten bleiben auf diesem Rechner; BalanceOS"
             " überträgt nichts ins Internet."
         )
         self.ordner_label.setWordWrap(True)
@@ -357,6 +365,12 @@ class EinstellungenSeite(Seite):
         return seite
 
     # --- Aktualisieren --------------------------------------------------------------------
+
+    def showEvent(self, event) -> None:  # noqa: N802 – Qt-Methodenname
+        """Verwirft beim Wiederanzeigen abgelehnte, nicht gespeicherte Wunschprofil-Werte."""
+        if self._profil_abgelehnt:
+            self._veraltet = True
+        super().showEvent(event)
 
     def aktualisieren(self) -> None:
         """Lädt Bereiche, Wunschprofil, Einstellungen und Regeln neu."""

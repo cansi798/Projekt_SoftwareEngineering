@@ -43,6 +43,7 @@ class BegruendungDialog(QDialog):
         layout = QVBoxLayout(self)
 
         kopf = QLabel(f"{SYMBOL_HINWEISART[hinweis.art]}  {hinweis.text}")
+        kopf.setTextFormat(Qt.TextFormat.PlainText)
         kopf.setWordWrap(True)
         kopf.setStyleSheet(
             f"font-size: 11pt; font-weight: 600; color: {FARBE_HINWEISART[hinweis.art]};"
@@ -58,6 +59,8 @@ class BegruendungDialog(QDialog):
             links.setStyleSheet("font-weight: 600;")
             links.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
             rechts = QLabel(inhalt)
+            # Inhalte können Bereichsnamen enthalten und werden nie als HTML gedeutet.
+            rechts.setTextFormat(Qt.TextFormat.PlainText)
             rechts.setWordWrap(True)
             rechts.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             raster.addWidget(links, nr, 0)

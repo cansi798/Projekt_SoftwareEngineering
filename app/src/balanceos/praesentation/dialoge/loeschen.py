@@ -13,7 +13,8 @@ from PySide6.QtWidgets import (
 
 from balanceos.anwendung.kontext import AppKontext
 from balanceos.domaene.kalender import KW
-from balanceos.domaene.validierung import LOESCHWORT
+from balanceos.domaene.validierung import LOESCHWORT, pruefe_loeschbestaetigung
+from balanceos.praesentation.widgets.feldfehler import fehlerlabel, markiere
 from balanceos.praesentation.zustand import Zustand
 
 BETROFFEN = [
@@ -60,6 +61,8 @@ class LoeschenDialog(QDialog):
         self.eingabe = QLineEdit()
         self.eingabe.setPlaceholderText(LOESCHWORT)
         layout.addWidget(self.eingabe)
+        self.fehler_label = fehlerlabel()
+        layout.addWidget(self.fehler_label)
 
         knoepfe = QHBoxLayout()
         knoepfe.addStretch(1)
@@ -73,12 +76,19 @@ class LoeschenDialog(QDialog):
         knoepfe.addWidget(self.loeschen_knopf)
         layout.addLayout(knoepfe)
 
-        self.eingabe.textChanged.connect(
-            lambda text: self.loeschen_knopf.setEnabled(text == LOESCHWORT)
-        )
+        self.eingabe.textChanged.connect(self._pruefen)
         self.abbrechen_knopf.clicked.connect(self.reject)
         self.loeschen_knopf.clicked.connect(self._loeschen)
         self.abbrechen_knopf.setFocus()
+
+    def _pruefen(self, text: str) -> None:
+        """Gibt „Endgültig löschen“ nur bei exakter Eingabe frei (GR29).
+
+        Die Meldung erscheint erst, wenn etwas eingegeben wurde.
+        """
+        fehler = pruefe_loeschbestaetigung(text)
+        markiere(self.eingabe, self.fehler_label, fehler[0].meldung if fehler and text else None)
+        self.loeschen_knopf.setEnabled(not fehler)
 
     def _loeschen(self) -> None:
         self._kontext.daten.alle_daten_loeschen(self.eingabe.text())

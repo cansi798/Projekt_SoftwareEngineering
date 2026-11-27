@@ -38,9 +38,11 @@ class WocheSeite(Seite):
         kw = self.zustand.kw
         bereiche = self.kontext.stammdaten.alle_bereiche()
         aktivitaeten = self.kontext.aktivitaeten.fuer_woche(kw)
+        # Überlauf vom Sonntag der Vorwoche nur zeichnen, nicht zählen (GR11).
+        ueberlauf = self.kontext.aktivitaeten.ueberlauf_aus_vorwoche(kw)
         self.kalender.setze(
             kw,
-            aktivitaeten,
+            ueberlauf + aktivitaeten,
             {b.id: b.farbe for b in bereiche},
             self.kontext.heute(),
             {b.id: b.name for b in bereiche},
@@ -55,8 +57,10 @@ class WocheSeite(Seite):
         durchgefuehrt = sum(
             a.dauer_minuten for a in aktivitaeten if a.status is Aktivitaetsstatus.DURCHGEFUEHRT
         )
+        anzahl = len(aktivitaeten)
         self.summe_label.setText(
-            f"{len(aktivitaeten)} Aktivitäten · {stunden_text(durchgefuehrt / 60)} durchgeführt"
+            f"{anzahl} {'Aktivität' if anzahl == 1 else 'Aktivitäten'}"
+            f" · {stunden_text(durchgefuehrt / 60)} durchgeführt"
             " · Doppelklick auf eine freie Stelle erfasst eine Aktivität,"
             " Doppelklick auf einen Block bearbeitet sie."
         )

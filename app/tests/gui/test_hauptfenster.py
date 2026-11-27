@@ -54,5 +54,5 @@ def test_wochenblaettern_aendert_kw(qtbot, fenster):
 
 
 def test_mindestgroesse(fenster):
-    assert fenster.minimumWidth() == 1280
-    assert fenster.minimumHeight() == 720
+    assert fenster.minimumWidth() == 960
+    assert fenster.minimumHeight() == 520

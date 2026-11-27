@@ -42,6 +42,20 @@ class AktivitaetService:
         """Alle Aktivitäten einer Kalenderwoche, sortiert nach Datum und Beginn."""
         return self._aktivitaeten.im_zeitraum(kw.montag(), kw.sonntag())
 
+    def ueberlauf_aus_vorwoche(self, kw: KW) -> list[Aktivitaet]:
+        """Aktivitäten vom Sonntag vor ``kw``, die über Mitternacht in den Montag reichen.
+
+        Die Wochenansicht zeichnet ihren Teil nach Mitternacht am Montag. Sie
+        zählen weiterhin nur zur Vorwoche (GR11).
+        """
+        sonntag = kw.montag() - timedelta(days=1)
+        return [
+            a
+            for a in self._aktivitaeten.im_zeitraum(sonntag, sonntag)
+            if a.beginn is not None
+            and a.beginn.hour * 60 + a.beginn.minute + a.dauer_minuten > 24 * 60
+        ]
+
     def aktivitaet(self, aktivitaet_id: int) -> Aktivitaet | None:
         """Aktivität mit der angegebenen ID."""
         return self._aktivitaeten.nach_id(aktivitaet_id)
@@ -188,6 +202,11 @@ class AktivitaetService:
     def serie_aendern(self, serie: Wiederholungsserie) -> None:
         """Übernimmt Änderungen einer Serie in alle zukünftigen, unbearbeiteten Termine (GR19).
 
+        Die gespeicherten Ausnahmen bleiben erhalten und werden mit denen der
+        übergebenen Serie vereinigt. So gehen Ausnahmen nicht verloren, die nach
+        dem Laden der Serie entstanden sind, etwa durch das Verschieben oder
+        Löschen eines Termins unmittelbar zuvor (GR18).
+
         Raises:
             ValidierungsFehler: bei ungültiger Serie.
         """
@@ -197,6 +216,9 @@ class AktivitaetService:
         heute = self._heute()
         bis = horizont(heute)
         with self._db.transaktion():
+            gespeichert = self._serien.nach_id(serie.id) if serie.id is not None else None
+            if gespeichert is not None:
+                serie.ausnahmen = set(serie.ausnahmen) | gespeichert.ausnahmen
             behalten = set()
             for t in self._aktivitaeten.termine_der_serie(serie.id):
                 if self._ersetzbar(t):

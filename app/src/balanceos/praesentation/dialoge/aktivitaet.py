@@ -30,7 +30,12 @@ from balanceos.domaene.kalender import MAX_DAUER_MINUTEN, berechne_dauer, stunde
 from balanceos.domaene.modell import Aktivitaet, Wiederholungsserie
 from balanceos.domaene.typen import Aktivitaetsstatus, StandardSchluessel, Wochentag
 from balanceos.domaene.validierung import MAX_NOTIZ, MAX_TITEL, Fehler, pruefe_serie
-from balanceos.praesentation.texte import BEWEGUNGSART_TEXT, STATUS_TEXT, WOCHENTAG_TEXT
+from balanceos.praesentation.texte import (
+    BEWEGUNGSART_TEXT,
+    STATUS_TEXT,
+    WOCHENTAG_TEXT,
+    als_html,
+)
 from balanceos.praesentation.widgets.auswahl import Auswahl
 from balanceos.praesentation.widgets.feldfehler import fehlerlabel, markiere
 from balanceos.praesentation.widgets.skala import Skala
@@ -533,14 +538,16 @@ class AktivitaetDialog(QDialog):
         self._fertig()
 
     def _serie_uebernehmen(self, a: Aktivitaet) -> None:
+        # Neu laden: das Speichern des Termins kann eben eine Ausnahme angelegt haben (GR18).
+        aktuell = self._service.serie(self._serie.id) or self._serie
         serie = replace(
-            self._serie,
+            aktuell,
             titel=a.titel,
             lebensbereich_id=a.lebensbereich_id,
             beginn=a.beginn,
             dauer_minuten=a.dauer_minuten,
             bewegungsart=a.bewegungsart,
-            ausnahmen=set(self._serie.ausnahmen),
+            ausnahmen=set(aktuell.ausnahmen),
         )
         self._service.serie_aendern(serie)
 
@@ -548,7 +555,7 @@ class AktivitaetDialog(QDialog):
         antwort = QMessageBox.question(
             self,
             self.windowTitle(),
-            text,
+            als_html(text),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No,
         )

@@ -1,6 +1,6 @@
 """Hauptfenster mit Seitenleiste, Kopfzeile und Inhaltsbereich."""
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QHBoxLayout,
@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QMainWindow,
     QPushButton,
+    QScrollArea,
     QStackedWidget,
     QVBoxLayout,
     QWidget,
@@ -37,6 +38,12 @@ SEITEN: list[type[Seite]] = [
 ]
 """Die sieben Seiten in der festen Reihenfolge der Seitenleiste."""
 
+MINDESTGROESSE = QSize(960, 520)
+"""Kleinste Fenstergröße; passt auch auf 1024 × 600 und 1920 × 1080 bei 150 % Skalierung."""
+
+STARTGROESSE = QSize(1280, 800)
+"""Bevorzugte Startgröße, höchstens die verfügbare Bildschirmfläche."""
+
 
 class Hauptfenster(QMainWindow):
     """Hauptfenster von BalanceOS (Spezifikation, Abschnitt „Hauptfenster und Navigation“)."""
@@ -47,11 +54,12 @@ class Hauptfenster(QMainWindow):
         self.kontext = kontext
         self.zustand = zustand
         self.setWindowTitle("BalanceOS")
-        self.setMinimumSize(1280, 720)
+        self.setMinimumSize(MINDESTGROESSE)
 
         self.seitenleiste = QListWidget()
         self.seitenleiste.setObjectName("seitenleiste")
         self.seitenleiste.setFixedWidth(210)
+        self.seitenleiste.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.stapel = QStackedWidget()
         self.seiten: list[Seite] = []
         for klasse in SEITEN:
@@ -66,6 +74,7 @@ class Hauptfenster(QMainWindow):
         untertitel = QLabel("Woche im Gleichgewicht")
         untertitel.setStyleSheet("background:#1F2A37;color:#ADB5BD;padding:0 18px 8px 18px;")
         leiste = QWidget()
+        leiste.setFixedWidth(210)
         leiste.setStyleSheet("background:#1F2A37;")
         leiste_layout = QVBoxLayout(leiste)
         leiste_layout.setContentsMargins(0, 0, 0, 0)
@@ -82,7 +91,13 @@ class Hauptfenster(QMainWindow):
         inhalt = QWidget()
         inhalt_layout = QVBoxLayout(inhalt)
         inhalt_layout.setContentsMargins(20, 16, 20, 16)
-        inhalt_layout.addWidget(self.stapel)
+        # Ist das Fenster kleiner als eine Seite mindestens braucht, bleibt der Inhalt
+        # über Bildlaufleisten erreichbar, statt abgeschnitten zu werden.
+        self.inhalt_bereich = QScrollArea()
+        self.inhalt_bereich.setWidgetResizable(True)
+        self.inhalt_bereich.setFrameShape(QScrollArea.Shape.NoFrame)
+        self.inhalt_bereich.setWidget(self.stapel)
+        inhalt_layout.addWidget(self.inhalt_bereich)
         rechts_layout.addWidget(inhalt, 1)
 
         zentral = QWidget()
@@ -98,9 +113,24 @@ class Hauptfenster(QMainWindow):
         self._kw_anzeigen(zustand.kw)
         self.seitenleiste.setCurrentRow(0)
 
+        self._startgroesse_setzen()
+
         QShortcut(QKeySequence("Ctrl+N"), self, activated=self.neue_aktivitaet)
         QShortcut(QKeySequence("Alt+Left"), self, activated=lambda: self._blaettern(-1))
         QShortcut(QKeySequence("Alt+Right"), self, activated=lambda: self._blaettern(1))
+
+    def _startgroesse_setzen(self) -> None:
+        """Wählt die Startgröße passend zur verfügbaren Bildschirmfläche und zentriert."""
+        verfuegbar = self.screen().availableGeometry()
+        # Reserve für Titelleiste und Fensterrahmen, die nicht zur Client-Größe zählen.
+        breite = min(STARTGROESSE.width(), verfuegbar.width() - 16)
+        hoehe = min(STARTGROESSE.height(), verfuegbar.height() - 40)
+        self.resize(max(breite, MINDESTGROESSE.width()), max(hoehe, MINDESTGROESSE.height()))
+        mitte = verfuegbar.center()
+        self.move(
+            max(verfuegbar.left(), mitte.x() - self.width() // 2),
+            max(verfuegbar.top(), mitte.y() - self.height() // 2),
+        )
 
     def _kopfzeile(self) -> QWidget:
         kopf = QWidget()

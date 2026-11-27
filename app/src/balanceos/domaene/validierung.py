@@ -145,7 +145,8 @@ def pruefe_who5(datum: date, antworten: Sequence[int | None], heute: date) -> li
         fehler.append(Fehler("datum", M_DATUM_ZUKUNFT))
     offen = sum(1 for a in antworten if a is None) + max(0, 5 - len(antworten))
     if offen:
-        fehler.append(Fehler("antworten", f"Noch offen: {offen} Aussagen."))
+        aussagen = "Aussage" if offen == 1 else "Aussagen"
+        fehler.append(Fehler("antworten", f"Noch offen: {offen} {aussagen}."))
     elif any(not 0 <= a <= 5 for a in antworten):
         fehler.append(Fehler("antworten", M_SKALA_WHO5))
     return fehler

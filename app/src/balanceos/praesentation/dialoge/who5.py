@@ -121,7 +121,8 @@ class Who5Dialog(QDialog):
 
     def _pruefen(self) -> None:
         offen = sum(1 for a in self.antworten() if a is None)
-        self.offen_label.setText(f"Noch offen: {offen} Aussagen." if offen else "")
+        wort = "Aussage" if offen == 1 else "Aussagen"
+        self.offen_label.setText(f"Noch offen: {offen} {wort}." if offen else "")
         self.auswerten_knopf.setEnabled(offen == 0)
 
     def _auswerten(self) -> None:

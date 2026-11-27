@@ -15,13 +15,23 @@ from PySide6.QtWidgets import (
 
 from balanceos.anwendung.fehler import RegelVerletzung
 from balanceos.domaene.kalender import stunden_text
-from balanceos.domaene.typen import Wochentag
+from balanceos.domaene.modell import Aktivitaet
+from balanceos.domaene.typen import Aktivitaetsstatus, Wochentag
 from balanceos.praesentation.dialoge.aktivitaet import aktivitaet_bearbeiten
 from balanceos.praesentation.seiten.basis import Seite
-from balanceos.praesentation.texte import STATUS_TEXT, WOCHENTAG_TEXT
+from balanceos.praesentation.texte import STATUS_TEXT, WOCHENTAG_TEXT, als_html
 from balanceos.praesentation.widgets.auswahl import Auswahl
 
 SPALTEN = ["Datum", "Zeit", "Lebensbereich", "Titel", "Dauer", "Status", "Demo", "Serie"]
+
+
+def _ueberspringbar(a: Aktivitaet | None) -> bool:
+    """Nur geplante Termine einer Serie lassen sich überspringen (US08, GP02).
+
+    Durchgeführte oder ausgefallene Termine tragen Bewertungen und Notizen;
+    sie werden über „Löschen“ mit Rückfrage entfernt, nicht übersprungen.
+    """
+    return a is not None and a.serie_id is not None and a.status is Aktivitaetsstatus.GEPLANT
 
 
 class AktivitaetenSeite(Seite):
@@ -142,7 +152,7 @@ class AktivitaetenSeite(Seite):
         a = self._gewaehlt()
         self.bearbeiten_knopf.setEnabled(a is not None)
         self.loeschen_knopf.setEnabled(a is not None)
-        self.ueberspringen_knopf.setEnabled(a is not None and a.serie_id is not None)
+        self.ueberspringen_knopf.setEnabled(_ueberspringbar(a))
 
     def _bearbeiten(self) -> None:
         a = self._gewaehlt()
@@ -154,7 +164,7 @@ class AktivitaetenSeite(Seite):
         if a is None:
             return
         antwort = QMessageBox.question(
-            self, "Aktivität löschen", f"Aktivität „{a.titel}“ wirklich löschen?"
+            self, "Aktivität löschen", als_html(f"Aktivität „{a.titel}“ wirklich löschen?")
         )
         if antwort == QMessageBox.StandardButton.Yes:
             self.kontext.aktivitaeten.loeschen(a.id)
@@ -162,7 +172,19 @@ class AktivitaetenSeite(Seite):
 
     def _ueberspringen(self) -> None:
         a = self._gewaehlt()
-        if a is None:
+        if not _ueberspringbar(a):
+            return
+        antwort = QMessageBox.question(
+            self,
+            "Termin überspringen",
+            als_html(
+                f"Termin „{a.titel}“ am {a.datum:%d.%m.%Y} überspringen? "
+                "Die übrigen Termine der Serie bleiben erhalten."
+            ),
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if antwort != QMessageBox.StandardButton.Yes:
             return
         try:
             self.kontext.aktivitaeten.termin_ueberspringen(a.id)

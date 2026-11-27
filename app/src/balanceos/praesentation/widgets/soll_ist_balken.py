@@ -4,6 +4,7 @@ from PySide6.QtCore import QRectF, QSize, Qt
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import QSizePolicy, QWidget
 
+from balanceos.domaene.kalender import zahl_text
 from balanceos.domaene.modell import Bereichsbewertung
 from balanceos.domaene.typen import Bereichstyp
 from balanceos.praesentation.stil import GRUEN, ROT
@@ -13,7 +14,8 @@ SKALA = 1.5
 
 
 def _h(stunden: float) -> str:
-    text = f"{stunden:.1f}".replace(".", ",")
+    """Stunden wie überall in BalanceOS kaufmännisch gerundet, ohne „,0“ (z. B. „1,3“)."""
+    text = zahl_text(stunden)
     return text[:-2] if text.endswith(",0") else text
 
 

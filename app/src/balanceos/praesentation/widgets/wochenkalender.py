@@ -3,12 +3,20 @@
 from datetime import date, time, timedelta
 
 from PySide6.QtCore import QPointF, QRectF, QSize, Qt, Signal
-from PySide6.QtGui import QBrush, QColor, QFont, QMouseEvent, QPainter, QPen
+from PySide6.QtGui import (
+    QBrush,
+    QColor,
+    QFont,
+    QFontMetricsF,
+    QMouseEvent,
+    QPainter,
+    QPen,
+)
 from PySide6.QtWidgets import QToolTip, QWidget
 
 from balanceos.domaene.modell import Aktivitaet
 from balanceos.domaene.typen import Aktivitaetsstatus
-from balanceos.praesentation.texte import STATUS_TEXT, WOCHENTAG_TEXT
+from balanceos.praesentation.texte import STATUS_TEXT, WOCHENTAG_TEXT, als_html
 
 WOCHENTAGE = list(WOCHENTAG_TEXT.values())
 
@@ -16,10 +24,31 @@ ACHSE = 46
 KOPF = 38
 ZEILE_OHNE = 22
 MIN_STUNDE = 20
+HALBE_BESCHRIFTUNG = 8
+"""Halbe Höhe der Stundenbeschriftung, die mittig auf der Stundenlinie steht."""
 
 
 def _minuten(t: time) -> int:
     return t.hour * 60 + t.minute
+
+
+def _ueberlappungsgruppen(
+    teile: list[tuple[Aktivitaet, int, int, bool]],
+) -> list[list[tuple[Aktivitaet, int, int, bool]]]:
+    """Teilt die Blöcke eines Tages in Gruppen, die sich zeitlich überschneiden.
+
+    Nur Blöcke derselben Gruppe teilen sich die Spaltenbreite; ein Block ohne
+    Überschneidung behält die volle Breite.
+    """
+    gruppen: list[list[tuple[Aktivitaet, int, int, bool]]] = []
+    gruppen_ende = -1
+    for teil in sorted(teile, key=lambda t: (t[1], -t[2])):
+        _, start, ende, _ = teil
+        if not gruppen or start >= gruppen_ende:
+            gruppen.append([])
+        gruppen[-1].append(teil)
+        gruppen_ende = max(gruppen_ende, ende)
+    return gruppen
 
 
 class Wochenkalender(QWidget):
@@ -28,8 +57,10 @@ class Wochenkalender(QWidget):
     Die Farbe zeigt den Lebensbereich, die Darstellung den Status: geplant
     (heller Block mit Rahmen), durchgeführt (gefüllt), ausgefallen
     (schraffiert und durchgestrichen). Aktivitäten über Mitternacht werden auf
-    zwei Tage verteilt gezeichnet, zählen aber zum Tag des Beginns. Aktivitäten
-    ohne Uhrzeit stehen in einer eigenen Zeile oberhalb der Zeitachse.
+    zwei Tage verteilt gezeichnet, zählen aber zum Tag des Beginns. Beginnt eine
+    solche Aktivität am Sonntag der Vorwoche, erscheint am Montag nur ihr
+    Überlaufteil. Aktivitäten ohne Uhrzeit stehen in einer eigenen Zeile
+    oberhalb der Zeitachse.
     """
 
     aktivitaet_doppelklick = Signal(int)
@@ -60,7 +91,11 @@ class Wochenkalender(QWidget):
         heute: date,
         namen: dict[int, str] | None = None,
     ) -> None:
-        """Übernimmt Woche, Aktivitäten und Bereichsfarben und zeichnet neu."""
+        """Übernimmt Woche, Aktivitäten und Bereichsfarben und zeichnet neu.
+
+        ``aktivitaeten`` darf Aktivitäten vom Sonntag der Vorwoche enthalten; von
+        ihnen wird nur der Teil nach Mitternacht am Montag gezeichnet.
+        """
         self._montag = kw.montag()
         self._heute = heute
         self._aktivitaeten = list(aktivitaeten)
@@ -68,7 +103,7 @@ class Wochenkalender(QWidget):
         self._namen = namen or {}
         pro_tag: dict[date, int] = {}
         for a in self._aktivitaeten:
-            if a.beginn is None:
+            if a.beginn is None and 0 <= (a.datum - self._montag).days <= 6:
                 pro_tag[a.datum] = pro_tag.get(a.datum, 0) + 1
         self._ohne_zeilen = max([1, *pro_tag.values()])
         self.updateGeometry()
@@ -78,7 +113,9 @@ class Wochenkalender(QWidget):
     # --- Geometrie ------------------------------------------------------------------------
 
     def _ohne_hoehe(self) -> int:
-        return ZEILE_OHNE * self._ohne_zeilen + 6
+        # Platz für die zweizeilige Beschriftung „ohne Zeit“ oberhalb von „00:00“.
+        beschriftung = 2 * QFontMetricsF(self.font()).lineSpacing() + 2 + HALBE_BESCHRIFTUNG
+        return max(ZEILE_OHNE * self._ohne_zeilen + 6, int(beschriftung + 0.999))
 
     def _spaltenbreite(self) -> float:
         return (self.width() - ACHSE) / 7
@@ -122,15 +159,17 @@ class Wochenkalender(QWidget):
         teile: dict[int, list[tuple[Aktivitaet, int, int, bool]]] = {i: [] for i in range(7)}
         ohne: dict[int, list[Aktivitaet]] = {i: [] for i in range(7)}
         for a in self._aktivitaeten:
-            index = (a.datum - self._montag).days
-            if not 0 <= index <= 6:
+            index = (a.datum - self._montag).days  # -1: Sonntag der Vorwoche
+            if not -1 <= index <= 6:
                 continue
             if a.beginn is None:
-                ohne[index].append(a)
+                if index >= 0:
+                    ohne[index].append(a)
                 continue
             start = _minuten(a.beginn)
             ende = start + a.dauer_minuten
-            teile[index].append((a, start, min(ende, 24 * 60), ende > 24 * 60 and index == 6))
+            if index >= 0:
+                teile[index].append((a, start, min(ende, 24 * 60), ende > 24 * 60 and index == 6))
             if ende > 24 * 60 and index < 6:
                 teile[index + 1].append((a, 0, ende - 24 * 60, False))
         for index in range(7):
@@ -139,24 +178,39 @@ class Wochenkalender(QWidget):
                     self._x(index) + 2, KOPF + 3 + nr * ZEILE_OHNE, breite - 4, ZEILE_OHNE - 3
                 )
                 self._bloecke.append((a.id, rechteck, False))
-            spalten_ende: list[int] = []
-            belegung: list[tuple[Aktivitaet, int, int, bool, int]] = []
-            for a, start, ende, folgetag in sorted(teile[index], key=lambda t: (t[1], -t[2])):
-                spalte = next((i for i, e in enumerate(spalten_ende) if e <= start), None)
-                if spalte is None:
-                    spalten_ende.append(ende)
-                    spalte = len(spalten_ende) - 1
-                else:
-                    spalten_ende[spalte] = ende
-                belegung.append((a, start, ende, folgetag, spalte))
-            anzahl = max(1, len(spalten_ende))
-            teilbreite = (breite - 4) / anzahl
-            for a, start, ende, folgetag, spalte in belegung:
-                y1, y2 = self._y(start), self._y(ende)
-                rechteck = QRectF(
-                    self._x(index) + 2 + spalte * teilbreite, y1, teilbreite - 1, max(6.0, y2 - y1)
-                )
-                self._bloecke.append((a.id, rechteck, folgetag))
+            for gruppe in _ueberlappungsgruppen(teile[index]):
+                spalten_ende: list[int] = []
+                belegung: list[tuple[Aktivitaet, int, int, bool, int]] = []
+                for a, start, ende, folgetag in gruppe:
+                    spalte = next((i for i, e in enumerate(spalten_ende) if e <= start), None)
+                    if spalte is None:
+                        spalten_ende.append(ende)
+                        spalte = len(spalten_ende) - 1
+                    else:
+                        spalten_ende[spalte] = ende
+                    belegung.append((a, start, ende, folgetag, spalte))
+                teilbreite = (breite - 4) / max(1, len(spalten_ende))
+                for a, start, ende, folgetag, spalte in belegung:
+                    y1, y2 = self._y(start), self._y(ende)
+                    rechteck = QRectF(
+                        self._x(index) + 2 + spalte * teilbreite,
+                        y1,
+                        teilbreite - 1,
+                        max(6.0, y2 - y1),
+                    )
+                    self._bloecke.append((a.id, rechteck, folgetag))
+
+    def achsenbeschriftungen(self) -> list[tuple[str, QRectF]]:
+        """Texte der linken Achse mit dem Rechteck, das ihr Text tatsächlich einnimmt."""
+        metrik = QFontMetricsF(self.font())
+        rechtsbuendig = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        rahmen = [
+            ("ohne\nZeit", QRectF(0, KOPF, ACHSE - 6, self._ohne_hoehe() - HALBE_BESCHRIFTUNG))
+        ]
+        for stunde in range(0, 24, 2):
+            y = self._y(stunde * 60) - HALBE_BESCHRIFTUNG
+            rahmen.append((f"{stunde:02d}:00", QRectF(0, y, ACHSE - 6, 2 * HALBE_BESCHRIFTUNG)))
+        return [(text, metrik.boundingRect(r, rechtsbuendig, text)) for text, r in rahmen]
 
     def bloecke(self) -> list[tuple[int, QRectF]]:
         """Gezeichnete Blöcke als Paare aus Aktivitäts-ID und Rechteck."""
@@ -203,7 +257,7 @@ class Wochenkalender(QWidget):
         zeit = f"{a.beginn:%H:%M}–{a.ende:%H:%M}, " if a.beginn and a.ende else ""
         bereich = self._namen.get(a.lebensbereich_id, "")
         folgetag = " (endet am Folgetag)" if a.ueber_mitternacht else ""
-        return (
+        return als_html(
             f"{a.titel}\n{bereich}\n{zeit}{a.dauer_minuten} min{folgetag}\n{STATUS_TEXT[a.status]}"
         )
 
@@ -234,23 +288,13 @@ class Wochenkalender(QWidget):
             p.setPen(linie)
             p.drawLine(QPointF(self._x(i), KOPF), QPointF(self._x(i), self.height()))
         p.setFont(self.font())
-        p.setPen(leise)
-        p.drawText(
-            QRectF(0, KOPF, ACHSE - 4, self._ohne_hoehe()),
-            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
-            "ohne\nZeit",
-        )
+        p.setPen(linie)
         for stunde in range(25):
             y = self._y(stunde * 60)
-            p.setPen(linie)
             p.drawLine(QPointF(ACHSE, y), QPointF(self.width(), y))
-            if stunde < 24 and stunde % 2 == 0:
-                p.setPen(leise)
-                p.drawText(
-                    QRectF(0, y - 8, ACHSE - 6, 16),
-                    Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
-                    f"{stunde:02d}:00",
-                )
+        p.setPen(leise)
+        for text, rechteck in self.achsenbeschriftungen():
+            p.drawText(rechteck, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, text)
         p.setPen(QPen(QColor("#CED4DA")))
         p.drawLine(QPointF(ACHSE, KOPF), QPointF(self.width(), KOPF))
         nach_id = {a.id: a for a in self._aktivitaeten}
