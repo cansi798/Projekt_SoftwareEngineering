@@ -22,7 +22,7 @@
 \addbibresource{literatur.bib}
 
 \dokumenttitel{Abstract}
-\dokumentuntertitel{\Projektname{} -- Making-of und Reflexion}
+\dokumentuntertitel{\Projektname{}: Making-of und Reflexion}
 \abgabedatum{\AbgabePhaseDrei}
 
 \begin{document}
@@ -30,19 +30,19 @@
 \hauptteil
 
 \section{Zielsetzung und Konzept}
-\TODO{Kurze Vorstellung von Ziel, Idee, Konzept und Methodik}
+Wer Beruf, Familie und eigene Interessen vereinbaren will, merkt oft erst spät, dass ein Lebensbereich zu kurz kommt. Mit \Projektname{} wollte ich eine Windows-Desktopanwendung entwickeln, die die Wochenbalance über zehn Lebensbereiche sichtbar macht. Die Projektfrage lautete, wie sich eine solche Auswertung transparent und modellbasiert gestalten lässt, ohne fehlende Einträge als schlechte Balance zu werten. Grundlage ist das Lifestyle Balance Model: Balance heißt dort, dass die tatsächliche Zeitverteilung zu den eigenen Wünschen passt. \Projektname{} vergleicht deshalb die erfasste Zeit mit einem persönlichen Wunschprofil und gibt regelbasierte Hinweise, die jeweils Quelle, Schwelle und Evidenzart nennen. Methodisch bin ich iterativ-inkrementell vorgegangen, mit User Stories, MoSCoW-Priorisierung und fünf Inkrementen.
 
 \section{Verlauf der Entwicklung}
-\TODO{Making-of: Phasen, wichtige Entscheidungen, eingesetzte Ressourcen und Software}
+In der Konzeptionsphase entstanden Projektdokumentation, Anforderungsdokument mit 22 User Stories und zwölf nichtfunktionalen Anforderungen sowie das Spezifikationsdokument mit Datenmodell, Regelkatalog und Mock-ups. In der Erarbeitungsphase habe ich eine Schichtenarchitektur mit Python, PySide6 und SQLite gewählt und die Anwendung in fünf Inkrementen umgesetzt. Jedes Inkrement endete mit einer lauffähigen Anwendung und grünen Tests. Für Code, Tests und Textentwürfe habe ich das KI-Werkzeug Claude Code eingesetzt und alle Ergebnisse selbst geprüft. In der Finalisierungsphase kamen Systemtests über die echte Oberfläche, das Testdokument, die Benutzeranleitung und eine ausführbare Datei hinzu, die ohne Installation startet. Die Dokumente habe ich in LaTeX geschrieben, die Diagramme in TikZ gezeichnet und alles in einem öffentlichen GitHub-Repository versioniert.
 
 \section{Probleme und Lösungen}
-\TODO{Unerwartete Probleme und wie damit umgegangen wurde}
+Das erste unerwartete Problem war zeitlich: Das Feedback zu Phase~1 kam vier Tage später als geplant. Laut Notfallplan habe ich Architektur, Feedback-Einarbeitung und Implementierung verdichtet, ohne den Umfang zu kürzen. Fachlich zeigten Tests und Reviews mehrere Fehler, die ich so nicht erwartet hatte. Gelöschte Serientermine erschienen nach einer Änderung der Serie wieder, eine Regel zählte deaktivierte Lebensbereiche mit, und die Systemtests fanden Eingabefelder ohne verknüpfte Beschriftung sowie englische Knöpfe in Rückfragen. Jeden Fehler habe ich zuerst mit einem Test nachgestellt und dann behoben. Technisch war die Auslieferung schwieriger als gedacht. Der erste Probebuild bestand aus einem Ordner mit vielen Einzeldateien. Die finale Version ist eine einzelne Datei ohne ungenutzte Qt-Module. Sie startete im Test auch bei aktiver intelligenter App-Steuerung von Windows.
 
 \section{Zeitplan und Zielerreichung}
-\TODO{Soll-Ist-Vergleich des Zeitplans; Entspricht das Ergebnis dem Ziel? Falls nein, warum nicht?}
+Bis zur ersten Abgabe hielt ich den Zeitplan ein. Danach verschoben sich die Termine durch das späte Feedback. Die Meilensteine M2 bis M4 erreichte ich trotzdem vor dem geplanten Termin, die finale Abgabe eine Woche früher. Die Schätzung von 45 Stunden für die Implementierung passte nicht zu einer KI-gestützten Entwicklung. Der Code entstand viel schneller, dafür brauchte das Prüfen von Code, Tests und Dokumenten mehr Aufmerksamkeit, als der Plan vorsah. Das Ziel ist erreicht: Alle User Stories und nichtfunktionalen Anforderungen sind umgesetzt und durch Testfälle geprüft. Offen bleibt, ob die Hinweise im Alltag tatsächlich zu mehr Balance führen. Der Score ist eine eigene Festlegung und nicht empirisch validiert, und einen Test mit Personen aus der Zielgruppe gab es nicht.
 
 \section{Erkenntnisse und Ausblick}
-\TODO{Was lief gut, was beim nächsten Projekt besser machen, wichtigste Lessons Learned}
+Am meisten hat mir die enge Verbindung von Spezifikation und Tests gebracht. Weil die Rechenbeispiele der Spezifikation direkt zu Tests wurden, fielen Widersprüche früh auf. Ebenso wichtig war das Feedback zu den ersten beiden Phasen. Es zeigte mir, dass Anforderungen erst dann wirklich prüfbar sind, wenn ihr Prüfkriterium Messgröße, Grenzwert und Verfahren nennt. Im nächsten Projekt würde ich solche Kriterien von Anfang an festlegen, für KI-gestützte Arbeit eigene Arbeitspakete für Review und Abnahme einplanen und früh echte Nutzer:innen einbeziehen. Als Weiterentwicklung bieten sich ein Usability-Test, eine Studie zur Validierung des Scores und eine signierte Installationsdatei mit automatischer Sicherung an.
 
 % Nur falls im Abstract zitiert wird:
 % \literaturverzeichnis

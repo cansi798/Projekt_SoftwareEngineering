@@ -5,12 +5,12 @@
 %  Orientierung: Qualitätsmerkmale nach ISO/IEC 25010.
 % =====================================================================
 \section{Nichtfunktionale Anforderungen}\label{sec:nfa}
-Nichtfunktionale Anforderungen legen fest, \emph{wie gut} BalanceOS seine Funktionen erbringen muss. Sie schränken die Lösung ein, indem sie etwa Antwortzeiten, Zuverlässigkeit oder einzusetzende Technologien vorgeben \parencite[S.~1-4]{swebok2026}. Dieses Kapitel beschreibt das zugrunde gelegte Qualitätsmodell, die daraus abgeleiteten Qualitätsanforderungen und die Rahmenbedingungen des Projekts.
+Nichtfunktionale Anforderungen legen fest, \emph{wie gut} BalanceOS seine Funktionen erbringen muss. Sie schränken die Lösung ein, indem sie etwa Antwortzeiten, Zuverlässigkeit oder einzusetzende Technologien vorgeben \parencite[S.~1-4]{swebok2026}. Das Kapitel beschreibt das Qualitätsmodell, die daraus abgeleiteten Qualitätsanforderungen und die Rahmenbedingungen des Projekts.
 
 \subsection{Qualitätsanforderungen}
-Als Ordnungsrahmen dient das Produktqualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 \parencite[Abschn.~4.2]{iso25010}. Es beschreibt Qualitätsmerkmale von Softwareprodukten, die sich messen und bewerten lassen \parencite[S.~12-11]{swebok2026}. Dazu gehören funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit (in der Fassung von 2023 als Interaktionsfähigkeit bezeichnet), Zuverlässigkeit, Sicherheit, Wartbarkeit und Flexibilität (früher Portabilität). Für BalanceOS sind die Merkmale ausgewählt, die für die Zielgruppe und die Aufgabenstellung besonders wichtig sind. Hinzu kommt Transparenz als Teil der funktionalen Angemessenheit. Sie ist aufgenommen, weil nachvollziehbare Hinweise die Anwendung von anderen unterscheiden.
+Als Ordnungsrahmen dient das Produktqualitätsmodell der Norm \acs{ISO}/\acs{IEC}~25010 \parencite[Abschn.~4.2]{iso25010}. Es beschreibt Qualitätsmerkmale von Softwareprodukten, die sich messen und bewerten lassen \parencite[S.~12-11]{swebok2026}. Dazu gehören funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit (in der Fassung von 2023 als Interaktionsfähigkeit bezeichnet), Zuverlässigkeit, Sicherheit, Wartbarkeit und Flexibilität (früher Portabilität). Für BalanceOS sind die Merkmale ausgewählt, die für Zielgruppe und Aufgabenstellung besonders wichtig sind. Hinzu kommt Transparenz als Teil der funktionalen Angemessenheit, weil nachvollziehbare Hinweise BalanceOS von anderen Anwendungen unterscheiden.
 
-Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforderung hat ein messbares Prüfkriterium, das im Testdokument der Finalisierungsphase überprüft wird.
+Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jedes Prüfkriterium nennt Messgröße, Grenzwert und Prüfverfahren und verweist auf den Testfall im Testdokument. Systemtests tragen dort die Kennungen TC-S-01 bis TC-S-10. Wird eine Anforderung durch Unit-, Integrations- oder Lasttests geprüft, nennt das Kriterium die Teststufe.
 
 \begingroup\tabsatz
 \begin{longtable}{@{}L{1.2cm}L{3.0cm}L{5.9cm}L{5.1cm}@{}}
@@ -28,60 +28,84 @@ Tabelle~\ref{tab:nfa} enthält die nichtfunktionalen Anforderungen. Jede Anforde
   \endlastfoot
   NFA01 & Benutzbarkeit (Erlernbarkeit)
     & Die grafische Oberfläche ist selbsterklärend und vollständig deutschsprachig; die Navigation erfolgt einheitlich über eine Seitenleiste.
-    & Mindestens 4 von 5 Testpersonen erfassen ohne Anleitung ihre erste Aktivität in höchstens 2~Minuten. \\
+    & \textit{Messgröße:} Beschriftung der sieben Seiten, des Erfassungsdialogs und seiner Eingabefelder; Klicks bis zum Erfassungsdialog.\newline
+      \textit{Grenzwert:} kein englischer Standardtext (z.\,B. OK, Cancel); 100~\% der Eingabefelder beschriftet; Erfassungsdialog von jeder der sieben Seiten mit 1~Klick erreichbar.\newline
+      \textit{Prüfung:} automatisierter Systemtest TC-S-09. \\
   \midrule
   NFA02 & Benutzbarkeit (Fehlertoleranz)
     & Ungültige Eingaben werden vor dem Speichern abgefangen und mit einer verständlichen Meldung direkt am betroffenen Feld erklärt.
-    & 100~\% der Zeilen der Validierungstabelle des Spezifikationsdokuments sind durch Testfälle abgedeckt, und alle diese Testfälle bestehen. \\
+    & \textit{Messgröße:} Anteil der Zeilen der Validierungstabelle des Spezifikationsdokuments, die durch bestandene Testfälle abgedeckt sind.\newline
+      \textit{Grenzwert:} 100~\%.\newline
+      \textit{Prüfung:} Unit- und Integrationstests je Tabellenzeile, zusätzlich Systemtest TC-S-03. \\
   \midrule
   NFA03 & Leistungs\-effizienz
     & Die Anwendung startet in höchstens 5~s; die Neuberechnung des Dashboards dauert bei 3.000 Aktivitäten (etwa ein Jahr) höchstens 1~s.
-    & Automatisierter Lasttest mit 3.000 Aktivitäten und Messung der Startzeit auf dem Referenzrechner; beide Werte liegen unter der Grenze. \\
+    & \textit{Messgröße:} Zeit vom Programmstart bis zum sichtbaren Hauptfenster; Dauer der Dashboard-Neuberechnung bei 3.000 Aktivitäten.\newline
+      \textit{Grenzwert:} Start höchstens 5~s mit \texttt{python -m balanceos} auf dem Entwicklungsrechner (Windows~11); Neuberechnung höchstens 1~s.\newline
+      \textit{Prüfung:} Systemtest TC-S-08 (Start) und automatisierter Lasttest (Neuberechnung). \\
   \midrule
   NFA04 & Zuverlässigkeit
     & Es entstehen keine Datenverluste: Jede bestätigte Änderung wird sofort transaktional gespeichert.
-    & 0 verlorene bestätigte Änderungen in 10 Versuchen, die Anwendung direkt nach dem Speichern zwangsweise zu beenden. \\
+    & \textit{Messgröße:} verlorene bestätigte Änderungen, wenn der Prozess direkt nach dem Speichern zwangsweise beendet wird.\newline
+      \textit{Grenzwert:} 0 in 10 Versuchen.\newline
+      \textit{Prüfung:} Systemtest TC-S-07. \\
   \midrule
   NFA05 & Sicherheit und Datenschutz
     & Die Anwendung baut keine Netzwerkverbindung auf, speichert Daten nur lokal im Benutzerprofil und ermöglicht deren vollständige Löschung.
-    & Es finden keine Netzwerkzugriffe statt; nach \anf{Alle Daten löschen} sind keine Nutzdaten mehr vorhanden. \\
+    & \textit{Messgröße:} Netzwerkzugriffe während eines kompletten Ablaufs; Datensätze in den Nutzdaten-Tabellen nach \anf{Alle Daten löschen}.\newline
+      \textit{Grenzwert:} jeweils 0.\newline
+      \textit{Prüfung:} Systemtest TC-S-06 mit im Test gesperrten Socket-Funktionen; Systemtest TC-S-05 für das Löschen. \\
   \midrule
   NFA06 & Funktionale Korrektheit
     & Score, Datenvollständigkeit und Regeln werden exakt nach der Spezifikation berechnet.
-    & 100~\% der Rechenbeispiele der Spezifikation sind als Unit-Tests umgesetzt und bestehen. \\
+    & \textit{Messgröße:} Anteil der Rechenbeispiele der Spezifikation, die als bestandene Testfälle umgesetzt sind.\newline
+      \textit{Grenzwert:} 100~\%.\newline
+      \textit{Prüfung:} Unit-Tests. \\
   \midrule
   NFA07 & Wartbarkeit (Modularität, Testbarkeit)
     & Oberfläche, Fachlogik und Datenhaltung sind getrennt; die Fachlogik ist ohne grafische Oberfläche testbar.
-    & Die Zeilenabdeckung der Bewertungs- und Regellogik beträgt mindestens 80~\%. \\
+    & \textit{Messgröße:} Zeilenabdeckung der Bewertungs- und Regellogik.\newline
+      \textit{Grenzwert:} mindestens 80~\%.\newline
+      \textit{Prüfung:} Abdeckungsmessung im automatisierten Testlauf. \\
   \midrule
   NFA08 & Wartbarkeit (Analysier\-barkeit)
     & Der Quellcode ist mit Docstrings kommentiert und folgt dem Stilleitfaden \ac{PEP}~8.
-    & 0 Befunde der statischen Prüfung mit \texttt{ruff check} \parencite{ruff}; Docstrings für 100~\% der öffentlichen Module, Klassen und Methoden. \\
+    & \textit{Messgröße:} Befunde der statischen Prüfung; Anteil der öffentlichen Module, Klassen und Methoden mit Docstring.\newline
+      \textit{Grenzwert:} 0 Befunde; 100~\%.\newline
+      \textit{Prüfung:} statische Prüfung mit \texttt{ruff check} \parencite{ruff}. \\
   \midrule
   NFA09 & Portabilität/\allowbreak Flexibilität (Installierbarkeit)
     & Die Anwendung läuft unter Windows~10 und 11 (64~Bit), ohne dass Python installiert sein muss.
-    & Die ausgelieferte \texttt{.exe}-Datei startet auf einem frischen Windows-Profil. \\
+    & \textit{Messgröße:} Start von \texttt{BalanceOS.exe} unter Windows~10/11 (64~Bit) ohne installiertes Python; Zeit bis zum sichtbaren Hauptfenster.\newline
+      \textit{Grenzwert:} Hauptfenster erscheint nach höchstens 10~s.\newline
+      \textit{Prüfung:} manueller Systemtest TC-S-10. \\
   \midrule
   NFA10 & Kompatibilität
     & Der Export erfolgt als CSV (UTF-8, Semikolon, in Excel lesbar) und als JSON.
-    & Die CSV-Datei öffnet sich in Excel mit 16 Spalten und ohne Umlautfehler; die JSON-Datei ist laut \texttt{json.loads} gültig. \\
+    & \textit{Messgröße:} Kodierung, Trennzeichen und Spaltenzahl der CSV-Datei; Gültigkeit der JSON-Datei.\newline
+      \textit{Grenzwert:} CSV in UTF-8 mit Byte Order Mark (BOM), Semikolon als Trennzeichen, 16 Spalten in jeder Zeile; JSON laut \texttt{json.loads} gültig.\newline
+      \textit{Prüfung:} Systemtest TC-S-04. \\
   \midrule
   NFA11 & Transparenz (funktionale Angemessenheit)
     & Jeder Hinweis nennt Regel, Modell, Datenbasis, Zeitraum, Schwelle, ermittelten Wert, Quelle, Evidenzart und Grenzen der Aussage.
-    & 10 von 10 Regeln (R01--R10) liefern alle neun Begründungsangaben. \\
+    & \textit{Messgröße:} Anzahl der Regeln R01--R10, deren Begründung alle neun Angaben enthält.\newline
+      \textit{Grenzwert:} 10 von 10.\newline
+      \textit{Prüfung:} Unit-Tests. \\
   \midrule
   NFA12 & Leistungs\-effizienz (Skalierbarkeit)
     & Die Anwendung bleibt bei wachsendem Datenbestand nutzbar.
-    & Bei 30.000 Aktivitäten (etwa zehn Jahre) dauern Dashboard und Statistik je höchstens 2~s; die Datenbankdatei bleibt unter 50~MB. \\
+    & \textit{Messgröße:} Dauer der Neuberechnung von Dashboard und Statistik sowie Größe der Datenbankdatei bei 30.000 Aktivitäten (etwa zehn Jahre).\newline
+      \textit{Grenzwert:} je höchstens 2~s; Datei unter 50~MB.\newline
+      \textit{Prüfung:} automatisierter Lasttest. \\
 \end{longtable}
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Die Anforderungen an die Benutzbarkeit (NFA01, NFA02) setzen die Vorgabe der Aufgabenstellung um, dass die grafische Oberfläche selbsterklärend und intuitiv bedienbar sein muss. Sie orientieren sich an den Interaktionsprinzipien der DIN~EN~ISO~9241-110, insbesondere an Selbstbeschreibungsfähigkeit, Erwartungskonformität, Erlernbarkeit und Robustheit gegen Benutzungsfehler \parencite[Abschn.~5]{iso9241}. NFA04 und NFA05 folgen aus dem Nutzungskontext der Zielgruppe. Die Erfassung wird häufig unterbrochen, und die erfassten Daten sind persönlich. NFA06 und NFA07 sichern die Korrektheit der Bewertungs- und Regellogik ab. Fehler in dieser Logik würden direkt zu falschen Hinweisen führen. NFA09 ergibt sich aus der Vorgabe, dass die Anwendung unter Windows~10/11 lauffähig sein muss und alle nicht standardmäßig vorhandenen Komponenten mitzuliefern sind. NFA12 kam nach dem Feedback zu Portfolioteil~1 hinzu. BalanceOS kann über Jahre genutzt werden, und jede Wochenbewertung wird bei der Anzeige neu berechnet. Deshalb muss die Anwendung auch mit dem Datenbestand vieler Jahre flüssig bleiben. Die Grenze von 30.000 Aktivitäten entspricht etwa zehn Jahren mit knapp 60 Einträgen pro Woche.
+Die Anforderungen an die Benutzbarkeit (NFA01, NFA02) setzen die Vorgabe der Aufgabenstellung um, dass die grafische Oberfläche selbsterklärend und intuitiv bedienbar sein muss. Sie orientieren sich an den Interaktionsprinzipien der DIN~EN~ISO~9241-110, insbesondere an Selbstbeschreibungsfähigkeit, Erwartungskonformität, Erlernbarkeit und Robustheit gegen Benutzungsfehler \parencite[Abschn.~5]{iso9241}. Wie die Oberfläche diese Prinzipien umsetzt, beschreibt das Spezifikationsdokument in Abschnitt~5.1. NFA01 prüft sie an Merkmalen, die sich automatisiert messen lassen: deutsche Beschriftung und ein Klick bis zum Erfassungsdialog. NFA04 und NFA05 folgen aus dem Nutzungskontext der Zielgruppe, denn die Erfassung wird häufig unterbrochen, und die Daten sind persönlich. NFA06 und NFA07 sichern die Bewertungs- und Regellogik ab, weil Fehler dort direkt zu falschen Hinweisen führen. NFA09 ergibt sich aus der Vorgabe, dass die Anwendung unter Windows~10/11 lauffähig sein muss und alle nicht standardmäßig vorhandenen Komponenten mitzuliefern sind. NFA12 kam nach dem Feedback zu Portfolioteil~1 hinzu. BalanceOS kann über Jahre genutzt werden, und jede Wochenbewertung wird bei der Anzeige neu berechnet. Die Anwendung muss deshalb auch mit dem Datenbestand vieler Jahre flüssig bleiben. Die Grenze von 30.000 Aktivitäten entspricht etwa zehn Jahren mit knapp 60 Einträgen pro Woche.
 
 \subsection{Rahmenbedingungen}
-Neben den Qualitätsanforderungen gelten technische und organisatorische Rahmenbedingungen, die nicht verhandelbar sind und den Lösungsraum zusätzlich einschränken.
+Neben den Qualitätsanforderungen gelten technische und organisatorische Rahmenbedingungen. Sie sind nicht verhandelbar und schränken den Lösungsraum zusätzlich ein.
 
-\textbf{Technische Rahmenbedingungen:} Die Anwendung wird objektorientiert in Python ab Version~3.12 entwickelt und als native Windows-Desktopanwendung ausgeliefert. Die Versionsverwaltung läuft über GitHub. Das Repository ist unter \url{https://github.com/cansi798/Projekt_SoftwareEngineering} erreichbar. Bibliotheken von Drittanbietern werden nur verwendet, wenn ihr Einsatz begründet ist. Die Begründung steht im Architekturdokument der Phase~2. Die Bibliotheken werden mit der Anwendung ausgeliefert. Quellcode aus fremden Anwendungen wird nicht übernommen.
+\textbf{Technische Rahmenbedingungen:} Die Anwendung wird objektorientiert in Python ab Version~3.12 entwickelt und als native Windows-Desktopanwendung ausgeliefert. Die Versionsverwaltung läuft über GitHub. Das Repository ist unter \url{https://github.com/cansi798/Projekt_SoftwareEngineering} erreichbar. Bibliotheken von Drittanbietern werden nur verwendet, wenn ihr Einsatz begründet ist. Die Begründung steht im Architekturdokument (Kapitel~1, Technologieübersicht). Die Bibliotheken werden mit der Anwendung ausgeliefert. Quellcode aus fremden Anwendungen wird nicht übernommen.
 
 \textbf{Organisatorische Rahmenbedingungen:} Eine einzelne Person bearbeitet das Projekt und übernimmt alle Rollen von der Anforderungsermittlung bis zum Test. Der Bearbeitungszeitraum reicht vom 09.11.2026 bis zum 12.12.2026 und gliedert sich in die drei Portfolio-Phasen der IU mit festen Abgabeterminen. Das Feedback der Tutor:innen kann bis zu sieben Tage dauern und muss in der Planung berücksichtigt werden. Inhaltlich gilt außerdem: BalanceOS ist kein Medizinprodukt. Hinweise zeigen Zusammenhänge und keine Ursachen, und die Anwendung stellt keine Diagnosen.

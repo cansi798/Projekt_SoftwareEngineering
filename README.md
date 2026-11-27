@@ -5,8 +5,10 @@ BalanceOS ist eine lokal laufende Windows-Desktopanwendung in Python. Sie vergle
 Alltag über Lebensbereiche hinweg mit persönlichen Wünschen und wissenschaftlich begründeten
 Richtwerten. Daraus entstehen transparente, regelbasierte Hinweise, ganz ohne KI.
 
-> Projektstand: **Phase 1 (Konzeptionsphase)**. Die Implementierung beginnt erst nach Einreichung
-> von Portfolioteil 1 (siehe [`CHECKLISTE.md`](CHECKLISTE.md)).
+> Projektstand: **Phase 3 (Finalisierungsphase)**. Die Anwendung ist fertig und getestet.
+> Ausführbare Datei: [`app/release/BalanceOS.exe`](app/release/BalanceOS.exe) (einzelne Datei, keine Installation).
+> Start aus dem Quellcode, Tests und Build: [`app/README.md`](app/README.md).
+> Die Dokumente liegen als PDF in [`docs/pdf/`](docs/pdf/), die eingereichten Fassungen in [`abgabe/`](abgabe/).
 
 ## Ordnerstruktur
 
@@ -22,7 +24,7 @@ Richtwerten. Daraus entstehen transparente, regelbasierte Hinweise, ganz ohne KI
 │   │   ├── 04_Architekturdokument/
 │   │   ├── 05_Testdokument/
 │   │   └── 06_Abstract/
-│   ├── diagramme/               draw.io-Quellen (UML, Mock-ups) und export/ (PDF für LaTeX)
+│   ├── diagramme/               TikZ-Quellen (UML, Mock-ups) und ihre PDF-Exporte
 │   ├── bilder/                  Screenshots der Anwendung
 │   └── pdf/                     aktuell gebaute Einzeldokumente
 ├── abgabe/                      eingereichte Fassungen je Phase (PebblePad) und Kurzzusammenfassungen

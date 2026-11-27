@@ -6,10 +6,10 @@
 %  Mock-ups in docs/diagramme/06_Mockups/, Export nach docs/diagramme/export/.
 % =====================================================================
 \section{Benutzerschnittstellen}\label{sec:benutzerschnittstellen}
-Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\ac{GUI}) von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes. Sie legen Inhalt, Anordnung und Verhalten fest, aber nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
+Dieses Kapitel beschreibt die grafische Benutzeroberfläche (\ac{GUI}) von BalanceOS: Gestaltungsgrundsätze, Hauptfenster, wichtigste Dialoge, Dialogfluss und die Gültigkeitsregeln der Eingabefelder. Die Mock-ups sind Wireframes: Sie legen Inhalt, Anordnung und Verhalten fest, nicht die endgültige grafische Gestaltung. Prototypen von Benutzeroberflächen dienen dazu, Anforderungen frühzeitig mit Nutzer:innen abzustimmen \parencite[S.~1-7]{swebok2026}. Alle Beispiele zeigen Daten der Persona Sarah Keller in \ac{KW}~46/2026.
 
 \subsection{Gestaltungsgrundsätze}\label{sec:gestaltungsgrundsaetze}
-Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlangt Erlernbarkeit (erste Aktivität ohne Anleitung in höchstens zwei Minuten). NFA02 verlangt Fehlertoleranz (ungültige Eingaben werden vor dem Speichern abgefangen und am Feld erklärt). Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}. Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
+Die Oberfläche soll selbsterklärend und intuitiv bedienbar sein. NFA01 verlangt Erlernbarkeit (alle Seiten und Eingabefelder deutsch beschriftet, Erfassungsdialog von jeder Seite mit einem Klick erreichbar). NFA02 verlangt Fehlertoleranz (ungültige Eingaben werden vor dem Speichern abgefangen und am Feld erklärt). Maßstab der Gestaltung sind die sieben Interaktionsprinzipien der DIN EN ISO 9241-110 \parencite[Abschn.~5]{iso9241}. Tabelle~\ref{tab:interaktionsprinzipien} zeigt ihre Umsetzung.
 
 \begin{longtable}{@{}L{3.6cm}L{12.0cm}@{}}
   \caption{Umsetzung der Interaktionsprinzipien in BalanceOS}\label{tab:interaktionsprinzipien}\\
@@ -137,7 +137,7 @@ Die modalen Dialoge liegen außerhalb des Hauptfensters, weil dessen Seiten wäh
 \end{figure}
 
 \subsection{Eingabevalidierung}\label{sec:validierung}
-Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:geschaeftsregeln} an der Oberfläche um. BalanceOS prüft jedes Feld beim Verlassen und beim Speichern zusätzlich alle feldübergreifenden Regeln. Ein ungültiges Feld erhält einen roten Rahmen. Die Meldung steht rot direkt darunter und nennt den Weg zur Korrektur. Die Hauptaktion (\enquote{Speichern}, \enquote{Auswerten}, \enquote{Exportieren}, \enquote{Endgültig löschen}) ist erst bei gültigen Eingaben aktiv. Ein Hinweistext an der gesperrten Schaltfläche nennt die offenen Felder. Wo möglich, verhindern Auswahllisten, Skalen und Schieberegler ungültige Werte von vornherein. Tabelle~\ref{tab:validierung} legt alle Eingabefelder fest, und jede Zeile wird im Testdokument geprüft.
+Die Validierung setzt NFA02 und die Geschäftsregeln (GR) aus Kapitel~\ref{sec:geschaeftsregeln} an der Oberfläche um. BalanceOS prüft jedes Feld beim Verlassen und beim Speichern zusätzlich alle feldübergreifenden Regeln. Ein ungültiges Feld erhält einen roten Rahmen. Die Meldung steht rot direkt darunter und nennt den Weg zur Korrektur. Die Hauptaktion (\enquote{Speichern}, \enquote{Auswerten}, \enquote{Exportieren}, \enquote{Endgültig löschen}) ist erst bei gültigen Eingaben aktiv. Ein Hinweistext an der gesperrten Schaltfläche nennt die offenen Felder. Wo möglich, verhindern Auswahllisten, Skalen und Schieberegler ungültige Werte von vornherein. Tabelle~\ref{tab:validierung} legt alle Eingabefelder fest. Jede Zeile wird im Testdokument geprüft (NFA02).
 
 \begin{longtable}{@{}L{2.8cm}L{2.2cm}L{5.8cm}L{4.4cm}@{}}
   \caption{Gültigkeitsregeln für Eingabefelder}\label{tab:validierung}\\

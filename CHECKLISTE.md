@@ -66,7 +66,7 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 | Verhalten als **UML-Sequenzdiagramm** eines zentralen Ablaufs | `…/04_Verhalten.tex` | ☐ |
 | Implementierung gemäß Anforderungen, Spezifikation und Architektur | `app/` | ☐ |
 | **Link zum GitHub-Repository** in der Projektdokumentation | ⚙ `04_Versionsverwaltung.tex` (ab Phase 2 automatisch) | ⚙ |
-| Signifikante Änderungen an Anforderungen und Spezifikation begründet | Architektur 2.3 bzw. Projektdokumentation 6.3 | ☐ |
+| Signifikante Änderungen an Anforderungen und Spezifikation begründet | Architektur 2.3 und Projektdokumentation, Kapitel 7 | ☐ |
 
 **Einreichung:**
 1. ☐ Kurzzusammenfassung der Design- und Implementierungsentscheidungen (ca. ½ Seite)
@@ -81,7 +81,8 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 | Optional: automatisierte Tests (pytest) | `app/tests/` | ☐ |
 | **Benutzeranleitung** (Installation, Ausführung) in der Projektdokumentation | ⚙ `05_Benutzeranleitung.tex` (Phase 3) | ☐ |
 | **Abstract**: 2 Seiten, Making-of und Reflexion inkl. Problemen und Zeitplantreue | `06_Abstract/Abstract.tex` | ☐ |
-| Feedback aus Phase 1 und 2 umgesetzt | alle | ☐ |
+| Feedback aus Phase 1 und 2 umgesetzt | Projektdokumentation, Kapitel 7 (Tabellen je Phase) | ☐ |
+| Limitationen, kritische Bewertung und Fazit (Feedback Phase 2) | `01_Projektdokumentation/kapitel/08_Fazit.tex` | ☐ |
 
 **Einreichung (5 Teile):**
 1. ☐ `…_PSE_P3_Abstract.pdf`
