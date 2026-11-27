@@ -3,17 +3,96 @@
 %  Aufgabenstellung 1: Nicht vollständig erfüllte funktionale und
 %  nichtfunktionale Anforderungen „explizit an geeigneter Stelle als
 %  technische Schuld (Technical Debt) dokumentieren“.
-%  Aufgabenstellung 1.2: Signifikante Änderungen an Anforderungen und
-%  Spezifikation begründen und dokumentieren.
+%  Signifikante Änderungen stehen in Kapitel 7 (keine Wiederholung hier).
 % =====================================================================
 \section{Anforderungserfüllung und technische Schulden}\label{sec:anforderungserfuellung}
-\TODO{Kurze Hinführung}
+Dieses Kapitel zeigt, welche Anforderungen aus dem Anforderungsdokument umgesetzt sind und durch welche Testfälle des Testdokuments sie geprüft werden. Danach folgen die technischen Schulden, also bekannte Lücken und Vereinfachungen, die bei einer Weiterentwicklung zu beheben wären. Die Änderungen an Anforderungen und Spezifikation gegenüber der Konzeption stehen in Kapitel~\ref{sec:aenderungen}.
 
 \subsection{Umsetzungsstand der Anforderungen}
-\TODO{Tabelle: Anforderungs-ID, umgesetzt ja/teilweise/nein, Verweis auf Testfall}
+Tabelle~\ref{tab:erfuellung} ordnet jeder User Story und jeder nichtfunktionalen Anforderung die Testfälle zu, die sie prüfen. Die Kennungen verweisen auf das Testprotokoll: TC-U steht für Unit-Tests, TC-I für Integrationstests und TC-S für Systemtests. Alle 18 Must- und alle vier Should-Stories sind umgesetzt. Die Could-Anforderungen waren laut Priorisierung nicht Teil des Projektumfangs.
+
+\begingroup
+\setstretch{1.0}
+\fontsize{10pt}{12pt}\selectfont
+\begin{longtable}{@{}L{1.6cm}L{1.7cm}L{2.6cm}L{9.9cm}@{}}
+  \caption{Umsetzungsstand und Testabdeckung der Anforderungen}\label{tab:erfuellung}\\
+  \toprule
+  \textbf{Anforderung} & \textbf{Priorität} & \textbf{Status} & \textbf{Geprüft durch} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Anforderung} & \textbf{Priorität} & \textbf{Status} & \textbf{Geprüft durch} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  US01 & Must & umgesetzt & TC-I-01, TC-I-02, TC-S-01 \\
+  US02 & Must & umgesetzt & TC-U-10, TC-I-02 \\
+  US03 & Must & umgesetzt & TC-U-01, TC-U-03, TC-I-01 \\
+  US04 & Must & umgesetzt & TC-U-02, TC-U-10, TC-I-02 \\
+  US05 & Must & umgesetzt & TC-U-04, TC-U-09, TC-I-03, TC-S-02, TC-S-03 \\
+  US06 & Must & umgesetzt & TC-U-09, TC-I-03, TC-I-04 \\
+  US07 & Must & umgesetzt & TC-U-10, TC-U-12, TC-I-04, TC-S-05 \\
+  US08 & Must & umgesetzt & TC-U-12, TC-I-04 \\
+  US09 & Must & umgesetzt & TC-U-04, TC-I-05, TC-S-02 \\
+  US10 & Must & umgesetzt & TC-U-06, TC-I-06, TC-S-01, TC-S-02 \\
+  US11 & Must & umgesetzt & TC-U-01, TC-U-02, TC-I-06 \\
+  US12 & Must & umgesetzt & TC-U-05, TC-U-06, TC-I-06 \\
+  US13 & Must & umgesetzt & TC-U-08, TC-I-06 \\
+  US14 & Must & umgesetzt & TC-U-07, TC-I-01, TC-I-06 \\
+  US15 & Must & umgesetzt & TC-I-07 \\
+  US16 & Must & umgesetzt & TC-I-08, TC-S-04 \\
+  US17 & Must & umgesetzt & TC-U-11, TC-I-09, TC-S-05 \\
+  US18 & Must & umgesetzt & TC-I-09, TC-S-01 \\
+  US19 & Should & umgesetzt & TC-U-01, TC-U-03, TC-I-02, TC-I-06 \\
+  US20 & Should & umgesetzt & TC-U-11, TC-U-13, TC-I-10, TC-S-05 \\
+  US21 & Should & umgesetzt & TC-I-06, TC-I-10 \\
+  US22 & Should & umgesetzt & TC-U-11, TC-I-10, TC-S-05 \\
+  \midrule
+  NFA01 & -- & erfüllt & TC-I-05, TC-S-09 \\
+  NFA02 & -- & erfüllt & TC-U-09, TC-U-10, TC-U-11, TC-I-03, TC-S-03 \\
+  NFA03 & -- & erfüllt & TC-I-11, TC-S-08 \\
+  NFA04 & -- & erfüllt & TC-I-01, TC-S-07 \\
+  NFA05 & -- & erfüllt & TC-S-05, TC-S-06 \\
+  NFA06 & -- & erfüllt & TC-U-01, TC-I-06 \\
+  NFA07 & -- & erfüllt & TC-U-14 \\
+  NFA08 & -- & erfüllt & TC-U-15 \\
+  NFA09 & -- & teilweise geprüft & TC-S-10 (nur unter Windows~11, siehe TD02) \\
+  NFA10 & -- & erfüllt & TC-I-08, TC-S-04 \\
+  NFA11 & -- & erfüllt & TC-U-08 \\
+  NFA12 & -- & erfüllt & TC-I-11 \\
+\end{longtable}
+\endgroup
+\quelle{Eigene Darstellung.}
+
+Der Status \enquote{erfüllt} bedeutet, dass alle zugeordneten Testfälle am 27.11.2026 bestanden haben. Die Messwerte und die Abdeckung nennt das Testdokument in den Testergebnissen.
 
 \subsection{Technische Schulden}
-\TODO{Je Schuld: Beschreibung, Ursache, Auswirkung, geplante Behebung}
+Technische Schulden sind bewusst in Kauf genommene Lücken, die das Ergebnis heute nicht verfälschen, eine Weiterentwicklung aber erschweren. Tabelle~\ref{tab:schulden} nennt für jede Schuld die Ursache, die Auswirkung und eine mögliche Behebung.
 
-\subsection{Änderungen gegenüber der Konzeption}
-\TODO{Signifikante Änderungen an Anforderungen und Spezifikation mit Begründung (Feedback der Tutor:innen)}
+\begingroup
+\setstretch{1.0}
+\fontsize{10pt}{12pt}\selectfont
+\begin{longtable}{@{}L{1.0cm}L{4.4cm}L{5.2cm}L{5.2cm}@{}}
+  \caption{Technische Schulden}\label{tab:schulden}\\
+  \toprule
+  \textbf{ID} & \textbf{Beschreibung und Ursache} & \textbf{Auswirkung} & \textbf{Mögliche Behebung} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Beschreibung und Ursache} & \textbf{Auswirkung} & \textbf{Mögliche Behebung} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  TD01 & Die ausführbare Datei ist nicht digital signiert, weil ein Zertifikat für ein Studienprojekt nicht verfügbar war. & Windows kann beim ersten Start warnen; Unternehmensrichtlinien können den Start verhindern. Variante~B der Benutzeranleitung umgeht das. & Signieren mit einem Code-Signing-Zertifikat oder Verteilung über einen Installer aus einer vertrauenswürdigen Quelle. \\
+  TD02 & NFA09 nennt Windows~10 und~11, getestet wurde nur unter Windows~11 auf dem Entwicklungsrechner. & Abweichungen unter Windows~10 sind nicht ausgeschlossen, auch wenn PySide6 beide Versionen unterstützt. & TC-S-10 auf einem Rechner mit Windows~10 wiederholen. \\
+  TD03 & NFA01 wird über messbare Merkmale der Oberfläche geprüft, nicht mit Testpersonen. & Ob die Oberfläche ohne Anleitung verständlich ist, bleibt unbelegt. & Usability-Test mit fünf Personen aus der Zielgruppe und Aufgaben aus den Kernprozessen. \\
+  TD04 & Die Oberflächentests laufen ohne sichtbaren Bildschirm (Qt-Plattform \texttt{offscreen}). & Darstellungsfehler bei hoher Bildschirmskalierung oder kleinen Fenstern bleiben unentdeckt. & Stichprobenartige Sichtprüfung bei 125~\% und 150~\% Skalierung, ergänzt um Bildvergleichstests. \\
+  TD05 & Es gibt keine automatische Datensicherung; gesichert wird nur über den manuellen Export. & Ein defekter Datenträger führt zum Verlust aller Einträge seit dem letzten Export. & Wöchentliche Sicherungskopie der Datenbankdatei mit einstellbarem Speicherort. \\
+  TD06 & Die Demodaten nutzen das Standard-Wunschprofil und nicht das angepasste Profil der Persona Sarah Keller. & Einige Werte der Demowoche weichen von den Beispielen im Spezifikationsdokument ab, etwa beim Bereich Arbeit. & Wunschprofil der Persona beim Laden der Demodaten mit setzen. \\
+\end{longtable}
+\endgroup
+\quelle{Eigene Darstellung.}
+
+Keine dieser Schulden verhindert, dass eine Anforderung erfüllt wird. TD02 und TD03 begrenzen aber die Aussagekraft der Prüfung. Kapitel~\ref{sec:fazit} greift sie bei den Limitationen wieder auf.
