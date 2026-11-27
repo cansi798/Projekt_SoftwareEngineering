@@ -34,6 +34,16 @@ def _leer(wert: Any) -> str:
     return "" if wert is None else str(wert)
 
 
+# Anfangszeichen, mit denen Tabellenkalkulationen eine Zelle als Formel auswerten
+_FORMELZEICHEN = ("=", "+", "-", "@", "\t", "\r")
+
+
+def _text(wert: str | None) -> str:
+    """Freitext für die CSV-Datei; Formelzeichen am Anfang erhalten ein Apostroph."""
+    text = _leer(wert)
+    return "'" + text if text.startswith(_FORMELZEICHEN) else text
+
+
 class ExportService:
     """Schreibt Aktivitäten als CSV und alle Nutzdaten als JSON in eine Datei."""
 
@@ -102,9 +112,9 @@ class ExportService:
                 [
                     a.datum.isoformat(),
                     KW.aus_datum(a.datum).iso(),
-                    b.name,
+                    _text(b.name),
                     b.typ,
-                    a.titel,
+                    _text(a.titel),
                     _leer(_zeit(a.beginn)),
                     _leer(_zeit(a.ende)),
                     a.dauer_minuten,
@@ -113,7 +123,7 @@ class ExportService:
                     _leer(a.belastung),
                     _leer(a.erholung),
                     _leer(a.bewegungsart),
-                    _leer(a.notiz),
+                    _text(a.notiz),
                     _ja_nein(a.serie_id is not None),
                     _ja_nein(a.ist_demo),
                 ]
