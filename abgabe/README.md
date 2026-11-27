@@ -35,8 +35,8 @@ git tag phase1-abgabe; git push origin phase1-abgabe
 1. `python tools/build_docs.py --phase 3 --abgabe` ausführen
 2. Ausführbare Anwendung in `app/release/` ablegen
 3. Committen und pushen
-4. `python tools/build_docs.py --phase 3 --zip` ausführen. Das Skript bricht ab, wenn der lokale
-   Stand von GitHub abweicht.
+4. `python tools/build_docs.py --phase 3 --zip` ausführen. Das Skript baut dabei nichts neu und
+   bricht ab, wenn der lokale Stand von GitHub abweicht.
 5. In PebblePad hochladen. Danach nichts mehr am Repository ändern.
 
 Vor jeder Einreichung muss die **Eidesstattliche Erklärung** elektronisch über myCampus abgegeben

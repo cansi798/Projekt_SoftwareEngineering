@@ -329,6 +329,12 @@ def main() -> int:
         if platzhalter_in_meta(m):
             print("WARNUNG: Name/Matrikelnummer in docs/latex/_gemeinsam/meta.tex sind noch Platzhalter.\n")
 
+        if args.zip and not (args.abgabe or args.anlage or args.doc):
+            # Nur verpacken: ein Neubau würde die Zeitstempel der PDFs ändern
+            # und das Repository wieder vom GitHub-Stand abweichen lassen.
+            erstelle_zip(praefix)
+            return 0
+
         auswahl = [d for d in DOKUMENTE if d.ab_phase <= args.phase]
         if args.doc:
             auswahl = [d for d in DOKUMENTE if d.name.lower() == args.doc.lower()]
