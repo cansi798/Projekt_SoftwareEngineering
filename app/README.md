@@ -33,7 +33,7 @@ Nach der Installation startet auch der Befehl `balanceos` die Anwendung. Die Dat
 ## Tests
 
 ```
-pytest                          # Unit-, Integrations- und Oberflächentests
+pytest                          # Unit-, Integrations-, Oberflächen- und Systemtests
 pytest -m leistung -v -s        # Lasttests (NFA03, NFA12) mit Messwerten
 pytest --cov=balanceos          # mit Zeilenabdeckung
 ruff check . && ruff format --check .
@@ -41,13 +41,17 @@ ruff check . && ruff format --check .
 
 Die Oberflächentests laufen mit pytest-qt ohne sichtbare Fenster (`tests/conftest.py` setzt `QT_QPA_PLATFORM=offscreen`). Die Lasttests sind vom normalen Lauf ausgenommen und füllen eine Datenbank mit 3.000 bzw. 30.000 Aktivitäten.
 
-## Probebuild
+## Ausführbare Datei (ohne Python)
+
+`release/BalanceOS.exe` ist eine einzelne ausführbare Datei für Windows 10/11 (64 Bit). Sie enthält Python, PySide6 und die Anwendung; eine Installation ist nicht nötig. Doppelklick startet BalanceOS. Die exe ist nicht digital signiert, deshalb kann Windows SmartScreen beim ersten Start warnen („Weitere Informationen“ → „Trotzdem ausführen“). Lässt Windows den Start nicht zu, startet BalanceOS wie oben beschrieben mit `python -m balanceos`.
+
+Neu bauen (im Ordner `app/`, mit installierten Entwicklungswerkzeugen):
 
 ```
-pyinstaller balanceos.spec
+pyinstaller balanceos.spec --distpath release --workpath build --noconfirm
 ```
 
-Der Build erzeugt `dist/BalanceOS/BalanceOS.exe` als Ordner-Build ohne Konsolenfenster. `dist/` und `build/` werden nicht eingecheckt. Die exe ist nicht signiert; ist unter Windows die intelligente App-Steuerung (Smart App Control) aktiv, blockiert Windows den Start. In diesem Fall startet man BalanceOS mit `python -m balanceos`.
+Die Spezifikation lässt Qt-Teile weg, die BalanceOS nicht nutzt (Quick/QML, PDF, Netzwerk/TLS, Software-OpenGL). `build/` wird nicht eingecheckt.
 
 ## Ordnerstruktur
 
@@ -61,8 +65,10 @@ app/
 ├── tests/
 │   ├── unit/            Domänenlogik, darunter die Rechenbeispiele der Spezifikation
 │   ├── integration/     Services mit echter Datenbank, Export, Lasttests
-│   └── gui/             Seiten und Dialoge mit pytest-qt
-├── balanceos.spec       PyInstaller-Konfiguration für den Probebuild
+│   ├── gui/             Seiten und Dialoge mit pytest-qt
+│   └── system/          Systemtests: komplette Abläufe über die Oberfläche
+├── release/           BalanceOS.exe (ausgelieferte Anwendung)
+├── balanceos.spec       PyInstaller-Konfiguration für die exe
 └── pyproject.toml       Abhängigkeiten, pytest- und ruff-Konfiguration
 ```
 
