@@ -139,48 +139,50 @@
 \begin{scope}[font=\sz{7.5}, text=iuGrau]
   \node[anchor=west] at (3.7,7.8) {Lebensbereich};
   \node[anchor=west] at (7.75,7.8) {Typ};
-  \node[anchor=west] at (9.55,7.8) {Soll-Ist-Balken (bis 150 \% des Solls)};
-  \node[anchor=east] at (15.55,7.8) {Ist / Soll};
+  \node[anchor=west] at (9.55,7.8) {Soll-Ist-Balken (bis 150 \%)};
+  \node[anchor=east] at (14.25,7.8) {Ist / Soll};
+  \node[anchor=east] at (15.5,7.8) {Ist − Soll};
   \node[anchor=east] at (16.45,7.8) {Score};
 \end{scope}
 \draw[iuGrau!50] (3.7,7.6) -- (16.45,7.6);
-% Zeilen: Name / Farbe / Typ (M = Mindestziel, O = Obergrenze) / Ist / Soll / Score
-\foreach \name/\farbe/\typ/\ist/\istt/\soll/\score [count=\i] in {
-    Arbeit/bArbeit/O/33/33/30/74,
-    Schlaf/bSchlaf/M/39/39/56/62,
-    Bewegung/bBewegung/M/1.5/{1,5}/3/65,
-    Familie/bFamilie/M/12/12/10/95,
-    Hobbys/bHobbys/M/2/2/4/60,
-    Soziale Kontakte/bSozial/M/1/1/4/45,
-    Freizeit/bFreizeit/M/5/5/6/75,
-    Erholung/bErholung/M/3/3/5/56,
-    Persönliche Entwicklung/bEntwicklung/M/9/9/10/74,
-    Alltägliche Verpflichtungen/bAlltag/O/14/14/12/83}{
+% Zeilen: Name / Farbe / Typ (M = Mindestziel, O = Obergrenze) / Ist / Soll / Ist − Soll / Score
+\foreach \name/\farbe/\typ/\ist/\istt/\soll/\diff/\score [count=\i] in {
+    Arbeit/bArbeit/O/33/33/30/+3/74,
+    Schlaf/bSchlaf/M/39/39/56/−17/62,
+    Bewegung/bBewegung/M/1.5/{1,5}/3/{−1,5}/65,
+    Familie/bFamilie/M/12/12/10/+2/95,
+    Hobbys/bHobbys/M/2/2/4/−2/60,
+    Soziale Kontakte/bSozial/M/1/1/4/−3/45,
+    Freizeit/bFreizeit/M/5/5/6/−1/75,
+    Erholung/bErholung/M/3/3/5/−2/56,
+    Persönliche Entwicklung/bEntwicklung/M/9/9/10/−1/74,
+    Alltägliche Verpflichtungen/bAlltag/O/14/14/12/+2/83}{
   \pgfmathsetmacro{\y}{7.36-0.36*(\i-1)}
   \pgfmathsetmacro{\r}{min(\ist/\soll,1.5)}
   \fill[\farbe] (3.82,\y) circle (0.08);
   \node[anchor=west, font=\sz{8}] at (3.95,\y) {\name};
   \node[anchor=west, font=\sz{7.5}, text=iuGrau] at (7.75,\y)
     {\if\typ M Mindestziel\else Obergrenze\fi};
-  % Balkenspur 0 … 150 % (3,6 cm), Soll bei 100 % = 2,4 cm
-  \fill[iuFlaeche] (9.6,\y-0.08) rectangle (13.2,\y+0.08);
+  % Balkenspur 0 … 150 % (3,0 cm), Soll bei 100 % = 2,0 cm
+  \fill[iuFlaeche] (9.6,\y-0.08) rectangle (12.6,\y+0.08);
   \if\typ M
     \pgfmathsetmacro{\farbwahl}{\r>=1 ? 1 : 0}
     \ifdim\farbwahl pt=1pt
-      \fill[iuGruen] (9.6,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+      \fill[iuGruen] (9.6,\y-0.08) rectangle (9.6+2.0*\r,\y+0.08);
     \else
-      \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+      \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.0*\r,\y+0.08);
     \fi
   \else
     \pgfmathsetmacro{\basis}{min(\r,1)}
-    \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.4*\basis,\y+0.08);
+    \fill[iuAkzent] (9.6,\y-0.08) rectangle (9.6+2.0*\basis,\y+0.08);
     \pgfmathsetmacro{\ueber}{\r>1 ? 1 : 0}
     \ifdim\ueber pt=1pt
-      \fill[iuRot] (12.0,\y-0.08) rectangle (9.6+2.4*\r,\y+0.08);
+      \fill[iuRot] (11.6,\y-0.08) rectangle (9.6+2.0*\r,\y+0.08);
     \fi
   \fi
-  \draw[iuLinie, line width=1pt] (12.0,\y-0.13) -- (12.0,\y+0.13);
-  \node[anchor=east, font=\sz{8}] at (15.55,\y) {\istt\,/\,\soll~h};
+  \draw[iuLinie, line width=1pt] (11.6,\y-0.13) -- (11.6,\y+0.13);
+  \node[anchor=east, font=\sz{8}] at (14.25,\y) {\istt\,/\,\soll~h};
+  \node[anchor=east, font=\sz{8}] at (15.5,\y) {\diff~h};
   \node[anchor=east, font=\sz{8.5}\bfseries] at (16.45,\y) {\score};
 }
 
