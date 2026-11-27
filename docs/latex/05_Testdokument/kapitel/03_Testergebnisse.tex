@@ -22,19 +22,19 @@ Tabelle~\ref{tab:testergebnisse} zeigt das Ergebnis je Teststufe. Die Spalte \en
   \endhead
   \bottomrule
   \endfoot
-  Unit-Tests & 15 & 137 & 137 & 0 & 0,2~s \\
-  Integrationstests & 11 & 127 & 127 & 0 & 4,4~s \\
-  \quad davon Oberfläche & -- & 49 & 49 & 0 & 0,9~s \\
-  \quad davon Lasttests & 1 & 4 & 4 & 0 & 3,2~s \\
-  Systemtests & 10 & 9 + 1 manuell & 9 + 1 & 0 & 17,0~s \\
+  Unit-Tests & 16 & 141 & 141 & 0 & 0,2~s \\
+  Integrationstests & 15 & 176 & 176 & 0 & 5,8~s \\
+  \quad davon Oberfläche & -- & 93 & 93 & 0 & 2,7~s \\
+  \quad davon Lasttests & 1 & 4 & 4 & 0 & 2,7~s \\
+  Systemtests & 10 & 9 + 1 manuell & 9 + 1 & 0 & 18,0~s \\
   \midrule
-  Summe & 36 & 273 + 1 manuell & 273 + 1 & 0 & 21,5~s \\
+  Summe & 41 & 326 + 1 manuell & 326 + 1 & 0 & 24,0~s \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
 
-Alle 273 automatisierten Tests haben bestanden. Kein Test wurde übersprungen, und es gab keine Fehler beim Aufbau der Tests. Der manuelle Testfall TC-S-10 hat ebenfalls bestanden, mit der in Abschnitt~\ref{sec:fehler} genannten Einschränkung. Der gesamte Lauf mit Abdeckungsmessung dauerte 22,9~s. Gut ein Viertel davon entfällt auf TC-S-07, der zehn Python-Prozesse nacheinander startet und hart beendet (6,7~s). Die Unit-Tests brauchen zusammen nur etwa 0,2~s und lassen sich deshalb nach jeder Änderung ausführen.
+Alle 326 automatisierten Tests haben bestanden. Kein Test wurde übersprungen, und es gab keine Fehler beim Aufbau der Tests. Der manuelle Testfall TC-S-10 hat ebenfalls bestanden, mit der in Abschnitt~\ref{sec:fehler} genannten Einschränkung. Der gesamte Lauf mit Abdeckungsmessung dauerte 25,6~s. Gut ein Drittel davon entfällt auf TC-S-07, der zehn Python-Prozesse nacheinander startet und hart beendet (8,8~s). Die Unit-Tests brauchen zusammen nur etwa 0,2~s und lassen sich deshalb nach jeder Änderung ausführen.
 
-Die Zahl der Tests je Stufe spiegelt die Architektur wider. Die meisten Unit-Tests betreffen die Regeln (33) und die Gültigkeitsregeln (48 einschließlich Parametrisierung), weil dort die meisten Fallunterscheidungen der Spezifikation liegen. Die Integrationstests verteilen sich auf alle Anwendungsservices und alle Seiten der Oberfläche. Die neun automatisierten Systemtests decken die Abläufe ab, die die Prüfkriterien der nichtfunktionalen Anforderungen verlangen, und zusätzlich die beiden wichtigsten Nutzungsabläufe: den ersten Start mit Demodaten und das Erfassen einer Aktivität.
+Die Zahl der Tests je Stufe spiegelt die Architektur wider. Die meisten Unit-Tests betreffen die Regeln (33) und die Gültigkeitsregeln (48 einschließlich Parametrisierung), weil dort die meisten Fallunterscheidungen der Spezifikation liegen. Die Integrationstests verteilen sich auf alle Anwendungsservices und alle Seiten der Oberfläche. Die neun automatisierten Systemtests decken die Abläufe ab, die die Prüfkriterien der nichtfunktionalen Anforderungen verlangen, und zusätzlich die beiden wichtigsten Nutzungsabläufe: den ersten Start mit Demodaten und das Erfassen einer Aktivität. 53 der 326 Tests kamen erst nach der Abschlussprüfung der Software hinzu (TC-U-16, TC-I-12 bis TC-I-15 und ein Test in TC-I-08). 44 davon sind Oberflächentests, weil die meisten gefundenen Fehler die Oberfläche betrafen.
 
 \subsection{Abdeckung und Messwerte}\label{sec:abdeckung}
 Tabelle~\ref{tab:abdeckung} zeigt die Zeilenabdeckung, die pytest-cov im vollständigen Lauf gemessen hat. Für NFA07 zählt die Abdeckung der Bewertungs- und Regellogik durch die Unit-Tests allein. Sie wurde deshalb zusätzlich in einem Lauf nur mit \texttt{tests/unit} gemessen.
@@ -51,21 +51,21 @@ Tabelle~\ref{tab:abdeckung} zeigt die Zeilenabdeckung, die pytest-cov im vollst�
   \endhead
   \bottomrule
   \endfoot
-  \multicolumn{4}{@{}l}{\textit{Alle Tests (273)}} \\*
-  \texttt{balanceos} gesamt & 3.954 & 208 & 95~\% \\
-  \quad Domäne (\texttt{domaene}) & 614 & 6 & 99~\% \\
-  \quad Anwendung (\texttt{anwendung}) & 534 & 10 & 98~\% \\
-  \quad Persistenz (\texttt{persistenz}) & 250 & 4 & 98~\% \\
-  \quad Präsentation (\texttt{praesentation}) & 2.551 & 184 & 93~\% \\
+  \multicolumn{4}{@{}l}{\textit{Alle Tests (326)}} \\*
+  \texttt{balanceos} gesamt & 4.157 & 173 & 96~\% \\
+  \quad Domäne (\texttt{domaene}) & 621 & 6 & 99~\% \\
+  \quad Anwendung (\texttt{anwendung}) & 544 & 8 & 99~\% \\
+  \quad Persistenz (\texttt{persistenz}) & 257 & 4 & 98~\% \\
+  \quad Präsentation (\texttt{praesentation}) & 2.730 & 151 & 94~\% \\
   \midrule
-  \multicolumn{4}{@{}l}{\textit{Nur Unit-Tests (137), Prüfkriterium NFA07}} \\*
+  \multicolumn{4}{@{}l}{\textit{Nur Unit-Tests (141), Prüfkriterium NFA07}} \\*
   \texttt{domaene/bewertung.py} & 41 & 0 & 100~\% \\
-  \texttt{domaene/regeln.py} & 177 & 4 & 98~\% \\
-  Domäne gesamt & 614 & 7 & 99~\% \\
+  \texttt{domaene/regeln.py} & 183 & 4 & 98~\% \\
+  Domäne gesamt & 621 & 7 & 99~\% \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
 
-Die Bewertungs- und Regellogik liegt mit 100~\% und 98~\% deutlich über dem Grenzwert von 80~\%. Die niedrigste Abdeckung hat die Präsentationsschicht. Die Startfunktion in \texttt{praesentation/app.py} (62~\%) und \texttt{\_\_main\_\_.py} (0~\%) werden zwar in TC-S-08 ausgeführt, aber in einem eigenen Prozess, den pytest-cov nicht misst. Die übrigen Lücken liegen vor allem in Zeichen- und Kontextmenüfunktionen des Wochenkalenders und der Aktivitätenliste (je 84~\%).
+Die Bewertungs- und Regellogik liegt mit 100~\% und 98~\% deutlich über dem Grenzwert von 80~\%. Die niedrigste Abdeckung hat die Präsentationsschicht. Die Startfunktion in \texttt{praesentation/app.py} (81~\%) und \texttt{\_\_main\_\_.py} (0~\%) werden zwar in TC-S-08 ausgeführt, aber in einem eigenen Prozess, den pytest-cov nicht misst. Die übrigen Lücken liegen vor allem im Wochenkalender (89~\%) bei Doppelklick, Tooltip und dem Zeichnen ausgefallener Termine sowie in Dashboard und Erfassungsdialog (je 92~\%).
 
 Für NFA02 verlangt das Prüfkriterium, dass alle Zeilen der Tabelle \enquote{Gültigkeitsregeln für Eingabefelder} des Spezifikationsdokuments durch bestandene Testfälle abgedeckt sind. Tabelle~\ref{tab:validierungsabdeckung} ordnet die 26 Zeilen den Testfällen zu.
 
@@ -83,17 +83,17 @@ Für NFA02 verlangt das Prüfkriterium, dass alle Zeilen der Tabelle \enquote{G�
   \endfoot
   Titel & TC-U-09, TC-I-03, TC-S-03 & Name & TC-U-10, TC-I-02 \\
   Lebensbereich & TC-U-09, TC-I-03 & Typ, Farbe & TC-I-02 \\
-  Datum & TC-I-03, TC-S-02 & Aktiv & TC-U-10, TC-I-02 \\
-  Beginn, Ende & TC-U-04, TC-U-09, TC-I-03 & Soll-Stunden & TC-U-10 \\
-  Dauer & TC-U-09, TC-S-03 & Summe Soll & TC-U-10, TC-I-02 \\
+  Datum & TC-I-03, TC-S-02 & Aktiv & TC-U-10, TC-I-02, TC-I-14 \\
+  Beginn, Ende & TC-U-04, TC-U-09, TC-I-03 & Soll-Stunden & TC-U-10, TC-I-14 \\
+  Dauer & TC-U-09, TC-S-03 & Summe Soll & TC-U-10, TC-I-02, TC-I-14 \\
   Status & TC-U-09, TC-I-03 & Gewicht & TC-U-10, TC-I-02 \\
   Zufriedenheit, Belastung, Erholung & TC-U-09, TC-I-03 & Gewichtung $\alpha$ & TC-U-11, TC-I-02 \\
   Bewegungsart & TC-U-09, TC-I-03 & Datum WHO-5 & TC-U-11, TC-I-10 \\
-  Notiz & TC-U-09 & Aussagen 1--5 & TC-U-11, TC-I-10 \\
-  Wochentage & TC-U-10, TC-I-04 & Leitfragen, Stimmung & TC-U-11, TC-I-10 \\
+  Notiz & TC-U-09 & Aussagen 1--5 & TC-U-11, TC-I-10, TC-I-14 \\
+  Wochentage & TC-U-10, TC-I-04 & Leitfragen, Stimmung & TC-U-11, TC-I-10, TC-I-14 \\
   Enddatum & TC-U-10, TC-I-04 & Format & TC-I-08, TC-S-04 \\
   Zeitraum & TC-U-11, TC-I-08 & Speicherort & TC-I-08 \\
-  Demodaten & TC-I-09 & Bestätigung & TC-U-11, TC-I-09, TC-S-05 \\
+  Demodaten & TC-I-09 & Bestätigung & TC-U-11, TC-I-09, TC-I-14, TC-S-05 \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
 
@@ -101,7 +101,6 @@ Alle 26 Zeilen werden mit ungültigen Eingaben oder Grenzwerten geprüft. Bei de
 
 Tabelle~\ref{tab:nfa-messwerte} stellt für jede nichtfunktionale Anforderung den Grenzwert aus dem Anforderungsdokument dem gemessenen Wert gegenüber.
 
-\needspace{34\baselineskip}
 \begin{longtable}{@{}L{1.4cm}L{4.8cm}L{4.9cm}L{2.0cm}L{2.2cm}@{}}
   \caption{Messwerte der nichtfunktionalen Anforderungen}\label{tab:nfa-messwerte}\\
   \toprule
@@ -115,24 +114,26 @@ Tabelle~\ref{tab:nfa-messwerte} stellt für jede nichtfunktionale Anforderung de
   \bottomrule
   \endfoot
   NFA01 & kein englischer Standardtext; 100~\% der Eingabefelder beschriftet; Erfassung mit 1~Klick & 0 Verstöße; 7 von 7 Seiten mit 1~Klick & TC-S-09 & erfüllt \\
-  NFA02 & 100~\% der Zeilen der Validierungstabelle & 26 von 26 Zeilen & TC-U-09 bis TC-U-11, TC-I-03, TC-S-03 & erfüllt \\
-  NFA03 & Start höchstens 5~s; Dashboard bei 3.000 Aktivitäten höchstens 1~s & Start 0,50~s; Dashboard 6~ms & TC-S-08, TC-I-11 & erfüllt \\
+  NFA02 & 100~\% der Zeilen der Validierungstabelle & 26 von 26 Zeilen & TC-U-09 bis TC-U-11, TC-I-03, TC-I-14, TC-S-03 & erfüllt \\
+  NFA03 & Start höchstens 5~s; Dashboard bei 3.000 Aktivitäten höchstens 1~s & Start 0,82~s; Dashboard 5~ms & TC-S-08, TC-I-11 & erfüllt \\
   NFA04 & 0 Verluste in 10 Versuchen & 0 von 10 verloren; Integritätsprüfung \enquote{ok} & TC-S-07 & erfüllt \\
   NFA05 & 0 Netzwerkzugriffe; 0 Nutzdaten nach dem Löschen & 0 Zugriffe; 0 Datensätze in 6 Tabellen & TC-S-06, TC-S-05 & erfüllt \\
   NFA06 & 100~\% der Rechenbeispiele & 3 von 3 & TC-U-01 & erfüllt \\
   NFA07 & Zeilenabdeckung mindestens 80~\% & \texttt{bewertung.py} 100~\%, \texttt{regeln.py} 98~\% & TC-U-14 & erfüllt \\
-  NFA08 & 0 Befunde; 100~\% Docstrings & 0 Befunde; 304 von 304 & TC-U-15 & erfüllt \\
-  NFA09 & Hauptfenster nach höchstens 10~s ohne installiertes Python & 3,1~s, 3,1~s und 3,2~s auf einem Rechner mit Python & TC-S-10 & vorläufig erfüllt \\
+  NFA08 & 0 Befunde; 100~\% Docstrings & 0 Befunde; 312 von 312 & TC-U-15 & erfüllt \\
+  NFA09 & Hauptfenster nach höchstens 10~s ohne installiertes Python & 3,8~s, 3,3~s und 3,2~s auf einem Rechner mit Python & TC-S-10 & vorläufig erfüllt \\
   NFA10 & UTF-8 mit BOM, Semikolon, 16 Spalten je Zeile; JSON gültig & alle Bedingungen erfüllt & TC-S-04 & erfüllt \\
   NFA11 & 10 von 10 Regeln vollständig begründet & 10 von 10 & TC-U-08 & erfüllt \\
-  NFA12 & Dashboard und Statistik je höchstens 2~s; Datei unter 50~MB & Dashboard 6~ms; Statistik 9~ms; 3,2~MB & TC-I-11 & erfüllt \\
+  NFA12 & Dashboard und Statistik je höchstens 2~s; Datei unter 50~MB & Dashboard 5~ms; Statistik 10~ms; 3,2~MB & TC-I-11 & erfüllt \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
 
-Die Leistungswerte liegen weit unter den Grenzwerten. Die Lasttests messen die Neuberechnung im Auswertungsservice, also Wochenbewertung, Hinweise und Verlauf. Das Zeichnen der Oberfläche ist darin nicht enthalten. Die Werte stammen aus einem einzelnen Lauf und schwanken von Lauf zu Lauf um einige Millisekunden. Die Dauer hängt kaum von der Gesamtzahl der Aktivitäten ab, weil der Auswertungsservice aus der Datenbank nur die Aktivitäten der benötigten Wochen liest. Die Startzeit von 0,50~s gilt für den Start mit \texttt{python -m balanceos}. Die ausführbare Datei braucht etwa 3~s, weil sie ihre Laufzeitumgebung bei jedem Start in einen temporären Ordner entpackt.
+Die Leistungswerte liegen weit unter den Grenzwerten. Die Lasttests messen die Neuberechnung im Auswertungsservice, also Wochenbewertung, Hinweise und Verlauf. Das Zeichnen der Oberfläche ist darin nicht enthalten. Die Werte stammen aus einem einzelnen Lauf und schwanken von Lauf zu Lauf um einige Millisekunden. Die Dauer hängt kaum von der Gesamtzahl der Aktivitäten ab, weil der Auswertungsservice aus der Datenbank nur die Aktivitäten der benötigten Wochen liest. Die Startzeit von 0,82~s gilt für den Start mit \texttt{python -m balanceos}. Die ausführbare Datei braucht etwa 3 bis 4~s, weil sie ihre Laufzeitumgebung bei jedem Start in einen temporären Ordner entpackt.
 
 \subsection{Gefundene Fehler und offene Punkte}\label{sec:fehler}
-Im abschließenden Lauf ist kein Test fehlgeschlagen. Während der Entwicklung haben Tests und Reviews jedoch mehrere Fehler gefunden. Tabelle~\ref{tab:fehler} beschreibt sie mit Ursache und Behebung. Zu jedem behobenen Fehler gibt es einen Regressionstest, der sein erneutes Auftreten erkennt. Die Angaben lassen sich in der Versionsgeschichte des Repositorys nachvollziehen (Commits \texttt{7bf7a31} vom 23.11.2026 und \texttt{69ca627} vom 27.11.2026).
+Im abschließenden Lauf ist kein Test fehlgeschlagen. Während der Entwicklung haben Tests und Reviews jedoch mehrere Fehler gefunden. Tabelle~\ref{tab:fehler} beschreibt sie mit Ursache und Behebung. Zu jedem behobenen Fehler gibt es einen Regressionstest, der sein erneutes Auftreten erkennt. Die Angaben lassen sich in der Versionsgeschichte des Repositorys nachvollziehen (Commits \texttt{7bf7a31} vom 23.11.2026 sowie \texttt{69ca627}, \texttt{7ccd33a} und \texttt{64d7188} vom 27.11.2026).
+
+Die Fehler F6 bis F13 fand die Abschlussprüfung der Software in Phase~3, nachdem alle automatisierten Tests bereits bestanden hatten. Dabei wurde die laufende Anwendung in Bedienabläufen über mehrere Schritte geprüft, zum Beispiel einen Serientermin verschieben und die Änderung danach auf alle zukünftigen Termine anwenden. Solche Abfolgen deckten die automatisierten Tests bis dahin nicht ab. Jeder Fehler wurde zuerst als fehlschlagender Test nachgestellt und erst danach behoben. F14 kam nach der Abschlussprüfung hinzu.
 
 \begin{longtable}{@{}L{0.7cm}L{4.4cm}L{4.6cm}L{6.0cm}@{}}
   \caption{Gefundene und behobene Fehler}\label{tab:fehler}\\
@@ -155,6 +156,24 @@ Im abschließenden Lauf ist kein Test fehlgeschlagen. Während der Entwicklung h
   F4 & Eingabefelder ohne verknüpfte Beschriftung: Filter der Seite \enquote{Aktivitäten}, Felder des Wunschprofils, Enddatum der Serie. Gefunden durch TC-S-09. & Die Beschriftung stand als Text neben dem Feld, war aber nicht mit ihm verknüpft. & Beschriftungen mit dem Feld verknüpft bzw. einen zugänglichen Namen gesetzt. TC-S-09 prüft alle sichtbaren Felder auf allen Seiten. \\
   \midrule
   F5 & Rückfragen von Qt zeigten die englischen Knöpfe \enquote{Yes} und \enquote{No}. Gefunden bei der Arbeit an den Systemtests in Phase~3. & Die Qt-Übersetzung der Standardtexte (\texttt{qtbase\_de}) wurde beim Start nicht geladen. & Die Übersetzung wird beim Start geladen und in die ausführbare Datei gepackt; fehlt sie, startet die Anwendung trotzdem. Tests in \pyt{tests/gui/test_uebersetzung.py} (TC-I-05). \\
+  \midrule
+  F6 & Wurde ein Serientermin im Dialog auf einen anderen Tag verschoben und dabei \enquote{auf alle zukünftigen Termine anwenden} gewählt, entstand am alten Tag ein zweiter Termin. & Der Dialog speicherte die Serie in dem Stand, den er beim Öffnen geladen hatte. Die Ausnahme, die das Verschieben kurz zuvor angelegt hatte, ging dabei verloren. & Der Dialog lädt die Serie vor dem Speichern neu, und die Serienänderung vereinigt die gespeicherten Ausnahmen mit den übergebenen (GR18, GR19). Tests in TC-I-12. \\
+  \midrule
+  F7 & Ungespeicherter Text der Wochenreflexion ging verloren, wenn der WHO-5-Fragebogen ausgewertet oder die Woche gewechselt wurde. & Die Seite lud bei jeder Aktualisierung die gespeicherte Reflexion neu und überschrieb damit die Eingabefelder. & Die Auswertung lässt ungespeicherten Text stehen. Vor einem Wochenwechsel fragt eine Rückfrage, ob gespeichert, verworfen oder abgebrochen werden soll. Tests \pyt{test_a2_*} in TC-I-14. \\
+  \midrule
+  F8 & \enquote{Termin überspringen} auf der Seite \enquote{Aktivitäten} löschte ohne Rückfrage, auch durchgeführte Termine mit Bewertung und Notiz. & Der Knopf war für jeden Termin einer Serie aktiv und führte das Überspringen sofort aus. & Überspringen ist nur für geplante Serientermine möglich und erst nach einer Rückfrage (US08). Tests in TC-I-12. \\
+  \midrule
+  F9 & Namen und Titel mit \enquote{<} wurden als HTML dargestellt, z.\,B. erschien \enquote{<b>Hobbys</b>} fett und ohne Tags. & Beschriftungen, Rückfragen und Tooltips erkennen HTML automatisch, die Texte wurden aber ungeschützt übergeben. & Texte werden als Klartext gesetzt oder vorher maskiert. Tests \pyt{test_b1_*} und \pyt{tests/gui/test_review_phase3_klartext.py} in TC-I-15. \\
+  \midrule
+  F10 & Das Hauptfenster passte nicht auf kleine Bildschirme. & Die Mindestgröße war fest auf 1.280 $\times$ 720 Pixel gesetzt. & Mindestgröße 960 $\times$ 520 Pixel; die Seiten liegen in einem Bildlaufbereich, die Startgröße richtet sich nach der Bildschirmfläche. Tests \pyt{test_mindestgroesse} (TC-I-05) und \pyt{test_b2_*} (TC-I-15). \\
+  \midrule
+  F11 & Ein Datenbankfehler im laufenden Betrieb, etwa eine gesperrte Datei, blieb ohne Meldung. & Unbehandelte Fehler in der Oberfläche wurden nur auf der Konsole ausgegeben, die die ausführbare Datei nicht hat. & Eine zentrale Fehlerbehandlung zeigt eine deutsche Meldung und schreibt die Einzelheiten in \texttt{fehler.log}. Tests \pyt{test_b3_*} in TC-I-13. \\
+  \midrule
+  F12 & Datenbankdatei: Nach \enquote{Alle Daten löschen} standen gelöschte Inhalte bis zum Programmende im Write-Ahead-Log; bei einem Fehler beim Öffnen blieb die Verbindung offen; die Anwendung ließ sich zweimal mit denselben Daten starten. & Das Log wurde erst beim Beenden geleert, die Verbindung im Fehlerfall nicht geschlossen, und eine Sperre gegen eine zweite Instanz fehlte. & Nach dem Löschen wird das Log sofort geleert (NFA05, GR29), die Verbindung bei einem Fehler geschlossen und der Datenordner gesperrt. Tests in TC-I-13. \\
+  \midrule
+  F13 & Kleinere Fehler in Texten und Darstellung: 6,98~h erschien in R03 als \enquote{7 h}; Einzahl fehlte (\enquote{1 Aktivitäten}, \enquote{Noch offen: 1 Aussagen.}); das Dashboard zeigte einen Strich statt \enquote{zu wenig Daten} und keine Abweichung Ist $-$ Soll; Meldungen am Feld fehlten für Leitfragen, Löschbestätigung und Lebensbereich; die Wochenansicht zeigte den Überlauf vom Sonntag der Vorwoche nicht. & Verschiedene Einzelursachen in Regeltexten, Seiten und Wochenkalender. & Einzeln behoben. Tests in TC-U-16, TC-I-14 und TC-I-15; angepasst wurden \pyt{test_mindestgroesse}, \pyt{test_unzureichende_daten_zeigen_zu_wenig_daten} und TC-S-02. \\
+  \midrule
+  F14 & Im CSV-Export konnte ein Titel wie \enquote{=SUMME(1;2)} beim Öffnen in einer Tabellenkalkulation als Formel ausgeführt werden. & Textfelder wurden unverändert geschrieben. & Bereichsname, Titel und Notiz erhalten ein vorangestelltes Apostroph, wenn sie mit =, +, -, @, Tabulator oder Wagenrücklauf beginnen. Test \pyt{test_csv_textfelder_mit_formelzeichen_erhalten_apostroph} (TC-I-08). \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
 

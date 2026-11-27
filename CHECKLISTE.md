@@ -86,7 +86,7 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 
 **Einreichung (5 Teile):**
 1. ☐ `…_PSE_P3_Abstract.pdf` (erzeugt am 27.11.2026 in `abgabe/Phase3_Finalisierung/`)
-2. ☐ `…_PSE_P3_FinalesProdukt.pdf` mit allen 6 Dokumenten (erzeugt am 27.11.2026, 338 Seiten). ⚙ `--phase 3 --abgabe`
+2. ☐ `…_PSE_P3_FinalesProdukt.pdf` mit allen 6 Dokumenten (erzeugt am 27.11.2026, 370 Seiten). ⚙ `--phase 3 --abgabe`
 3. ☐ `…_PSE_P3_Abgabe.zip` mit **identischem** Inhalt wie das GitHub-Repository. ⚙ `--phase 3 --zip` prüft Commit und Push. **Danach keine Änderungen mehr am Repository.**
 4. ☐ PDF aus Phase 1 erneut (eingefrorene Fassung)
 5. ☐ PDF aus Phase 2 erneut (eingefrorene Fassung)

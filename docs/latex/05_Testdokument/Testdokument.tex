@@ -9,6 +9,14 @@
 \documentclass{iu-pse}
 \input{meta}
 \addbibresource{literatur.bib}
+\makeatletter
+\newcommand{\tabellenplatz}[1]{\par\penalty\z@
+  \begingroup\dimen@\pagegoal\advance\dimen@-\pagetotal
+  \ifdim\pagegoal<\maxdimen\ifdim\dimen@<#1\relax\newpage\fi\fi\endgroup}
+\let\tabellenplatz@needspace\needspace
+\BeforeBeginEnvironment{longtable}{\tabellenplatz{6\baselineskip}\let\needspace\@gobble}
+\AfterEndEnvironment{longtable}{\let\needspace\tabellenplatz@needspace}
+\makeatother
 
 \dokumenttitel{Testdokument}
 \dokumentuntertitel{\Projektname}

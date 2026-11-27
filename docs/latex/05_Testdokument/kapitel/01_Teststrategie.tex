@@ -35,8 +35,8 @@ SWEBOK unterscheidet vier Teststufen: Unit-, Integrations-, System- und Abnahmet
   \endhead
   \bottomrule
   \endfoot
-  Unit-Tests & Domänenschicht ohne Oberfläche und Datenbank: Wochenbewertung, Regeln R01--R10, Gültigkeitsregeln, Kalenderwoche, Wiederholungsserien, \acs{WHO}-5; Architekturregeln; statische Analyse & \texttt{tests/unit}; pytest, Ruff & 137 Tests; TC-U-01 bis TC-U-15 \\
-  Integrationstests & Anwendungsservices mit echter SQLite-Datenbank, Persistenz, Export und Demodaten; Seiten und Dialoge der Oberfläche mit echten Services; Lasttests & \texttt{tests/integration}, \texttt{tests/gui}; pytest, pytest-qt & 78 + 49 Tests; TC-I-01 bis TC-I-11 \\
+  Unit-Tests & Domänenschicht ohne Oberfläche und Datenbank: Wochenbewertung, Regeln R01--R10, Gültigkeitsregeln, Kalenderwoche, Wiederholungsserien, \acs{WHO}-5; Architekturregeln; statische Analyse & \texttt{tests/unit}; pytest, Ruff & 141 Tests; TC-U-01 bis TC-U-16 \\
+  Integrationstests & Anwendungsservices mit echter SQLite-Datenbank, Persistenz, Export und Demodaten; Seiten und Dialoge der Oberfläche mit echten Services; Lasttests & \texttt{tests/integration}, \texttt{tests/gui}; pytest, pytest-qt & 83 + 93 Tests; TC-I-01 bis TC-I-15 \\
   Systemtests & vollständige Abläufe über das Hauptfenster auf einer Datenbankdatei; Start und Absturz in eigenen Prozessen; Start der ausführbaren Datei & \texttt{tests/system}; pytest-qt, Unterprozesse; manuell & 9 Tests + 1 manueller Test; TC-S-01 bis TC-S-10 \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
@@ -58,12 +58,11 @@ Die Ausführung von Tests soll so genau dokumentiert sein, dass eine andere Pers
 
 \verb|python -m pytest -m "leistung or not leistung" --cov=balanceos -s|
 
-Der Zusatz \verb|-m "leistung or not leistung"| schließt die Lasttests ein, \texttt{-s} gibt die Messwerte aus. Die Ergebnisse in Kapitel~\ref{sec:testprotokoll} und~\ref{sec:testergebnisse} stammen aus diesem Lauf am 27.11.2026 mit dem Stand des Repositorys nach Commit \texttt{69ca627}.
+Der Zusatz \verb|-m "leistung or not leistung"| schließt die Lasttests ein, \texttt{-s} gibt die Messwerte aus. Die Ergebnisse in Kapitel~\ref{sec:testprotokoll} und~\ref{sec:testergebnisse} stammen aus diesem Lauf am 27.11.2026 mit dem Stand des Repositorys nach Commit \texttt{64d7188}.
 
 \subsection{Nachverfolgbarkeit}\label{sec:nachverfolgbarkeit}
 Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebok2026}. Jeder Testfall im Protokoll nennt deshalb im Feld \enquote{Bezug} die User Stories, nichtfunktionalen Anforderungen und Geschäftsregeln, die er prüft. Im Feld \enquote{Automatisierung} nennt er die pytest-Funktionen, die ihn umsetzen. Tabelle~\ref{tab:nachverfolgbarkeit} zeigt dieselbe Zuordnung aus Sicht der Anforderungen. Jede User Story, jede nichtfunktionale Anforderung und jede Geschäftsregel wird von mindestens einem Testfall geprüft.
 
-\needspace{16\baselineskip}
 \begin{longtable}{@{}L{1.5cm}L{9.3cm}L{5.3cm}@{}}
   \caption{Zuordnung von Anforderungen und Geschäftsregeln zu Testfällen}\label{tab:nachverfolgbarkeit}\\
   \toprule
@@ -78,34 +77,34 @@ Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebo
   \endfoot
   \multicolumn{3}{@{}l}{\textbf{User Stories}} \\*
   US01 & zehn vorbereitete Lebensbereiche beim ersten Start & TC-I-01, TC-I-02, TC-S-01 \\
-  US02 & Lebensbereiche anlegen, umbenennen, färben, deaktivieren & TC-U-10, TC-I-02 \\
+  US02 & Lebensbereiche anlegen, umbenennen, färben, deaktivieren & TC-U-10, TC-I-02, TC-I-14, TC-I-15 \\
   US03 & Bereichstyp Mindestziel oder Obergrenze & TC-U-01, TC-U-03, TC-I-01 \\
-  US04 & Soll-Stunden je Lebensbereich (Wunschprofil) & TC-U-02, TC-U-10, TC-I-02 \\
+  US04 & Soll-Stunden je Lebensbereich (Wunschprofil) & TC-U-02, TC-U-10, TC-I-02, TC-I-14 \\
   US05 & Aktivität erfassen & TC-U-04, TC-U-09, TC-I-03, TC-S-02, TC-S-03 \\
-  US06 & Aktivität bearbeiten, löschen, Status ändern & TC-U-09, TC-I-03, TC-I-04 \\
-  US07 & wiederkehrende Aktivität für gewählte Wochentage & TC-U-10, TC-U-12, TC-I-04, TC-S-05 \\
-  US08 & einzelnen Termin einer Serie überspringen & TC-U-12, TC-I-04 \\
-  US09 & Wochenansicht Montag bis Sonntag & TC-U-04, TC-I-05, TC-S-02 \\
-  US10 & Dashboard mit Scores, Balken, Hinweisen, Vollständigkeit & TC-U-06, TC-I-06, TC-S-01, TC-S-02 \\
-  US11 & Wochenbewertung als Score 0--100 & TC-U-01, TC-U-02, TC-I-06 \\
-  US12 & regelbasierte Hinweise & TC-U-05, TC-U-06, TC-I-06 \\
-  US13 & Begründung \enquote{Warum sehe ich das?} & TC-U-08, TC-I-06 \\
+  US06 & Aktivität bearbeiten, löschen, Status ändern & TC-U-09, TC-I-03, TC-I-04, TC-I-12, TC-I-15 \\
+  US07 & wiederkehrende Aktivität für gewählte Wochentage & TC-U-10, TC-U-12, TC-I-04, TC-I-12, TC-S-05 \\
+  US08 & einzelnen Termin einer Serie überspringen & TC-U-12, TC-I-04, TC-I-12 \\
+  US09 & Wochenansicht Montag bis Sonntag & TC-U-04, TC-I-05, TC-I-15, TC-S-02 \\
+  US10 & Dashboard mit Scores, Balken, Hinweisen, Vollständigkeit & TC-U-06, TC-I-06, TC-I-15, TC-S-01, TC-S-02 \\
+  US11 & Wochenbewertung als Score 0--100 & TC-U-01, TC-U-02, TC-I-06, TC-I-15 \\
+  US12 & regelbasierte Hinweise & TC-U-05, TC-U-06, TC-U-16, TC-I-06 \\
+  US13 & Begründung \enquote{Warum sehe ich das?} & TC-U-08, TC-U-16, TC-I-06 \\
   US14 & Regeln ein- und ausschalten & TC-U-07, TC-I-01, TC-I-06 \\
   US15 & Balance-Kompass mit Modellseiten & TC-I-07 \\
   US16 & Export als CSV und JSON & TC-I-08, TC-S-04 \\
-  US17 & alle Daten vollständig löschen & TC-U-11, TC-I-09, TC-S-05 \\
+  US17 & alle Daten vollständig löschen & TC-U-11, TC-I-09, TC-I-13, TC-I-14, TC-S-05 \\
   US18 & Demodaten laden und entfernen & TC-I-09, TC-S-01 \\
   US19 & optionaler Gesamt-Score mit Gewichtung & TC-U-01, TC-U-03, TC-I-02, TC-I-06 \\
-  US20 & WHO-5-Fragebogen & TC-U-11, TC-U-13, TC-I-10, TC-S-05 \\
+  US20 & WHO-5-Fragebogen & TC-U-11, TC-U-13, TC-U-16, TC-I-10, TC-I-14, TC-S-05 \\
   US21 & Verlauf der Scores über mehrere Wochen & TC-I-06, TC-I-10 \\
-  US22 & Wochenreflexion & TC-U-11, TC-I-10, TC-S-05 \\
+  US22 & Wochenreflexion & TC-U-11, TC-I-10, TC-I-14, TC-S-05 \\
   \midrule
   \multicolumn{3}{@{}l}{\textbf{Nichtfunktionale Anforderungen}} \\*
-  NFA01 & deutsche, beschriftete Oberfläche; Erfassung mit einem Klick & TC-I-05, TC-S-09 \\
-  NFA02 & ungültige Eingaben mit Meldung am Feld abfangen & TC-U-09, TC-U-10, TC-U-11, TC-I-03, TC-S-03 \\
+  NFA01 & deutsche, beschriftete Oberfläche; Erfassung mit einem Klick & TC-I-05, TC-I-15, TC-S-09 \\
+  NFA02 & ungültige Eingaben mit Meldung am Feld abfangen & TC-U-09, TC-U-10, TC-U-11, TC-I-03, TC-I-14, TC-S-03 \\
   NFA03 & Start höchstens 5~s, Dashboard bei 3.000 Aktivitäten höchstens 1~s & TC-I-11, TC-S-08 \\
-  NFA04 & keine Datenverluste & TC-I-01, TC-S-07 \\
-  NFA05 & kein Netzwerkzugriff, vollständige Löschung & TC-S-05, TC-S-06 \\
+  NFA04 & keine Datenverluste & TC-I-01, TC-I-13, TC-S-07 \\
+  NFA05 & kein Netzwerkzugriff, vollständige Löschung & TC-I-13, TC-S-05, TC-S-06 \\
   NFA06 & Berechnung exakt nach Spezifikation (Rechenbeispiele) & TC-U-01, TC-I-06 \\
   NFA07 & Schichtentrennung, Abdeckung der Bewertungs- und Regellogik & TC-U-14 \\
   NFA08 & Docstrings und PEP~8, keine Befunde der statischen Prüfung & TC-U-15 \\
@@ -116,34 +115,34 @@ Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebo
   \midrule
   \multicolumn{3}{@{}l}{\textbf{Geschäftsregeln}} \\*
   GR01 & Name 1--40 Zeichen, eindeutig & TC-U-10, TC-I-02 \\
-  GR02 & mindestens ein aktiver Bereich mit Soll über 0~h & TC-U-10 \\
+  GR02 & mindestens ein aktiver Bereich mit Soll über 0~h & TC-U-10, TC-I-14 \\
   GR03 & Standardbereiche nicht löschbar & TC-U-07, TC-I-02 \\
   GR04 & genutzter eigener Bereich nicht löschbar & TC-I-01, TC-I-02 \\
   GR05 & deaktivierte Bereiche nicht bewertet, nicht neu wählbar & TC-U-02, TC-U-09, TC-I-03 \\
-  GR06 & Soll 0--168~h, Summe höchstens 168~h & TC-U-10, TC-I-02 \\
+  GR06 & Soll 0--168~h, Summe höchstens 168~h & TC-U-10, TC-I-02, TC-I-14 \\
   GR07 & Gewicht 0--10 & TC-U-03, TC-U-10, TC-I-02 \\
   GR08 & Parameter $\alpha$ zwischen 0 und 1 & TC-U-03, TC-U-11, TC-I-02 \\
   GR09 & genau ein Bereich, Titel 1--80, Notiz bis 500 Zeichen & TC-U-09, TC-S-03 \\
   GR10 & Dauer 1--1.440~min, Beginn und Ende verschieden & TC-U-04, TC-U-09, TC-S-03 \\
-  GR11 & Aktivität über Mitternacht & TC-U-04, TC-I-03, TC-I-05 \\
+  GR11 & Aktivität über Mitternacht & TC-U-04, TC-I-03, TC-I-05, TC-I-15 \\
   GR12 & durchgeführt nicht in der Zukunft & TC-U-09, TC-I-03 \\
   GR13 & Bewertungen nur bei durchgeführt & TC-U-09, TC-I-03 \\
   GR14 & nur durchgeführte Aktivitäten aktiver Bereiche zählen & TC-U-02, TC-U-05 \\
   GR15 & Bewegungsart nur im Bereich Bewegung & TC-U-05, TC-U-09, TC-I-03 \\
   GR16 & Serie mit Wochentag, Dauer, gültigem Enddatum & TC-U-10, TC-I-04 \\
   GR17 & Termine an gewählten Tagen, höchstens 52 Wochen voraus & TC-U-12, TC-I-04 \\
-  GR18 & Ausnahme für ein Termindatum & TC-U-12, TC-I-04 \\
-  GR19 & Serienänderung nur für künftige, unbearbeitete Termine & TC-I-04 \\
+  GR18 & Ausnahme für ein Termindatum & TC-U-12, TC-I-04, TC-I-12 \\
+  GR19 & Serienänderung nur für künftige, unbearbeitete Termine & TC-I-04, TC-I-12 \\
   GR20 & Löschen einer Serie & TC-I-01, TC-I-04 \\
-  GR21 & keine Scores unter vier Tagen, nur Hinweis R10 & TC-U-02, TC-U-06, TC-I-06 \\
+  GR21 & keine Scores unter vier Tagen, nur Hinweis R10 & TC-U-02, TC-U-06, TC-I-06, TC-I-15 \\
   GR22 & Bereiche mit Soll 0~h nicht bewertet & TC-U-02, TC-U-06 \\
   GR23 & Gesamt-Score nur eingeschaltet und mit Gewicht über 0 & TC-U-03, TC-I-06 \\
   GR24 & höchstens ein Hinweis je Regel und Woche, Ausblenden & TC-U-06, TC-I-06 \\
   GR25 & deaktivierte Regeln ohne Hinweis, vollständige Begründung & TC-U-07, TC-U-08, TC-I-06 \\
-  GR26 & WHO-5 nur vollständig, Datum nicht in der Zukunft & TC-U-11, TC-I-10 \\
+  GR26 & WHO-5 nur vollständig, Datum nicht in der Zukunft & TC-U-11, TC-U-16, TC-I-10, TC-I-14 \\
   GR27 & höchstens eine Wochenreflexion je Woche & TC-I-01, TC-I-10 \\
   GR28 & Demodaten zusätzlich laden, gezielt entfernen & TC-I-09 \\
-  GR29 & Löschen erst nach Eingabe von LÖSCHEN & TC-U-11, TC-I-09, TC-S-05 \\
+  GR29 & Löschen erst nach Eingabe von LÖSCHEN & TC-U-11, TC-I-09, TC-I-13, TC-I-14, TC-S-05 \\
   GR30 & Daten verlassen den Rechner nur per Export & TC-I-08, TC-S-06 \\
 \end{longtable}
 \quelle{Eigene Darstellung.}

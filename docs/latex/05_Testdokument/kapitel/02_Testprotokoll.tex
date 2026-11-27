@@ -6,7 +6,7 @@
 %  Je Testfall ein Block mit dem Makro \testfall (alle Pflichtfelder)
 %  innerhalb einer longtable je Teststufe. Zwischen zwei Blöcken steht
 %  \midrule; innerhalb eines Blocks verhindert \\* einen Seitenumbruch.
-%  Tatsächliche Ergebnisse: Lauf vom 27.11.2026 (273 Tests, 0 Fehler).
+%  Tatsächliche Ergebnisse: Lauf vom 27.11.2026 (326 Tests, 0 Fehler).
 % =====================================================================
 % pytest-Funktion mit Zeilenumbruch an beliebiger Stelle (xurl)
 \newcommand{\pyt}[1]{{\urlstyle{tt}\nolinkurl{#1}}}
@@ -34,7 +34,7 @@
 \section{Testprotokoll}\label{sec:testprotokoll}
 Das Testprotokoll beschreibt alle Testfälle, getrennt nach Teststufen. Neben den Pflichtangaben der Aufgabenstellung nennt jeder Testfall den Bezug zu den Anforderungen und die automatisierten Tests, die ihn umsetzen. Die IDs folgen dem Schema TC-\textit{Stufe}-\textit{Nummer} (U für Unit-, I für Integrations-, S für Systemtests).
 
-Ein Testfall bündelt gleichartige pytest-Funktionen, etwa alle Grenzwertprüfungen einer Regel. Jede der 247 Testfunktionen gehört zu genau einem Testfall. Die Zahl der ausgeführten Tests ist bei parametrisierten Funktionen größer als die Zahl der Funktionen. Pfade beziehen sich auf den Ordner \texttt{app}. Das tatsächliche Ergebnis stammt aus dem Testlauf vom 27.11.2026 (Abschnitt~\ref{sec:testumgebung}). \enquote{Bestanden} heißt, dass alle Prüfungen der genannten Tests erfüllt waren.
+Ein Testfall bündelt gleichartige pytest-Funktionen, etwa alle Grenzwertprüfungen einer Regel. Jede der 300 Testfunktionen gehört zu genau einem Testfall. Die Zahl der ausgeführten Tests ist bei parametrisierten Funktionen größer als die Zahl der Funktionen. Pfade beziehen sich auf den Ordner \texttt{app}. Das tatsächliche Ergebnis stammt aus dem Testlauf vom 27.11.2026 (Abschnitt~\ref{sec:testumgebung}). \enquote{Bestanden} heißt, dass alle Prüfungen der genannten Tests erfüllt waren. TC-U-16 und TC-I-12 bis TC-I-15 enthalten die Regressionstests zu den Fehlern, die die Abschlussprüfung der Software in Phase~3 gefunden hat (Abschnitt~\ref{sec:fehler}).
 
 \subsection{Unit-Tests}\label{sec:protokoll-unit}
 Die Unit-Tests prüfen die Domänenschicht ohne Oberfläche und Datenbank. Die Vorbedingungen beschränken sich deshalb auf die Geschäftsobjekte, die der Test selbst anlegt. Die Lebensbereiche entsprechen den zehn Standardbereichen aus dem Spezifikationsdokument, sofern der Testfall nichts anderes angibt. Die Woche ist KW~46 oder KW~47/2026. Die Tabellen~\ref{tab:protokoll-unit} bis~\ref{tab:protokoll-system} geben das Protokoll wieder. TC-U-01 setzt die Rechenbeispiele der Spezifikation um und ist damit der zentrale Nachweis für NFA06. TC-U-15 ist keine pytest-Funktion, sondern die statische Prüfung mit Ruff und einem Prüfskript für Docstrings.
@@ -166,7 +166,7 @@ Die Unit-Tests prüfen die Domänenschicht ohne Oberfläche und Datenbank. Die V
     {Quellcode in \texttt{src/balanceos}.}
     {Auswertung aller Importe der Pakete \texttt{domaene}, \texttt{persistenz} und \texttt{anwendung}; Gegenprobe mit einer Testdatei, die \texttt{sqlite3} importiert; \texttt{python -m pytest tests/unit -{}-cov=balanceos.domaene}.}
     {Die Domäne importiert weder PySide6 noch \texttt{sqlite3} noch höhere Schichten; Persistenz und Anwendung importieren kein Qt. Die Gegenprobe findet den Verstoß. Zeilenabdeckung von \texttt{bewertung.py} und \texttt{regeln.py} je mindestens 80~\%.}
-    {Bestanden am 27.11.2026 (3 von 3 Tests). Abdeckung durch die Unit-Tests: \texttt{bewertung.py} 100~\% (41 von 41 Anweisungen), \texttt{regeln.py} 98~\% (173 von 177), Domänenschicht gesamt 99~\%.}
+    {Bestanden am 27.11.2026 (3 von 3 Tests). Abdeckung durch die Unit-Tests: \texttt{bewertung.py} 100~\% (41 von 41 Anweisungen), \texttt{regeln.py} 98~\% (179 von 183), Domänenschicht gesamt 99~\%.}
   \midrule
   \testfall{TC-U-15}
     {Statische Analyse des Quellcodes auf Stilfehler und Docstrings.}
@@ -175,7 +175,16 @@ Die Unit-Tests prüfen die Domänenschicht ohne Oberfläche und Datenbank. Die V
     {Konfiguration in \texttt{pyproject.toml}; Ruff 0.17.6.}
     {Aufruf von Ruff; Aufruf des Prüfskripts, das jedes öffentliche Element ohne führenden Unterstrich auf einen Docstring prüft.}
     {0 Befunde von Ruff; 100~\% der öffentlichen Elemente mit Docstring.}
-    {Bestanden am 27.11.2026. Ruff: \enquote{All checks passed!} (0 Befunde). Prüfskript: 304 öffentliche Elemente geprüft, alle mit Docstring.}
+    {Bestanden am 27.11.2026. Ruff: \enquote{All checks passed!} (0 Befunde). Prüfskript: 312 öffentliche Elemente geprüft, alle mit Docstring.}
+  \midrule
+  \testfall{TC-U-16}
+    {Hinweis- und Meldungstexte an der Schwelle: Werte knapp unter einer Schwelle werden nicht auf die Schwelle gerundet; Einzahl und Mehrzahl in der WHO-5-Meldung.}
+    {US12, US13, US20, GR26}
+    {\pyt{tests/unit/test_review_phase3_texte.py}: \pyt{test_r03_knapp_unter_sieben_stunden_nicht_als_sieben_angezeigt}, \pyt{test_r04_knapp_unter_der_haelfte_nicht_als_haelfte_angezeigt}, \pyt{test_r03_rundung_unveraendert_wenn_schwelle_nicht_erreicht_wird}, \pyt{test_who5_meldung_singular_bei_einer_offenen_aussage} (4~Tests)}
+    {Wie TC-U-05; KW~46/2026; Soll Soziale Kontakte 4~h; für WHO-5 Datum und Tagesdatum 18.11.2026.}
+    {(a) Schlaf an 4 Tagen mit 419, 419, 419 und 418~min (Durchschnitt 6,98~h). (b) Soziale Kontakte in KW~44 bis KW~46 mit 60, 60 und 119~min. (c) Schlaf an 4 Tagen je 387~min (6,45~h). (d) WHO-5 mit vier, drei und keiner Antwort.}
+    {(a) R03 meldet \enquote{Durchschnittliche Schlafdauer in KW 46: 6,9 h an 4 Tagen mit Eintrag -- unter der Empfehlung von mindestens 7 h.}, die Begründung nennt als Wert \enquote{6,9 h an 4 Tagen}. (b) R04 endet mit \enquote{(zuletzt 1,9 von 4 h).}, der Wert in der Begründung mit \enquote{KW 46/2026: 1,9 h}. (c) Unterhalb der Schwelle wird weiter kaufmännisch gerundet: \enquote{6,5 h}. (d) \enquote{Noch offen: 1 Aussage.}, \enquote{Noch offen: 2 Aussagen.} und \enquote{Noch offen: 5 Aussagen.}}
+    {Bestanden am 27.11.2026 (4 von 4 Tests). 6,98~h erscheint als \enquote{6,9 h} und nicht als \enquote{7 h}, 1,98~h als \enquote{1,9 von 4 h}.}
 \end{longtable}
 \endgroup
 \quelle{Eigene Darstellung.}
@@ -228,7 +237,7 @@ Die Integrationstests prüfen das Zusammenspiel der Schichten. Sofern nicht ande
     {\pyt{tests/gui/test_woche.py} (3~Tests); \pyt{tests/gui/test_hauptfenster.py} (4~Tests); \pyt{tests/gui/test_uebersetzung.py}: \pyt{test_rueckfragen_zeigen_deutsche_knoepfe}, \pyt{test_fehlende_uebersetzung_bricht_nicht_ab} (zusammen 9~Tests)}
     {Frischer Kontext mit vier Aktivitäten in KW~47 (darunter Schlaf 23:00--06:30 am Montag und eine geplante Nachtaktivität am Sonntag) und einer in KW~48; Hauptfenster in KW~47.}
     {Wochenkalender für KW~47 füllen und den Mittelpunkt eines Blocks auswerten; Punkt auf der freien Fläche am Mittwoch, 09:10 Uhr, in Datum und Uhrzeit umrechnen; Statusfilter \enquote{geplant}; Seitenleiste lesen und Eintrag 5 wählen; Woche vor, zweimal zurück, \enquote{Heute}; Mindestgröße abfragen. Qt-Übersetzung laden und eine Rückfrage mit Ja und Nein erzeugen; Laden aus einem leeren Ordner.}
-    {Blöcke nur der KW~47; die Nachtaktivität erscheint in zwei Teilen, die Sonntagsaktivität nur bis 24 Uhr; der Mittelpunkt gehört zur richtigen Aktivität. Der Punkt ergibt 18.11.2026, 09:00 Uhr. Filter zeigt 1 von 4 Zeilen. Sieben Seiten von \enquote{Dashboard} bis \enquote{Einstellungen}; Titel \enquote{Kompass}; Kalenderwoche wechselt passend. Mindestgröße 1.280 $\times$ 720 Pixel. Knöpfe heißen \enquote{\&Ja} und \enquote{\&Nein}; ohne Übersetzungsdatei startet die Anwendung trotzdem.}
+    {Blöcke nur der KW~47; die Nachtaktivität erscheint in zwei Teilen, die Sonntagsaktivität nur bis 24 Uhr; der Mittelpunkt gehört zur richtigen Aktivität. Der Punkt ergibt 18.11.2026, 09:00 Uhr. Filter zeigt 1 von 4 Zeilen. Sieben Seiten von \enquote{Dashboard} bis \enquote{Einstellungen}; Titel \enquote{Kompass}; Kalenderwoche wechselt passend. Mindestgröße 960 $\times$ 520 Pixel. Knöpfe heißen \enquote{\&Ja} und \enquote{\&Nein}; ohne Übersetzungsdatei startet die Anwendung trotzdem.}
     {Bestanden am 27.11.2026 (9 von 9 Tests).}
   \midrule
   \testfall{TC-I-06}
@@ -237,7 +246,7 @@ Die Integrationstests prüfen das Zusammenspiel der Schichten. Sofern nicht ande
     {\pyt{tests/integration/test_auswertung_service.py}: 6 Funktionen von \pyt{test_wochenbewertung_rechenbeispiel} bis \pyt{test_leere_datenbank}; \pyt{tests/gui/test_dashboard.py} (8~Tests); \pyt{tests/gui/test_einstellungen.py::test_regel_schalter_deaktiviert_regel} (zusammen 15~Tests)}
     {Frischer Kontext; Beispielwoche KW~46 mit Rechenbeispiel~1 (Bewegung 2 $\times$ 45~min, Zufriedenheit 4 und 5) und Verpflichtungen an vier Tagen; für einige Tests weitere Aktivitäten, die mehr als fünf Hinweise erzeugen.}
     {Wochenbewertung KW~46 mit Gesamt-Score aus und ein; R01 ausblenden; einen von zwei R08-Hinweisen ausblenden; Verlauf ab KW~47; R01 bzw. R03 ausschalten; leere Datenbank. Dashboard für KW~46 öffnen; nur eine Aktivität; \enquote{Ausblenden} klicken; Begründungsdialog zu R01 öffnen; Soll-Ist-Balken für Arbeit 46 von 40~h.}
-    {Bewegung Score 65; Gesamt-Score nur eingeschaltet. Ausgeblendeter Hinweis fehlt in KW~46, ist mit Option weiter abrufbar und betrifft KW~47 nicht; bei R08 nur der gewählte Bereich. Verlauf: acht Wochen, älteste zuerst, KW~46 bewertet, KW~47 mit zu wenig Daten. Ausgeschaltete Regel ohne Hinweis. Leere Datenbank nur mit R10. Dashboard zeigt Score \enquote{65} und \enquote{4/7}, bei einem Tag \enquote{--} und \enquote{1/7}, höchstens fünf Hinweise plus \enquote{Alle Hinweise (n)}. Begründungsdialog mit neun Zeilen von \enquote{Regel} bis \enquote{Grenzen}; Balken \enquote{46 / 40 h}.}
+    {Bewegung Score 65; Gesamt-Score nur eingeschaltet. Ausgeblendeter Hinweis fehlt in KW~46, ist mit Option weiter abrufbar und betrifft KW~47 nicht; bei R08 nur der gewählte Bereich. Verlauf: acht Wochen, älteste zuerst, KW~46 bewertet, KW~47 mit zu wenig Daten. Ausgeschaltete Regel ohne Hinweis. Leere Datenbank nur mit R10. Dashboard zeigt Score \enquote{65} und \enquote{4/7}, bei einem Tag \enquote{zu wenig Daten} und \enquote{1/7}, höchstens fünf Hinweise plus \enquote{Alle Hinweise (n)}. Begründungsdialog mit neun Zeilen von \enquote{Regel} bis \enquote{Grenzen}; Balken \enquote{46 / 40 h}.}
     {Bestanden am 27.11.2026 (15 von 15 Tests).}
   \midrule
   \testfall{TC-I-07}
@@ -252,11 +261,11 @@ Die Integrationstests prüfen das Zusammenspiel der Schichten. Sofern nicht ande
   \testfall{TC-I-08}
     {Export als \acsu{CSV} und \acsu{JSON} über Export-Service und Exportdialog.}
     {US16, NFA10, GR30}
-    {\pyt{tests/integration/test_export.py} (alle 8 Funktionen); \pyt{tests/gui/test_datendialoge.py}: \pyt{test_export_dialog_csv}, \pyt{test_export_dialog_zeitraum_ungueltig} (zusammen 10~Tests)}
+    {\pyt{tests/integration/test_export.py} (alle 8 Funktionen); \pyt{tests/integration/test_review_phase3_export.py::test_csv_textfelder_mit_formelzeichen_erhalten_apostroph}; \pyt{tests/gui/test_datendialoge.py}: \pyt{test_export_dialog_csv}, \pyt{test_export_dialog_zeitraum_ungueltig} (zusammen 11~Tests)}
     {Frischer Kontext mit Aktivitäten in KW~46, darunter Text mit Semikolon, Anführungszeichen, Zeilenumbruch und Umlauten sowie eine Serie mit Ausnahme; Zielordner in einem temporären Ordner.}
-    {CSV-Export für 09.11.--15.11.2026, auch ohne Zeilen; JSON-Export; Export in einen Ordnerpfad statt einer Datei. Im Dialog: mit vorbelegtem Zeitraum exportieren; \enquote{bis} auf 01.11.2026 setzen, danach JSON wählen.}
-    {Dateinamen \texttt{BalanceOS\_Aktivitaeten\_}\textit{von}\texttt{\_}\textit{bis}\texttt{.csv} bzw. \texttt{BalanceOS\_Export\_}\textit{Datum}\texttt{.json}. CSV mit \acs{UTF-8}-\acs{BOM}, Semikolon, Zeilenende CRLF, festgelegter Kopfzeile und korrektem Quoting, sortiert nach Datum und Beginn; ohne Zeilen nur die Kopfzeile. JSON ohne BOM, mit Umlauten im Klartext, festen Schlüsseln, zehn Lebensbereichen, Regeln, WHO-5, Reflexionen, Serien mit Ausnahmen und Serienverweisen. Ungültiger Ort: \enquote{Hier kann nicht gespeichert werden.} Dialog: CSV vorgewählt, Zeitraum 16.11.--22.11.2026, Vorschlag \texttt{BalanceOS\_Aktivitaeten\_2026-11-16\_2026-11-22.csv}, Datei geschrieben und gemeldet; \enquote{Ende vor Beginn des Zeitraums.} sperrt den CSV-Export; JSON braucht keinen Zeitraum.}
-    {Bestanden am 27.11.2026 (10 von 10 Tests).}
+    {CSV-Export für 09.11.--15.11.2026, auch ohne Zeilen; JSON-Export; Export in einen Ordnerpfad statt einer Datei. CSV-Export von Aktivitäten mit den Titeln \enquote{=SUMME(1;2)}, \enquote{+49 Anruf}, \enquote{-Joggen}, \enquote{@Termin} und \enquote{Joggen} im Bereich \enquote{=Hobby}, eine davon mit einer Notiz, die mit einem Tabulator beginnt. Im Dialog: mit vorbelegtem Zeitraum exportieren; \enquote{bis} auf 01.11.2026 setzen, danach JSON wählen.}
+    {Dateinamen \texttt{BalanceOS\_Aktivitaeten\_}\textit{von}\texttt{\_}\textit{bis}\texttt{.csv} bzw. \texttt{BalanceOS\_Export\_}\textit{Datum}\texttt{.json}. CSV mit \acs{UTF-8}-\acs{BOM}, Semikolon, Zeilenende CRLF, festgelegter Kopfzeile und korrektem Quoting, sortiert nach Datum und Beginn; ohne Zeilen nur die Kopfzeile. JSON ohne BOM, mit Umlauten im Klartext, festen Schlüsseln, zehn Lebensbereichen, Regeln, WHO-5, Reflexionen, Serien mit Ausnahmen und Serienverweisen. Ungültiger Ort: \enquote{Hier kann nicht gespeichert werden.} Textfelder, die mit =, +, -, @ oder einem Tabulator beginnen, erhalten in der CSV-Datei ein vorangestelltes Apostroph (\enquote{'=SUMME(1;2)}, \enquote{'=Hobby}), damit eine Tabellenkalkulation sie nicht als Formel ausführt; \enquote{Joggen} bleibt unverändert. Dialog: CSV vorgewählt, Zeitraum 16.11.--22.11.2026, Vorschlag \texttt{BalanceOS\_Aktivitaeten\_2026-11-16\_2026-11-22.csv}, Datei geschrieben und gemeldet; \enquote{Ende vor Beginn des Zeitraums.} sperrt den CSV-Export; JSON braucht keinen Zeitraum.}
+    {Bestanden am 27.11.2026 (11 von 11 Tests).}
   \midrule
   \testfall{TC-I-09}
     {Demodaten laden und entfernen, alle Daten löschen; zugehörige Dialoge und Dashboard.}
@@ -283,7 +292,43 @@ Die Integrationstests prüfen das Zusammenspiel der Schichten. Sofern nicht ande
     {Datenbankdatei in einem temporären Ordner; Tagesdatum 22.11.2026; 3.000 Aktivitäten über 52 Wochen bzw. 30.000 Aktivitäten über 520 Wochen aus verschobenen Demodaten.}
     {Zeitmessung mit \texttt{time.perf\_counter} für Wochenbewertung und Hinweise der Vorwoche (Dashboard) und für den Verlauf über acht Wochen (Statistik); Dateigröße nach dem Schließen.}
     {Dashboard bei 3.000 Aktivitäten unter 1~s; Dashboard und Statistik bei 30.000 Aktivitäten je unter 2~s; Datei unter 50~MB.}
-    {Bestanden am 27.11.2026 (4 von 4 Tests). Gemessen: Dashboard 3.000 Aktivitäten 6~ms; Dashboard 30.000 Aktivitäten 6~ms; Statistik 30.000 Aktivitäten 9~ms; Datenbank 3,2~MB.}
+    {Bestanden am 27.11.2026 (4 von 4 Tests). Gemessen: Dashboard 3.000 Aktivitäten 5~ms; Dashboard 30.000 Aktivitäten 5~ms; Statistik 30.000 Aktivitäten 10~ms; Datenbank 3,2~MB.}
+  \midrule
+  \testfall{TC-I-12}
+    {Serientermine verschieben, löschen und überspringen, während die Serie bereits geladen ist, sowie \enquote{Termin überspringen} auf der Seite \enquote{Aktivitäten}.}
+    {US06, US07, US08, GR18, GR19}
+    {\pyt{tests/integration/test_review_phase3_serien.py}: \pyt{test_serie_aendern_mit_veralteter_serie_behaelt_ausnahme_des_verschobenen_termins}, \pyt{test_serie_aendern_mit_veralteter_serie_behaelt_ausnahme_des_geloeschten_termins}; \pyt{tests/gui/test_review_phase3_aktivitaeten.py} (alle 4 Funktionen) (zusammen 6~Tests)}
+    {Kontext im Arbeitsspeicher mit Tagesdatum Sonntag, 22.11.2026. Serie \enquote{Yoga} (Bewegung) Mo und Mi ab 23.11.2026 bis 31.12.2026, 18:00--19:00, geplant. Für die Seite \enquote{Aktivitäten} Serie \enquote{Kurs} Mo und So ab 16.11.2026 mit 60~min; der Termin am 16.11. ist durchgeführt, mit Zufriedenheit~5 und der Notiz \enquote{wichtige Notiz}, der Termin am 22.11. ist geplant. Rückfragen beantwortet eine Ersatzfunktion.}
+    {(a) Serie laden, danach den Termin am 30.11. auf den 01.12. verschieben und die zuvor geladene Serie mit dem Titel \enquote{Yoga am Abend} speichern. (b) Serie laden, den Termin am 02.12. löschen und die geladene Serie speichern. (c) Im Dialog \enquote{Aktivität bearbeiten} den Termin am 30.11. auf den 01.12. setzen, \enquote{auf alle zukünftigen Termine anwenden} wählen und speichern. (d) Auf der Seite den durchgeführten Termin am 16.11. wählen und das Überspringen zusätzlich direkt aufrufen. (e) Den geplanten Termin am 22.11. überspringen und die Rückfrage mit Nein bzw. Ja beantworten.}
+    {(a) bis (c): kein Termin am 30.11. bzw. 02.12., genau ein Termin am 01.12., keine doppelten Termindaten; das ursprüngliche Datum bleibt als Ausnahme gespeichert, im Dialogfall ist die Ausnahmemenge genau \{30.11.2026\}. (d) \enquote{Termin überspringen} ist gesperrt, es erscheint keine Rückfrage, und der Termin bleibt mit Notiz erhalten. (e) Genau eine Rückfrage mit dem Titel \enquote{Termin überspringen}, die den 22.11.2026 nennt. Bei Nein bleibt der Termin bestehen und die Serie ohne Ausnahme; bei Ja ist der Termin entfernt und der 22.11.2026 als Ausnahme eingetragen.}
+    {Bestanden am 27.11.2026 (6 von 6 Tests). Nach dem Verschieben mit Serienänderung genau ein Termin am 01.12.2026.}
+  \midrule
+  \testfall{TC-I-13}
+    {Robustheit und Datenschutz der Datenbank: Write-Ahead-Log nach \enquote{Alle Daten löschen}, Verbindung bei einem Fehler beim Öffnen, nur eine Programminstanz je Datenordner, Meldung bei Fehlern im laufenden Betrieb.}
+    {US17, NFA04, NFA05, GR29}
+    {\pyt{tests/integration/test_review_phase3_serien.py}: \pyt{test_alle_daten_loeschen_leert_write_ahead_log}, \pyt{test_datenbank_schliesst_verbindung_bei_fehler_beim_oeffnen}; \pyt{tests/gui/test_review_phase3_einzelinstanz.py} (alle 2 Funktionen); \pyt{tests/gui/test_review_phase3_oberflaeche.py}: \pyt{test_b3_*} (3 Funktionen) (zusammen 7~Tests)}
+    {Datenbankdatei bzw. Datenordner in einem temporären Ordner; Tagesdatum 22.11.2026. Für den Starttest ist der Pfad der Datenbank auf diesen Ordner umgeleitet. Meldungsfenster sind durch Ersatzfunktionen ersetzt, die den Text festhalten.}
+    {(a) Aktivität mit der Notiz \enquote{GEHEIMNOTIZ-4711} speichern und bei offener Verbindung \enquote{Alle Daten löschen} mit \enquote{LÖSCHEN} ausführen. (b) Eine Datei öffnen, die Text statt einer SQLite-Datenbank enthält. (c) Den Datenordner zweimal sperren, freigeben und erneut sperren; die Anwendung starten, während die Sperre besteht. (d) Fehlerbehandlung installieren und nacheinander \texttt{sqlite3.OperationalError} \enquote{database is locked}, denselben Fehlertyp mit \enquote{database or disk is full} in einem Qt-Slot und \texttt{ValueError} \enquote{kaputt} auslösen.}
+    {(a) Die Datei \texttt{balanceos.db-wal} fehlt oder ist leer, und die Notiz steht nicht mehr in der Datenbankdatei. (b) Das Öffnen scheitert mit \texttt{DatabaseError}; die einzige geöffnete Verbindung ist geschlossen, und die Datei lässt sich löschen. (c) Die zweite Sperre scheitert, nach der Freigabe gelingt sie wieder. Der Start endet mit Rückgabewert~1 und der Meldung \enquote{BalanceOS läuft bereits. Bitte das geöffnete Fenster verwenden.} und legt keine Datenbankdatei an. (d) Je Fehler genau eine Meldung mit dem Titel \enquote{BalanceOS}. Bei Datenbankfehlern beginnt sie mit \enquote{Die Daten konnten nicht gespeichert werden.} und nennt den Fehlertext, der auch in \texttt{fehler.log} steht; sonst beginnt sie mit \enquote{Ein unerwarteter Fehler ist aufgetreten.}}
+    {Bestanden am 27.11.2026 (7 von 7 Tests).}
+  \midrule
+  \testfall{TC-I-14}
+    {Wochenreflexion ohne Datenverlust; Meldungen am Feld in Reflexion, Löschdialog, Dialog \enquote{Lebensbereich}, WHO-5-Dialog und Wunschprofil.}
+    {US02, US04, US17, US20, US22, NFA02, GR02, GR06, GR26, GR29}
+    {\pyt{tests/gui/test_review_phase3_oberflaeche.py}: \pyt{test_a2_*} (7 Funktionen), \pyt{test_b7_*} (5 Funktionen), \pyt{test_c3_who5_noch_offen_einzahl_und_mehrzahl}, \pyt{test_c4_wunschprofil_verwirft_abgelehnten_wert_beim_wiederanzeigen} (zusammen 14~Tests)}
+    {Frischer Kontext; Seite \enquote{Reflexion} für KW~47 angezeigt. Rückfragen beantwortet eine Ersatzfunktion mit \enquote{Verwerfen}, \enquote{Speichern} oder \enquote{Abbrechen}. Für die übrigen Tests die Dialoge \enquote{Alle Daten löschen}, \enquote{Lebensbereich} und WHO-5 sowie die Seite \enquote{Einstellungen}.}
+    {Reflexion: Text eingeben, ohne zu speichern, und den WHO-5-Dialog mit fünfmal Antwort~3 auswerten; zu KW~46 wechseln ohne Änderung, mit Entwurf und Verwerfen, mit \enquote{Zu wenig Schlaf} und Stimmung~2 und Speichern, mit Abbrechen, bei verborgener Seite und nach dem Speichern. Feldmeldungen: Leitfrage mit 1.001 und danach 1.000 Zeichen; Löschbestätigung leer, \enquote{löschen} und \enquote{LÖSCHEN}; Soll Hobbys 0,3 und 0,5~h; Soll Schlaf 82 und 60~h; alle Soll auf 0~h und Hobbys auf 2~h; WHO-5 ohne Antwort und mit vier Antworten; Wunschprofil Freizeit 40~h, Seite verbergen und wieder anzeigen.}
+    {Der Text bleibt nach der WHO-5-Auswertung erhalten, das Ergebnis zeigt \enquote{60~\%}. Ohne Änderung erscheint keine Rückfrage. Mit Änderung erscheint genau eine Rückfrage, die KW~47 nennt. Verwerfen leert das Feld ohne zu speichern. Speichern legt die Reflexion der KW~47 mit Stimmung~2 an und zeigt danach KW~46. Abbrechen bleibt in KW~47 mit dem Text. Auch bei verborgener Seite wird gefragt; nach dem Speichern nicht. Meldungen am Feld: \enquote{Höchstens 1.000 Zeichen.}, \enquote{Bitte LÖSCHEN eingeben.}, \enquote{0 bis 168 h in Schritten von 0,5 h.}, \enquote{Summe übersteigt 168 h pro Woche.} und \enquote{Mindestens ein aktiver Bereich braucht ein Soll.}, jeweils mit rotem Rahmen am Feld; Speichern bzw. Löschen ist gesperrt. Bei gültigem Wert verschwinden Meldung und Rahmen. WHO-5: \enquote{Noch offen: 5 Aussagen.} und \enquote{Noch offen: 1 Aussage.} Wunschprofil: Die Meldung erscheint, der gespeicherte Wert bleibt; nach dem erneuten Anzeigen steht der gespeicherte Wert ohne Meldung im Feld.}
+    {Bestanden am 27.11.2026 (14 von 14 Tests).}
+  \midrule
+  \testfall{TC-I-15}
+    {Darstellung in Dashboard, Wochenansicht und Hauptfenster: Namen und Titel als Klartext, Fenstergröße mit Bildlauf, Spalte \enquote{Ist − Soll}, \enquote{zu wenig Daten}, Rundung der Balken, Aktivitäten über Mitternacht und überlappende Blöcke.}
+    {US02, US06, US09, US10, US11, NFA01, GR11, GR21}
+    {\pyt{tests/gui/test_review_phase3_oberflaeche.py}: \pyt{test_b1_*} (4 Funktionen), \pyt{test_b2_*} (3 Funktionen), \pyt{test_b4_dashboard_zeigt_abweichung_ist_minus_soll}, \pyt{test_b5_zu_wenig_daten_sichtbar_in_score_spalte}, \pyt{test_c2_balken_rundet_kaufmaennisch}; \pyt{tests/gui/test_review_phase3_klartext.py} (alle 4 Funktionen); \pyt{tests/gui/test_review_phase3_woche.py} (alle 7 Funktionen) (zusammen 21~Tests)}
+    {Frischer Kontext; Dashboard für KW~47, Wochenansicht für KW~47 und KW~48. Für die Fenstertests das Hauptfenster mit Demodaten. Für die Klartexttests Tagesdatum 22.11.2026 und die geplante Aktivität \enquote{<b>Yoga</b> \& Co} am 20.11.2026.}
+    {Bereiche in \enquote{Kinder <Leni \& Tom>} und \enquote{<b>Hobbys</b>} umbenennen, eigenen Bereich \enquote{<i>Ehrenamt</i>} anlegen; Hinweis und Begründung mit solchen Texten anzeigen; Löschfrage der Seite \enquote{Aktivitäten} und des Dialogs sowie Tooltip im Wochenkalender auslösen. Fenster auf 1.024 $\times$ 600 Pixel verkleinern und alle sieben Seiten zeigen. Dashboard: Bewegung 1,5~h bei Soll 3~h, Arbeit 46~h bei Soll 40~h, Familie mit Soll 0~h; Woche mit nur einem Tag. Balken mit Ist 1,25~h bei Soll 3~h. Wochenansicht: Schlaf am Sonntag, 22.11., 23:00--06:30; 0, 1 und 2 Aktivitäten; am 24.11. zwei überlappende Blöcke (08:00--09:00 und 08:30--09:30) und ein Block ohne Überschneidung.}
+    {Namen und Texte erscheinen wörtlich mit spitzen Klammern, auch der Name \enquote{<i>Ehrenamt</i>} in der Löschfrage zum Lebensbereich; Rückfragen und Tooltips enthalten den Titel maskiert (\texttt{\&lt;b\&gt;Yoga\&lt;/b\&gt; \&amp; Co}). Das Fenster lässt sich auf 1.024 $\times$ 600 Pixel verkleinern, jede Seite bleibt über Bildlaufleisten vollständig erreichbar, und die Startgröße passt auf den Bildschirm. Spalte \enquote{Ist − Soll} mit \enquote{−1,5 h}, \enquote{+6 h} und \enquote{--} bei Soll 0~h; \enquote{zu wenig Daten} wird vollständig angezeigt. Balken \enquote{1,3 / 3 h}. KW~48 zeigt den Schlaf von 00:00 bis 06:30 am Montag, zählt ihn aber nicht (\enquote{0 Aktivitäten · 0,0 h durchgeführt}); KW~47 zeigt ihn bis 24 Uhr und zählt ihn einmal (\enquote{1 Aktivität · 7,5 h durchgeführt}). Zusammenfassung \enquote{0 Aktivitäten}, \enquote{1 Aktivität}, \enquote{2 Aktivitäten}. Nur überlappende Blöcke teilen sich die Breite; die Beschriftung \enquote{ohne Zeit} überlappt nicht mit \enquote{00:00}.}
+    {Bestanden am 27.11.2026 (21 von 21 Tests).}
 \end{longtable}
 \endgroup
 \quelle{Eigene Darstellung.}
@@ -301,7 +346,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Neue Datenbankdatei ohne Aktivitäten; Hauptfenster geöffnet.}
     {Seite \enquote{Dashboard} in der Seitenleiste anklicken; Schaltfläche \enquote{Demodaten laden} anklicken; Meldung bestätigen; Seite \enquote{Woche} anklicken.}
     {Vor dem Laden: Datei angelegt, 0 Aktivitäten, Startzustand mit \enquote{Willkommen bei BalanceOS}, \enquote{Demodaten laden} und \enquote{Erste Aktivität erfassen}. Danach: Meldung \enquote{Demodaten geladen. \dots}, Aktivitäten in der Datei, Dashboard zeigt KW~46 mit Soll-Ist-Balken, mindestens einem Hinweis und Vollständigkeit \enquote{7/7}; Wochenansicht mit Blöcken.}
-    {Bestanden am 27.11.2026; Laufzeit 1,00~s.}
+    {Bestanden am 27.11.2026; Laufzeit 1,43~s.}
   \midrule
   \testfall{TC-S-02}
     {Aktivität über \enquote{+ Aktivität} erfassen; Dashboard, Aktivitätenliste und Wochenansicht zeigen sie ohne Neustart.}
@@ -309,8 +354,8 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {\pyt{tests/system/test_systemablauf.py::test_ts02_aktivitaet_erfassen_und_auswerten}}
     {Neue Datenbankdatei ohne Aktivitäten; Dashboard im Startzustand.}
     {\enquote{+ Aktivität} in der Kopfzeile anklicken; Titel \enquote{Joggen im Park} tippen; Lebensbereich \enquote{Bewegung} mit den Pfeiltasten wählen; Zeitangabe \enquote{Dauer} wählen und 45 tippen; Zufriedenheit 4 anklicken; \enquote{Speichern} anklicken; danach die Seiten \enquote{Aktivitäten} und \enquote{Woche} öffnen.}
-    {Genau eine Aktivität in der Datei mit Titel, Datum 18.11.2026, 45~min, Zufriedenheit 4 und Bereich Bewegung. Dashboard zeigt Inhalt mit \enquote{1/7}. Liste: eine Zeile mit \enquote{Joggen im Park}, \enquote{Bewegung}, \enquote{45 min} und \enquote{1 von 1 Aktivitäten}. Woche: ein Block für die Aktivität, Summe \enquote{1 Aktivitäten \dots}.}
-    {Bestanden am 27.11.2026; Laufzeit 1,00~s.}
+    {Genau eine Aktivität in der Datei mit Titel, Datum 18.11.2026, 45~min, Zufriedenheit 4 und Bereich Bewegung. Dashboard zeigt Inhalt mit \enquote{1/7}. Liste: eine Zeile mit \enquote{Joggen im Park}, \enquote{Bewegung}, \enquote{45 min} und \enquote{1 von 1 Aktivitäten}. Woche: ein Block für die Aktivität, Summe \enquote{1 Aktivität · \dots}.}
+    {Bestanden am 27.11.2026; Laufzeit 0,78~s.}
   \midrule
   \testfall{TC-S-03}
     {Ungültige Eingaben im Erfassungsdialog werden am Feld gemeldet; nichts wird gespeichert.}
@@ -319,7 +364,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Neue Datenbankdatei ohne Aktivitäten.}
     {\enquote{+ Aktivität} anklicken. (1) \enquote{x} tippen, löschen, mit Tab verlassen; \enquote{Speichern} anklicken und Enter drücken. (2) Titel \enquote{Lesen}, Modus \enquote{Dauer}, 1441 tippen; Speichern und Enter versuchen. (3) Dauer 0 tippen. Dialog abbrechen.}
     {(1) Meldung \enquote{Bitte 1 bis 80 Zeichen eingeben.} unter dem Titel, roter Rahmen, \enquote{Speichern} gesperrt mit Hinweis auf \enquote{Titel}, Dialog bleibt offen. (2) Titelmeldung verschwindet, \enquote{Dauer 1 bis 1.440 Minuten.} erscheint, Speichern gesperrt. (3) Gleiche Meldung bei 0. Kein Signal \enquote{Daten geändert}, 0 Aktivitäten in der Datei, kein Meldungsfenster.}
-    {Bestanden am 27.11.2026; Laufzeit 1,07~s.}
+    {Bestanden am 27.11.2026; Laufzeit 0,72~s.}
   \midrule
   \testfall{TC-S-04}
     {Export als CSV und JSON über Einstellungen, Reiter \enquote{Daten}, mit Umlauten und Sonderzeichen.}
@@ -328,7 +373,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Demodaten über das Dashboard geladen; \enquote{Heute} angeklickt (KW~47).}
     {Aktivität \enquote{Rückenübung für Jörg; Größe „groß“}, Bewegung, 30~min erfassen. Einstellungen $\rightarrow$ Daten $\rightarrow$ \enquote{Exportieren \dots}; Option CSV, Speicherort \texttt{export.csv}, \enquote{Exportieren}. Dasselbe mit JSON und \texttt{export.json}.}
     {Bestätigung mit Dateinamen. CSV beginnt mit UTF-8-BOM, Trennzeichen Semikolon, Kopfzeile beginnt mit \texttt{datum;kalenderwoche;lebensbereich}, jede Zeile hat 16 Spalten, die eigene Aktivität steht genau einmal mit 18.11.2026, Bewegung und 30~min darin, kein Ersatzzeichen. JSON ist mit \texttt{json.loads} lesbar, Version 1, enthält den Titel und so viele Aktivitäten wie die Datenbank.}
-    {Bestanden am 27.11.2026; Laufzeit 1,46~s.}
+    {Bestanden am 27.11.2026; Laufzeit 1,07~s.}
   \midrule
   \testfall{TC-S-05}
     {\enquote{Alle Daten löschen} entfernt alle Nutzdaten erst nach Eingabe von \enquote{LÖSCHEN}.}
@@ -337,7 +382,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Demodaten über das Dashboard geladen.}
     {Serie \enquote{Yogakurs} (Bewegung, 60~min, Wiederholung bis 09.12.2026) erfassen; auf der Seite \enquote{Reflexion} \enquote{Viel Bewegung} eingeben und speichern; WHO-5 mit fünfmal Antwort 3 ausfüllen und auswerten. Einstellungen $\rightarrow$ Daten $\rightarrow$ \enquote{Alle Daten löschen \dots}; \enquote{löschen} tippen; dann \enquote{LÖSCHEN} tippen und \enquote{Endgültig löschen} anklicken.}
     {WHO-5 zeigt \enquote{Rohwert 15 von 25}. Vor dem Löschen enthalten Aktivitäten, Serien, WHO-5 und Reflexionen Daten. Bei \enquote{löschen} bleibt der Knopf gesperrt, bei \enquote{LÖSCHEN} aktiv. Danach 0 Zeilen in allen sechs Tabellen mit Nutzdaten, keine Demodaten, Standardbereiche vorhanden, Dashboard im Startzustand.}
-    {Bestanden am 27.11.2026; Laufzeit 1,40~s. Nach dem Löschen 0 Nutzdatensätze.}
+    {Bestanden am 27.11.2026; Laufzeit 1,17~s. Nach dem Löschen 0 Nutzdatensätze.}
   \midrule
   \testfall{TC-S-06}
     {Ein vollständiger Ablauf ohne einen einzigen Netzwerkzugriff.}
@@ -346,7 +391,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Die Socket-Funktionen \texttt{connect}, \texttt{connect\_ex}, \texttt{create\_connection} und \texttt{getaddrinfo} sind im Test durch Funktionen ersetzt, die jeden Aufruf festhalten und den Test abbrechen; eine Gegenprobe zeigt, dass die Sperre greift.}
     {Demodaten laden; alle sieben Seiten und alle Reiter der Einstellungen öffnen; Aktivität \enquote{Spaziergang} (Bewegung, 40~min) erfassen; CSV- und JSON-Export.}
     {0 Netzwerkzugriffe; die Aktivität ist gespeichert, beide Exporte sind erfolgreich.}
-    {Bestanden am 27.11.2026; Laufzeit 1,72~s. 0 Netzwerkzugriffe.}
+    {Bestanden am 27.11.2026; Laufzeit 1,28~s. 0 Netzwerkzugriffe.}
   \midrule
   \testfall{TC-S-07}
     {Zwangsbeenden des Prozesses direkt nach dem Speichern führt nicht zu Datenverlust.}
@@ -355,7 +400,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Neue Datenbankdatei; ein Python-Skript, das den Anwendungskontext öffnet, eine Aktivität speichert, \enquote{GESPEICHERT} ausgibt und sich sofort mit \texttt{os.\_exit(1)} beendet.}
     {Das Skript zehnmal nacheinander als eigenen Prozess starten (Aktivitäten \enquote{Absturztest 0} bis \enquote{Absturztest 9}); danach die Datei neu öffnen und \texttt{PRAGMA integrity\_check} ausführen.}
     {Jeder Prozess endet mit Rückgabewert 1 nach \enquote{GESPEICHERT}. Alle zehn Aktivitäten sind vorhanden; die Integritätsprüfung meldet \enquote{ok}.}
-    {Bestanden am 27.11.2026; Laufzeit 6,65~s für zehn Prozesse. 0 von 10 Änderungen verloren.}
+    {Bestanden am 27.11.2026; Laufzeit 8,80~s für zehn Prozesse. 0 von 10 Änderungen verloren.}
   \midrule
   \testfall{TC-S-08}
     {Startzeit vom Prozessstart bis zum sichtbaren Hauptfenster.}
@@ -364,7 +409,7 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Neuer Python-Prozess mit Qt-Plattform \texttt{offscreen}; Pfad der Datenbank auf eine noch nicht vorhandene Datei umgeleitet.}
     {Startzeitpunkt vor dem Prozessstart festhalten; im Prozess die normale Startfunktion \texttt{starte} aufrufen; sobald die Ereignisschleife läuft, die vergangene Zeit messen und prüfen, ob das Hauptfenster sichtbar ist; Anwendung beenden.}
     {Hauptfenster sichtbar, Rückgabewert 0, Datenbankdatei angelegt, Startzeit höchstens 5,0~s.}
-    {Bestanden am 27.11.2026. Gemessene Startzeit 0,50~s.}
+    {Bestanden am 27.11.2026. Gemessene Startzeit 0,82~s.}
   \midrule
   \testfall{TC-S-09}
     {Oberfläche durchgehend deutsch und beschriftet; Erfassungsdialog von jeder Seite mit einem Klick erreichbar.}
@@ -373,16 +418,16 @@ Die Systemtests TC-S-01 bis TC-S-09 laufen in \texttt{tests/system/test\_systema
     {Neue Datenbankdatei; Hauptfenster geöffnet.}
     {Alle sieben Seiten und alle vier Reiter der Einstellungen öffnen, einmal leer und einmal mit Demodaten. Auf jeder Ansicht alle sichtbaren Knöpfe und Eingabefelder prüfen. Erfassungsdialog öffnen, Bewegung, Uhrzeit, Wiederholung und Enddatum einschalten und erneut prüfen. Danach von jeder Seite aus einmal \enquote{+ Aktivität} anklicken.}
     {Kein Knopf ohne Text und Tooltip, kein englischer Standardtext wie \enquote{OK} oder \enquote{Cancel}. Jedes Eingabefeld hat eine Beschriftung (Formularbeschriftung, verknüpftes Label, Platzhalter oder zugänglicher Name). Von jeder der sieben Seiten öffnet ein Klick den Dialog \enquote{Aktivität erfassen}.}
-    {Bestanden am 27.11.2026; Laufzeit 1,92~s. 0 Verstöße; 7 von 7 Seiten mit einem Klick.}
+    {Bestanden am 27.11.2026; Laufzeit 1,90~s. 0 Verstöße; 7 von 7 Seiten mit einem Klick.}
   \midrule
   \testfall{TC-S-10}
     {Start der ausgelieferten Datei \texttt{BalanceOS.exe} unter Windows ohne Installation (manuell).}
     {NFA09}
     {Keine (manueller Test)}
-    {\texttt{app/release/BalanceOS.exe} als einzelne Datei (26,3~MB), neu erstellt am 27.11.2026 mit der deutschen Qt-Übersetzung \texttt{qtbase\_de.qm}; Windows~11 Pro mit aktiver intelligenter App-Steuerung; keine Installation der Anwendung; leerer Datenordner (Umgebungsvariable \texttt{APPDATA} auf einen temporären Ordner umgelenkt).}
+    {\texttt{app/release/BalanceOS.exe} als einzelne Datei (26,4~MB), neu erstellt am 27.11.2026 nach Behebung der Fehler aus Abschnitt~\ref{sec:fehler} mit der deutschen Qt-Übersetzung \texttt{qtbase\_de.qm}; Windows~11 Pro mit aktiver intelligenter App-Steuerung; keine Installation der Anwendung; leerer Datenordner (Umgebungsvariable \texttt{APPDATA} auf einen temporären Ordner umgelenkt).}
     {\texttt{BalanceOS.exe} dreimal nacheinander starten; die Zeit bis zum sichtbaren Hauptfenster per Skript am Fensterprozess messen; Dashboard prüfen.}
     {Das Hauptfenster \enquote{BalanceOS} erscheint nach höchstens 10~s; das Dashboard wird korrekt dargestellt.}
-    {Bestanden am 27.11.2026 auf dem Entwicklungsrechner: Hauptfenster \enquote{BalanceOS} nach 3,1~s, 3,1~s und 3,2~s sichtbar, Dashboard korrekt dargestellt. Der Start dauert länger als mit \texttt{python -m balanceos} in TC-S-08, weil die Ein-Datei-exe ihre Laufzeit bei jedem Start in einen temporären Ordner entpackt. Der Grenzwert von 10~s ist eingehalten. Einschränkung: Auf dem Rechner ist Python installiert. Die exe bringt eine eigene Laufzeit mit und nutzt das installierte Python nicht; der Test auf einem Rechner ganz ohne Python steht noch aus (Abschnitt~\ref{sec:fehler}).}
+    {Bestanden am 27.11.2026 auf dem Entwicklungsrechner: Hauptfenster \enquote{BalanceOS} nach 3,8~s, 3,3~s und 3,2~s sichtbar, Dashboard korrekt dargestellt. Der Start dauert länger als mit \texttt{python -m balanceos} in TC-S-08, weil die Ein-Datei-exe ihre Laufzeit bei jedem Start in einen temporären Ordner entpackt. Der Grenzwert von 10~s ist eingehalten. Einschränkung: Auf dem Rechner ist Python installiert. Die exe bringt eine eigene Laufzeit mit und nutzt das installierte Python nicht; der Test auf einem Rechner ganz ohne Python steht noch aus (Abschnitt~\ref{sec:fehler}).}
 \end{longtable}
 \endgroup
 \quelle{Eigene Darstellung.}
