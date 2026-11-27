@@ -76,17 +76,17 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 
 | Inhalt | Ort | Status |
 |---|---|---|
-| Teststrategie (Vorgehen, Unit-, Integrations- und Systemtests) | `05_Testdokument/kapitel/01_Teststrategie.tex` | ☐ |
-| Testprotokoll je Testfall: ID, Kurzbeschreibung, Vorbedingungen, Eingaben/Aktionen, erwartetes und tatsächliches Ergebnis | ⚙ Makro `\testfall` in `02_Testprotokoll.tex` | ☐ |
-| Optional: automatisierte Tests (pytest) | `app/tests/` | ☐ |
-| **Benutzeranleitung** (Installation, Ausführung) in der Projektdokumentation | ⚙ `05_Benutzeranleitung.tex` (Phase 3) | ☐ |
-| **Abstract**: 2 Seiten, Making-of und Reflexion inkl. Problemen und Zeitplantreue | `06_Abstract/Abstract.tex` | ☐ |
-| Feedback aus Phase 1 und 2 umgesetzt | Projektdokumentation, Kapitel 7 (Tabellen je Phase) | ☐ |
-| Limitationen, kritische Bewertung und Fazit (Feedback Phase 2) | `01_Projektdokumentation/kapitel/08_Fazit.tex` | ☐ |
+| Teststrategie (Vorgehen, Unit-, Integrations- und Systemtests) | `05_Testdokument/kapitel/01_Teststrategie.tex` | ✅ |
+| Testprotokoll je Testfall: ID, Kurzbeschreibung, Vorbedingungen, Eingaben/Aktionen, erwartetes und tatsächliches Ergebnis | ⚙ Makro `\testfall` in `02_Testprotokoll.tex` | ✅ |
+| Optional: automatisierte Tests (pytest) | `app/tests/` | ✅ |
+| **Benutzeranleitung** (Installation, Ausführung) in der Projektdokumentation | ⚙ `05_Benutzeranleitung.tex` (Phase 3) | ✅ |
+| **Abstract**: 2 Seiten, Making-of und Reflexion inkl. Problemen und Zeitplantreue | `06_Abstract/Abstract.tex` | ✅ |
+| Feedback aus Phase 1 und 2 umgesetzt | Projektdokumentation, Kapitel 7 (Tabellen je Phase) | ✅ |
+| Limitationen, kritische Bewertung und Fazit (Feedback Phase 2) | `01_Projektdokumentation/kapitel/08_Fazit.tex` | ✅ |
 
 **Einreichung (5 Teile):**
-1. ☐ `…_PSE_P3_Abstract.pdf`
-2. ☐ `…_PSE_P3_FinalesProdukt.pdf` mit allen 6 Dokumenten. ⚙ `--phase 3 --abgabe`
+1. ☐ `…_PSE_P3_Abstract.pdf` (erzeugt am 27.11.2026 in `abgabe/Phase3_Finalisierung/`)
+2. ☐ `…_PSE_P3_FinalesProdukt.pdf` mit allen 6 Dokumenten (erzeugt am 27.11.2026, 338 Seiten). ⚙ `--phase 3 --abgabe`
 3. ☐ `…_PSE_P3_Abgabe.zip` mit **identischem** Inhalt wie das GitHub-Repository. ⚙ `--phase 3 --zip` prüft Commit und Push. **Danach keine Änderungen mehr am Repository.**
 4. ☐ PDF aus Phase 1 erneut (eingefrorene Fassung)
 5. ☐ PDF aus Phase 2 erneut (eingefrorene Fassung)
