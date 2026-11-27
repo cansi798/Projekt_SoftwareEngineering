@@ -25,7 +25,7 @@ Legende: ⚙ = automatisch durch Vorlage oder Skript erfüllt · ☐ = von dir z
 
 - ☐ Windows-10/11-Desktopanwendung in Python (objektorientiert)
 - ☐ Klar definierter **Kundennutzen** für eine definierte Zielgruppe → Projektdokumentation 1.2, Anforderungsdokument 2
-- ☐ **Sinnvolle Testdaten**, damit der Nutzen sofort sichtbar wird → `app/testdaten/`, Konzept M11
+- ✅ **Sinnvolle Testdaten**, damit der Nutzen sofort sichtbar wird → Demodaten über acht Wochen (`app/src/balanceos/anwendung/demodaten.py`), per Knopf in den Einstellungen
 - ☐ **Kreativ und neu**, kein Nachbau → Projektdokumentation 1.3 (Abgrenzung), Konzept Kap. 3
 - ☐ Funktionsfähig mit ausreichend Quellcode, kein Mock-up
 - ☐ Selbsterklärende, intuitive GUI

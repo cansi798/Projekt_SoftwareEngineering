@@ -160,13 +160,4 @@ Im abschließenden Lauf ist kein Test fehlgeschlagen. Während der Entwicklung h
 
 Ein weiteres Problem betraf das Testwerkzeug selbst. Die Funktion \texttt{QTest.keyClicks} von Qt~6.12 bricht den Prozess ab, wenn sie ein Zeichen ohne eigene Qt-Taste eingeben soll, etwa \enquote{ü} oder das deutsche Anführungszeichen. Die Systemtests senden solche Zeichen deshalb als Tastenereignis mit Text an das Feld, so wie es eine Tastatur mit deutschem Layout erzeugt (Hilfsfunktion \texttt{zeichen\_eingeben}). Die Anwendung selbst war davon nicht betroffen.
 
-Folgende Punkte sind noch offen:
-
-\begin{itemize}
-  \item TC-S-10 lief auf dem Entwicklungsrechner, auf dem Python installiert ist. Die ausführbare Datei bringt eine eigene Laufzeitumgebung mit und nutzt das installierte Python nicht. Der Nachweis auf einem Rechner ganz ohne Python steht trotzdem noch aus und wird vor der Abgabe nachgeholt. Bis dahin gilt NFA09 nur als vorläufig erfüllt.
-  \item Ein Usability-Test oder Abnahmetest mit Personen aus der Zielgruppe fand nicht statt. NFA01 wird nur über automatisch messbare Merkmale geprüft. Ob die Oberfläche für Erstnutzer:innen selbsterklärend ist, bleibt damit unbelegt.
-  \item Die Tests zeigen, dass Scores und Hinweise genau der Spezifikation entsprechen. Ob der Score die Balance einer Person treffend abbildet, prüfen sie nicht. Eine empirische Validierung der Bewertungslogik steht aus. Das Fazit der Projektdokumentation geht darauf näher ein.
-  \item Die Oberflächentests laufen ohne sichtbaren Bildschirm in einer festen Fenstergröße. Darstellungsfehler bei anderen Bildschirmgrößen oder Skalierungen würden sie nicht finden.
-\end{itemize}
-
-Offene Punkte, die die Erfüllung von Anforderungen betreffen, werden in der Projektdokumentation im Kapitel \enquote{Anforderungserfüllung und technische Schulden} als technische Schuld dokumentiert.
+Die Aussagekraft der Tests hat Grenzen. TC-S-10 lief nur auf dem Entwicklungsrechner, auf dem Python installiert ist. Die ausführbare Datei nutzt dieses Python nicht, der Nachweis auf einem Rechner ohne Python fehlt aber. NFA09 gilt deshalb nur als vorläufig erfüllt. Einen Usability-Test mit Personen aus der Zielgruppe gab es nicht, und die Oberflächentests laufen ohne sichtbaren Bildschirm. Außerdem zeigen die Tests nur, dass Scores und Hinweise der Spezifikation entsprechen, nicht, dass der Score die Balance einer Person treffend abbildet. Die Projektdokumentation führt diese Punkte im Kapitel \enquote{Anforderungserfüllung und technische Schulden} als TD02 bis TD04 und bewertet sie im Fazit.

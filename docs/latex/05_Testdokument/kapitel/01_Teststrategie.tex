@@ -16,7 +16,7 @@ Grundlage aller Tests sind prüfbare Vorgaben aus den Phasen~1 und~2: die Akzept
 
 Die Tests entstanden zusammen mit dem Code in den fünf Inkrementen I1 bis I5. Für die Fachlogik wurde testgetrieben gearbeitet: Zuerst entstand ein Test aus einem Rechenbeispiel, einem Beispieltext oder einer Gültigkeitsregel, danach der Code, der ihn erfüllt. Bei testgetriebener Entwicklung werden die Testfälle vor dem Code erstellt. Sie beruhen auf den User Stories und laufen mit Werkzeugen für automatisierte Komponententests \parencite[S.~5-24]{swebok2026}. Ein Inkrement galt erst als abgeschlossen, wenn alle bisherigen Tests weiterhin bestanden. Damit wurde nach jeder Änderung ein Regressionstest durchgeführt. Er soll zeigen, dass eine Änderung keine unbeabsichtigten Auswirkungen hat und die Software die festgelegten Anforderungen weiterhin erfüllt \parencite[S.~5-8]{swebok2026}.
 
-Fast alle Tests sind mit pytest automatisiert \parencite{pytest}. Oberflächen- und Systemtests nutzen zusätzlich pytest-qt \parencite{pytestqt}, die Zeilenabdeckung misst pytest-cov \parencite{pytestcov}. Nur TC-S-10, der Start der ausführbaren Datei unter Windows, wird von Hand durchgeführt, weil er eine Umgebung außerhalb der Entwicklungswerkzeuge braucht. Zwei Prüfungen ergänzen die dynamischen Tests. Ein Architekturtest stellt sicher, dass die Schichten nur in der erlaubten Richtung voneinander abhängen. Die statische Analyse mit Ruff prüft den Quellcode auf Fehler, Verstöße gegen den Stilleitfaden PEP~8 und fehlende Docstrings \parencite{ruff}. Lasttests mit 3.000 und 30.000 Aktivitäten prüfen die Leistungsanforderungen. Sie laufen wegen ihrer Dauer nur auf ausdrücklichen Aufruf (\texttt{pytest -m leistung}).
+Fast alle Tests sind mit pytest automatisiert \parencite{pytest}. Oberflächen- und Systemtests nutzen zusätzlich pytest-qt \parencite{pytestqt}, die Zeilenabdeckung misst pytest-cov \parencite{pytestcov}. Nur TC-S-10, der Start der ausführbaren Datei unter Windows, wird von Hand durchgeführt, weil er eine Umgebung außerhalb der Entwicklungswerkzeuge braucht. Zwei Prüfungen ergänzen die dynamischen Tests. Ein Architekturtest stellt sicher, dass die Schichten nur in der erlaubten Richtung voneinander abhängen. Die statische Analyse mit Ruff prüft den Quellcode auf Fehler, Verstöße gegen den Stilleitfaden \acs{PEP}~8 und fehlende Docstrings \parencite{ruff}. Lasttests mit 3.000 und 30.000 Aktivitäten prüfen die Leistungsanforderungen. Sie laufen wegen ihrer Dauer nur auf ausdrücklichen Aufruf (\texttt{pytest -m leistung}).
 
 Ein Abnahmetest mit Endnutzer:innen gehört nicht zur Strategie. Abnahmetests prüfen, ob die Software die Anforderungen und die Erwartungen der Endnutzer:innen erfüllt, und werden in der Regel von ihnen selbst oder gemeinsam mit ihnen durchgeführt \parencite[S.~5-7]{swebok2026}. Im Projekt standen keine Testpersonen zur Verfügung. Die Akzeptanzkriterien der User Stories werden deshalb durch Integrations- und Systemtests geprüft. Kapitel~\ref{sec:fehler} nennt diese Einschränkung als offenen Punkt.
 
@@ -35,8 +35,8 @@ SWEBOK unterscheidet vier Teststufen: Unit-, Integrations-, System- und Abnahmet
   \endhead
   \bottomrule
   \endfoot
-  Unit-Tests & Domänenschicht ohne Oberfläche und Datenbank: Wochenbewertung, Regeln R01--R10, Gültigkeitsregeln, Kalenderwoche, Wiederholungsserien, WHO-5; Architekturregeln; statische Analyse & \texttt{tests/unit}; pytest, Ruff & 137 Tests; TC-U-01 bis TC-U-15 \\
-  Integrationstests & Anwendungsservices mit echter SQLite-Datenbank, Persistenz, Export und Demodaten; Seiten und Dialoge der Oberfläche mit echten Services; Lasttests & \texttt{tests/integration}, \texttt{tests/gui}; pytest, pytest-qt & 78 + 48 Tests; TC-I-01 bis TC-I-11 \\
+  Unit-Tests & Domänenschicht ohne Oberfläche und Datenbank: Wochenbewertung, Regeln R01--R10, Gültigkeitsregeln, Kalenderwoche, Wiederholungsserien, \acs{WHO}-5; Architekturregeln; statische Analyse & \texttt{tests/unit}; pytest, Ruff & 137 Tests; TC-U-01 bis TC-U-15 \\
+  Integrationstests & Anwendungsservices mit echter SQLite-Datenbank, Persistenz, Export und Demodaten; Seiten und Dialoge der Oberfläche mit echten Services; Lasttests & \texttt{tests/integration}, \texttt{tests/gui}; pytest, pytest-qt & 78 + 49 Tests; TC-I-01 bis TC-I-11 \\
   Systemtests & vollständige Abläufe über das Hauptfenster auf einer Datenbankdatei; Start und Absturz in eigenen Prozessen; Start der ausführbaren Datei & \texttt{tests/system}; pytest-qt, Unterprozesse; manuell & 9 Tests + 1 manueller Test; TC-S-01 bis TC-S-10 \\
 \end{longtable}
 \quelle{Eigene Darstellung.}
@@ -86,7 +86,7 @@ Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebo
   US07 & wiederkehrende Aktivität für gewählte Wochentage & TC-U-10, TC-U-12, TC-I-04, TC-S-05 \\
   US08 & einzelnen Termin einer Serie überspringen & TC-U-12, TC-I-04 \\
   US09 & Wochenansicht Montag bis Sonntag & TC-U-04, TC-I-05, TC-S-02 \\
-  US10 & Dashboard mit Scores, Balken, Hinweisen, Vollständigkeit & TC-I-06, TC-S-01, TC-S-02 \\
+  US10 & Dashboard mit Scores, Balken, Hinweisen, Vollständigkeit & TC-U-06, TC-I-06, TC-S-01, TC-S-02 \\
   US11 & Wochenbewertung als Score 0--100 & TC-U-01, TC-U-02, TC-I-06 \\
   US12 & regelbasierte Hinweise & TC-U-05, TC-U-06, TC-I-06 \\
   US13 & Begründung \enquote{Warum sehe ich das?} & TC-U-08, TC-I-06 \\
@@ -96,7 +96,7 @@ Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebo
   US17 & alle Daten vollständig löschen & TC-U-11, TC-I-09, TC-S-05 \\
   US18 & Demodaten laden und entfernen & TC-I-09, TC-S-01 \\
   US19 & optionaler Gesamt-Score mit Gewichtung & TC-U-01, TC-U-03, TC-I-02, TC-I-06 \\
-  US20 & WHO-5-Fragebogen & TC-U-13, TC-I-10, TC-S-05 \\
+  US20 & WHO-5-Fragebogen & TC-U-11, TC-U-13, TC-I-10, TC-S-05 \\
   US21 & Verlauf der Scores über mehrere Wochen & TC-I-06, TC-I-10 \\
   US22 & Wochenreflexion & TC-U-11, TC-I-10, TC-S-05 \\
   \midrule
@@ -106,7 +106,7 @@ Ein Testprozess soll unter anderem nachverfolgbar sein \parencite[S.~5-18]{swebo
   NFA03 & Start höchstens 5~s, Dashboard bei 3.000 Aktivitäten höchstens 1~s & TC-I-11, TC-S-08 \\
   NFA04 & keine Datenverluste & TC-I-01, TC-S-07 \\
   NFA05 & kein Netzwerkzugriff, vollständige Löschung & TC-S-05, TC-S-06 \\
-  NFA06 & Berechnung exakt nach Spezifikation (Rechenbeispiele) & TC-U-01 \\
+  NFA06 & Berechnung exakt nach Spezifikation (Rechenbeispiele) & TC-U-01, TC-I-06 \\
   NFA07 & Schichtentrennung, Abdeckung der Bewertungs- und Regellogik & TC-U-14 \\
   NFA08 & Docstrings und PEP~8, keine Befunde der statischen Prüfung & TC-U-15 \\
   NFA09 & Start unter Windows ohne installiertes Python & TC-S-10 \\
