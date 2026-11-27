@@ -27,8 +27,12 @@ UNNOETIG = (
 
 def benoetigt(eintrag) -> bool:
     """Prüft, ob ein gesammelter Eintrag (Ziel, Quelle, Typ) in die exe gehört."""
-    name = eintrag[0].replace("\\", "/").lower().rsplit("/", 1)[-1]
-    return not name.startswith(UNNOETIG) and "/translations/" not in eintrag[0].replace("\\", "/")
+    pfad = eintrag[0].replace("\\", "/").lower()
+    name = pfad.rsplit("/", 1)[-1]
+    if "/translations/" in pfad:
+        # Nur die deutsche Übersetzung der Qt-Standardtexte („Ja“/„Nein“), NFA01.
+        return name == "qtbase_de.qm"
+    return not name.startswith(UNNOETIG)
 
 
 a = Analysis(

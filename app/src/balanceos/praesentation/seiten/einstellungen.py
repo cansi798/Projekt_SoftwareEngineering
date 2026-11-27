@@ -219,6 +219,9 @@ class EinstellungenSeite(Seite):
             gewicht = QSpinBox()
             gewicht.setRange(0, 10)
             gewicht.setKeyboardTracking(False)
+            # Die Spaltenköpfe sind keine Buddy-Labels; Screenreader brauchen den Namen am Feld.
+            soll.setAccessibleName(f"Soll pro Woche: {b.name}")
+            gewicht.setAccessibleName(f"Gewicht: {b.name}")
             self.soll_felder[b.id] = soll
             self.gewicht_felder[b.id] = gewicht
             self.profil_raster.addWidget(soll, zeile, 2)
