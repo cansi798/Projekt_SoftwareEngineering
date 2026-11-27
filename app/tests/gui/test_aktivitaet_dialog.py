@@ -131,3 +131,13 @@ def test_bearbeiten_modus(qtbot, kontext, zustand):
     d.titel_feld.setText("Lauf")
     d.speichern_knopf.click()
     assert kontext.repos.aktivitaeten.nach_id(a.id).titel == "Lauf"
+
+
+def test_datum_nimmt_nur_gueltige_daten_an(qtbot, kontext, zustand):
+    """Validierungszeile „Datum“: Format TT.MM.JJJJ, ungültige Daten werden nicht übernommen."""
+    d = _dialog(qtbot, kontext, zustand, datum=HEUTE)
+    assert d.datum_feld.displayFormat() == "dd.MM.yyyy"
+    vorher = d.datum_feld.date()
+    d.datum_feld.setDate(QDate(2026, 2, 31))  # 31. Februar existiert nicht
+    assert d.datum_feld.date() == vorher
+    assert d.datum_feld.date().isValid()

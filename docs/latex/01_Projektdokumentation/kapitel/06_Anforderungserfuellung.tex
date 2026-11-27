@@ -14,7 +14,7 @@ Tabelle~\ref{tab:erfuellung} ordnet jeder User Story und jeder nichtfunktionalen
 \begingroup
 \setstretch{1.0}
 \fontsize{10pt}{12pt}\selectfont
-\begin{longtable}{@{}L{1.6cm}L{1.7cm}L{2.6cm}L{9.9cm}@{}}
+\begin{longtable}{@{}L{1.6cm}L{1.7cm}L{2.6cm}L{9.7cm}@{}}
   \caption{Umsetzungsstand und Testabdeckung der Anforderungen}\label{tab:erfuellung}\\
   \toprule
   \textbf{Anforderung} & \textbf{Priorität} & \textbf{Status} & \textbf{Geprüft durch} \\
@@ -57,7 +57,7 @@ Tabelle~\ref{tab:erfuellung} ordnet jeder User Story und jeder nichtfunktionalen
   NFA06 & -- & erfüllt & TC-U-01, TC-I-06 \\
   NFA07 & -- & erfüllt & TC-U-14 \\
   NFA08 & -- & erfüllt & TC-U-15 \\
-  NFA09 & -- & teilweise geprüft & TC-S-10 (nur unter Windows~11, siehe TD02) \\
+  NFA09 & -- & vorläufig erfüllt & TC-S-10 (Windows~11 mit installiertem Python, siehe TD02) \\
   NFA10 & -- & erfüllt & TC-I-08, TC-S-04 \\
   NFA11 & -- & erfüllt & TC-U-08 \\
   NFA12 & -- & erfüllt & TC-I-11 \\
@@ -65,7 +65,7 @@ Tabelle~\ref{tab:erfuellung} ordnet jeder User Story und jeder nichtfunktionalen
 \endgroup
 \quelle{Eigene Darstellung.}
 
-Der Status \enquote{erfüllt} bedeutet, dass alle zugeordneten Testfälle am 27.11.2026 bestanden haben. Die Messwerte und die Abdeckung nennt das Testdokument in den Testergebnissen.
+Der Status \enquote{erfüllt} bedeutet, dass alle zugeordneten Testfälle am 27.11.2026 bestanden haben. NFA09 gilt als vorläufig erfüllt, weil der Test auf einem Rechner ohne Python noch aussteht. Die Messwerte und die Abdeckung nennt das Testdokument in den Testergebnissen.
 
 \subsection{Technische Schulden}
 Technische Schulden sind bewusst in Kauf genommene Lücken, die das Ergebnis heute nicht verfälschen, eine Weiterentwicklung aber erschweren. Tabelle~\ref{tab:schulden} nennt für jede Schuld die Ursache, die Auswirkung und eine mögliche Behebung.
@@ -73,7 +73,7 @@ Technische Schulden sind bewusst in Kauf genommene Lücken, die das Ergebnis heu
 \begingroup
 \setstretch{1.0}
 \fontsize{10pt}{12pt}\selectfont
-\begin{longtable}{@{}L{1.0cm}L{4.4cm}L{5.2cm}L{5.2cm}@{}}
+\begin{longtable}{@{}L{1.0cm}L{4.4cm}L{5.1cm}L{5.1cm}@{}}
   \caption{Technische Schulden}\label{tab:schulden}\\
   \toprule
   \textbf{ID} & \textbf{Beschreibung und Ursache} & \textbf{Auswirkung} & \textbf{Mögliche Behebung} \\
@@ -86,7 +86,7 @@ Technische Schulden sind bewusst in Kauf genommene Lücken, die das Ergebnis heu
   \bottomrule
   \endfoot
   TD01 & Die ausführbare Datei ist nicht digital signiert, weil ein Zertifikat für ein Studienprojekt nicht verfügbar war. & Windows kann beim ersten Start warnen; Unternehmensrichtlinien können den Start verhindern. Variante~B der Benutzeranleitung umgeht das. & Signieren mit einem Code-Signing-Zertifikat oder Verteilung über einen Installer aus einer vertrauenswürdigen Quelle. \\
-  TD02 & NFA09 nennt Windows~10 und~11, getestet wurde nur unter Windows~11 auf dem Entwicklungsrechner. & Abweichungen unter Windows~10 sind nicht ausgeschlossen, auch wenn PySide6 beide Versionen unterstützt. & TC-S-10 auf einem Rechner mit Windows~10 wiederholen. \\
+  TD02 & NFA09 nennt Windows~10 und~11 ohne installiertes Python. Getestet wurde nur auf dem Entwicklungsrechner mit Windows~11, auf dem Python installiert ist. & Die exe bringt ihre eigene Laufzeitumgebung mit; Abweichungen auf anderen Rechnern sind trotzdem nicht ausgeschlossen. & TC-S-10 auf einem Rechner ohne Python und auf einem Rechner mit Windows~10 wiederholen. \\
   TD03 & NFA01 wird über messbare Merkmale der Oberfläche geprüft, nicht mit Testpersonen. & Ob die Oberfläche ohne Anleitung verständlich ist, bleibt unbelegt. & Usability-Test mit fünf Personen aus der Zielgruppe und Aufgaben aus den Kernprozessen. \\
   TD04 & Die Oberflächentests laufen ohne sichtbaren Bildschirm (Qt-Plattform \texttt{offscreen}). & Darstellungsfehler bei hoher Bildschirmskalierung oder kleinen Fenstern bleiben unentdeckt. & Stichprobenartige Sichtprüfung bei 125~\% und 150~\% Skalierung, ergänzt um Bildvergleichstests. \\
   TD05 & Es gibt keine automatische Datensicherung; gesichert wird nur über den manuellen Export. & Ein defekter Datenträger führt zum Verlust aller Einträge seit dem letzten Export. & Wöchentliche Sicherungskopie der Datenbankdatei mit einstellbarem Speicherort. \\
