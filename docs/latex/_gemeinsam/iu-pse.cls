@@ -281,10 +281,13 @@
   extendedchars=true,
   literate=
     {ä}{{ä}}1 {ö}{{ö}}1 {ü}{{ü}}1 {Ä}{{Ä}}1 {Ö}{{Ö}}1 {Ü}{{Ü}}1 {ß}{{ß}}1
-    {€}{{€}}1 {„}{{„}}1 {“}{{“}}1 {–}{{–}}1 {—}{{—}}1 {…}{{…}}1
+    % Zeichen jenseits von U+00FF ersetzt tools/build_docs.py durch \symbol{…}
     {é}{{é}}1 {è}{{è}}1 {à}{{à}}1,
 }
 \lstdefinestyle{python}{language=Python}
+% Ersatzschriften für Symbole, die in der Code-Schrift fehlen (z. B. ▶ ✔ ⚠ �)
+\newfontfamily\iusymbolschrift{Segoe UI Symbol}
+\newfontfamily\iuuischrift{Segoe UI}
 \def\lst@visiblespace{\char32}  % echtes Leerzeichen statt „␣“
 
 % ---------------------------------------------------------------------

@@ -110,6 +110,21 @@ def tex_escape(text: str) -> str:
 AUSSCHLUSS = {".venv", "venv", "build", "dist", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 
 
+# Zeichen, die in der Code-Schrift (Consolas) fehlen, und die Ersatzschrift aus iu-pse.cls
+_ERSATZSCHRIFT = {0x25B6: "iusymbolschrift", 0x25C0: "iusymbolschrift", 0x2714: "iusymbolschrift",
+                  0x26A0: "iusymbolschrift", 0x2139: "iusymbolschrift", 0xFFFD: "iuuischrift"}
+
+
+def _listing_zeichen(z: str) -> str:
+    """Setzt Zeichen jenseits von U+00FF als \\symbol{…} in einen Escape-Abschnitt (§…§)."""
+    code = ord(z)
+    if code <= 0xFF:
+        return z
+    if code in _ERSATZSCHRIFT:
+        return f"§{{\\{_ERSATZSCHRIFT[code]}\\symbol{{{code}}}}}§"
+    return f"§\\symbol{{{code}}}§"
+
+
 def quellcode_anhang(build_dir: Path) -> int:
     dateien = sorted(
         p for p in APP_DIR.rglob("*.py")
@@ -127,10 +142,16 @@ def quellcode_anhang(build_dir: Path) -> int:
     for datei in dateien:
         rel_app = datei.relative_to(ROOT).as_posix()
         # Pfad relativ zum Dokumentordner docs/latex/01_Projektdokumentation
-        rel_doc = os.path.relpath(datei, LATEX / "01_Projektdokumentation").replace("\\", "/")
+        # listings setzt unter LuaLaTeX Zeichen jenseits von U+00FF an die falsche
+        # Stelle. Deshalb eine Kopie, in der diese Zeichen als \symbol{…} in einem
+        # Escape-Abschnitt (§…§) stehen; beim Kopieren aus dem PDF bleibt das Zeichen.
+        kopie = build_dir / "quellcode" / datei.relative_to(APP_DIR)
+        kopie.parent.mkdir(parents=True, exist_ok=True)
+        kopie.write_text("".join(map(_listing_zeichen, datei.read_text(encoding="utf-8"))), encoding="utf-8")
+        rel_doc = os.path.relpath(kopie, LATEX / "01_Projektdokumentation").replace("\\", "/")
         zeilen += [
             "\\par\\medskip\\textbf{Datei: " + tex_escape(rel_app) + "}\\par\\nopagebreak",
-            "\\lstinputlisting[style=python]{" + rel_doc + "}",
+            "\\lstinputlisting[style=python,escapechar=§]{" + rel_doc + "}",
             "",
         ]
     (build_dir / "quellcode.tex").write_text("\n".join(zeilen), encoding="utf-8")
